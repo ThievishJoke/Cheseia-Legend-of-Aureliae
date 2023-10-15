@@ -1,4 +1,4 @@
-from Main.rarity.WeaponRarities import index_rarity_by_name, calculate_bonus
+from rarity.WeaponRarities import index_rarity_by_name, calculate_bonus
 import json
 
 material = {
