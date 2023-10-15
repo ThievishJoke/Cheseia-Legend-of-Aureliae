@@ -1,6 +1,6 @@
 # Cheseia-Legend-of-Aureliae
 
-![](/main/menu_background.png)
+![](menu_background.png)
 
 ## todo:
 
