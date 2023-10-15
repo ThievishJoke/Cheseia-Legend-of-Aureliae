@@ -4,7 +4,7 @@
 #with open(r"C:\Users\westt\Desktop\V1.3 Cheseia Legend of Aureliae\lorebook\Aureliae.json", "r") as f:
 #    lore = f.read()
 #
-## Create the main window
+## Create the Main window
 #root = tk.Tk()
 #root.title("Lore Book")
 #
@@ -15,7 +15,7 @@
 ## Insert the lore into the Text widget
 #lore_text.insert("1.0", lore)
 #
-## Run the main loop
+## Run the Main loop
 #root.mainloop()
 
 import json
