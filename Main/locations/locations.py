@@ -78,7 +78,7 @@ R_Duskgrove = ["Killhollow"+(d), "Vinmur"+(t), "Lakeside"+(l+c), "Eastborough"+(
 #--------------------------------------------------------------------------------------------------- Dawngrove * (Needs additional dungeon locations/info)
 R_Dawngrove = ["Tassis"+(t), "Sunhollow"+(d), "Besanluire"+(t), "Silvermount"+(df+t), "Qaxtin"+(c), "Qrokving"+(l+dun), "Tradespell"+(df+dun), "Bridegalley"+(l+c)]
 #Grove/DenseForest/Light/Lake/Coastal/Dungeon >()
-#--------------------------------------------------------------------------------------------------- The Subterrane (Needs additional dungeon locations/info/location discriptors)
+#--------------------------------------------------------------------------------------------------- The Subterrane (Needs additional dungeon locations/info/location descriptors)
 R_The_Subterrane = ["Crystalshear", "Lovlimar", "Midkeep", "Uwruorith", "Galo's Bridge", "Draguiseau", "Dragonborough", "Dusthollow", "Ordville", "Spirithorn", "Deeprest" ]
 #Undergound/Nether Realm/Dungeon >
 #--------------------------------------------------------------------------------------------------- The Subterrane Sea (Needs additional dungeon locations/info)
