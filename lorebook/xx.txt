@@ -1,0 +1,100 @@
+Potential quests
+
+-CLASS
+Warrior:
+Warrior's Challenge: Face off against a powerful gladiator in the grand arena to prove your strength and earn the respect of the kingdom.
+The Lost Blade: Retrieve a legendary sword stolen by a notorious bandit leader and restore it to its rightful place in the kingdom's history.
+
+Thief:
+The Heist: Infiltrate a heavily guarded mansion to steal a valuable artifact that holds secrets to the kingdom's past.
+Shadows of Betrayal: Uncover a conspiracy within the royal court by gathering evidence from hidden locations and exposing the traitors.
+
+Bard:
+The Melody of Legends: Travel across the kingdom, collecting rare musical instruments to create a symphony that will bring harmony to the land.
+The Poet's Inspiration: Seek out renowned poets and artists to gather inspiration and create a masterpiece that will captivate the hearts of the people.
+
+Mage:
+The Arcane Trials: Prove your mastery of the magical arts by completing a series of challenging trials in the ancient ruins to unlock powerful spells.
+The Elemental Balance: Restore the balance of the elements by finding and activating ancient elemental altars scattered throughout the realm.
+
+Paladin:
+Divine Retribution: Hunt down and vanquish a powerful necromancer who threatens to unleash darkness upon the kingdom.
+The Sacred Oath: Undertake a pilgrimage to sacred shrines, proving your devotion to the gods and receiving blessings to enhance your righteous powers.
+
+Healer:
+The Elixir of Life: Venture into treacherous lands to gather rare herbs and ingredients needed to create a legendary potion with miraculous healing properties.
+Wounded Spirits: Aid lost and tormented souls by using your healing powers to cleanse their spirits and bring peace to restless souls.
+
+Ranger:
+Hunt of the Wild: Track down a ferocious beast terrorizing the kingdom's outskirts and protect the innocent villagers.
+The Ancient Forest: Navigate through a mystical forest, unraveling its secrets and safeguarding its creatures from an impending danger.
+
+Fighter:
+The Grand Tournament: Participate in a prestigious fighting tournament, defeating skilled opponents to earn the title of the kingdom's greatest warrior.
+The Warfront: Lead a squad of brave soldiers into battle against invading forces, strategizing and executing decisive maneuvers to defend the kingdom.
+
+-GENDER
+Male:
+The Knight's Test: Prove your valor and skill by completing a series of trials to earn a place among the elite knights of the kingdom.
+The Lost Relic: Search for a legendary artifact that holds the key to unlocking ancient powers, hidden in a treacherous dungeon.
+The Dragon's Challenge: Confront a fearsome dragon that threatens the kingdom's peace and prove your strength as a warrior.
+The Bandit King: Infiltrate a notorious bandit stronghold and take down their leader, bringing justice to the oppressed.
+The Secret Society: Uncover a hidden organization's sinister plot and dismantle their operations to protect the kingdom.
+The Mercenary's Contract: Accept high-risk missions as a skilled mercenary, completing dangerous tasks for the highest bidder.
+The Duelist's Honor: Engage in honorable duels with renowned swordsmen to become recognized as the kingdom's greatest duelist.
+The Guardian's Duty: Protect a sacred shrine from hordes of monsters that seek to corrupt its divine energy.
+The Tournament Champion: Compete in a grand martial arts tournament, defeating skilled opponents to claim the title of champion.
+The Forbidden Forest: Venture into a mystical forest filled with enchanted creatures and solve the mystery of its ancient curse.
+The Sunken Treasure: Dive into treacherous waters to retrieve a lost treasure from the depths of the ocean, facing perilous challenges along the way.
+The Shadow Assassin: Infiltrate the ranks of an elusive assassin guild to uncover their secrets and bring them to justice.
+The Undead Menace: Lead a group of fearless warriors against an undead horde that threatens to overrun the kingdom.
+The King's Decree: Carry out important missions for the king, ensuring the stability and security of the realm.
+The Legendary Duel: Seek out and challenge legendary warriors in epic one-on-one battles, proving your mettle as a formidable combatant.
+
+Female:
+The Royal Escort: Accompany Aureliae on a diplomatic mission to a neighboring kingdom, navigating political intrigue and forming a deep bond with the Empress.
+The Cursed Necklace: Retrieve a powerful artifact stolen by a nefarious sorcerer, unraveling the curse that plagues the wearer and saving innocent lives.
+The Spirit Guardian: Venture into the spirit realm to rescue a lost spirit and restore balance to the kingdom's spiritual energies.
+The Secret Garden: Discover a hidden garden filled with magical flora and assist the guardian nymphs in protecting it from those who seek to exploit its powers.
+The Enchanted Masquerade: Attend a grand masquerade ball where secrets and deceptions abound, unraveling a web of lies and protecting innocent attendees.
+The Moonlit Serenade: Join Aureliae on a romantic midnight escapade under the moonlight, where secrets are shared and feelings bloom.
+The Elixir of Life: Venture into a dangerous ancient temple to find the mythical elixir that can grant eternal youth, making choices that test your character and morality.
+The Forgotten Prophecy: Uncover an ancient prophecy hidden in the depths of a long-abandoned temple, unlocking the truth that could change the fate of the kingdom.
+The Pirate's Treasure: Set sail on a thrilling pirate adventure to retrieve a legendary treasure, encountering sea monsters, rival pirates, and the temptation of the high seas.
+The Artisan's Legacy: Assist a renowned master artisan in reviving a dying craft, showcasing your own artistic talents and preserving cultural heritage.
+The Feywild Hunt: Venture into the mystical realm of the fey to aid a group of magical creatures in their quest to reclaim their stolen homeland.
+The Starlight Dance: Participate in a celestial dance ceremony that calls upon the power of the stars, learning ancient rituals and communing with cosmic energies.
+The Forbidden Love: Navigate a forbidden love affair between two noble families, making difficult choices that challenge societal norms and bring about change.
+The Songbird's Melody: Help a talented bard unlock her true potential, embarking on a musical journey filled with captivating performances and heartfelt storytelling.
+The Fate's Threads: Unravel a complex tapestry of destinies and save a group of captured seers from a sinister organization, wielding the power of prophecy to shape the future.
+
+Warrior:
+Warrior Challenge
+The Lost Blade
+Thief:
+Infiltrate the church
+Missfortune of a betrayer
+Bard:
+Melody of legends
+Poet's Insperation
+Mage:
+The Arcane Challenge
+Elemental Balance
+Paladin:
+Divine Retribution
+Sacred Oath
+Healer:
+Elixir of Life
+Wounded Spirits
+Ranger:
+Hunt of the Wild
+Epadena Forest
+Fighter:
+Martial Prowess
+Warfront
+
+"Description" : "Extremely Powerful Reptilian Monsters."
+        "In Extreme Cases Powerful Ones Can Be Created, And Are Made Of Entirly Of Their Respective Element, And Or In The Case Of None Standard Types, Aborbing (A) Particular Energy/Energies."
+        "Also True That They May Become Completely One Or More Element, Most Likely Being Of The Type They Are."
+        "Dispite Many Of The Variuos Element Dragons' Differences They Very Friendly To One Another."
+        "Avoid At All Costs.",
