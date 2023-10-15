@@ -1,3 +1,6 @@
+from rarity.WeaponRarities import index_rarity_by_name, calculate_bonus
+
+
 material = {
     "wood" : {
         "Discription" : "Wood is a strong and sturdy natural material, rots quickly",
@@ -259,79 +262,118 @@ material = {
     },
 }
 
-rarity = {
-    "Very Common" : {
-        "Dmg Bonus" : 0,
-        "legendary_bonus" : 1,
-        "legendary_bonus_mult" : 1,
-    },
-    "Common" : {
-        "Dmg Bonus" : 0,
-        "legendary_bonus" : 1,
-        "legendary_bonus_mult" : 1,
-    },
-    "Uncommon" : {
-        "Dmg Bonus" : 10,
-        "legendary_bonus" : 1,
-        "legendary_bonus_mult" : 1,
-    },
-    "Rare" : {
-        "Dmg Bonus" : 15,
-        "legendary_bonus" : 1,
-        "legendary_bonus_mult" : 1,
-    },
-    "Epic" : {
-        "Dmg Bonus" : 20,
-        "legendary_bonus" : 1,
-        "legendary_bonus_mult" : 1,
-    },
-    "Legendary" : {
-        "Dmg Bonus" : 40,
-        "legendary_bonus" : 5,
-        "legendary_bonus_mult" : 2,
-    },
-    "Mythical" : {
-        "Dmg Bonus" : 60,
-        "legendary_bonus" : 5,
-        "legendary_bonus_mult" : 2,
-    },
-    "Unique" : {
-        "Dmg Bonus" : 100,
-        "legendary_bonus" : 10,
-        "legendary_bonus_mult" : 2,
-    },
-}
+#rarity = {
+#    "Very Common" : {
+#        "Dmg Bonus" : 0,
+#        "legendary_bonus" : 1,
+#        "legendary_bonus_mult" : 1,
+#    },
+#    "Common" : {
+#        "Dmg Bonus" : 0,
+#        "legendary_bonus" : 1,
+#        "legendary_bonus_mult" : 1,
+#    },
+#    "Uncommon" : {
+#        "Dmg Bonus" : 10,
+#        "legendary_bonus" : 1,
+#        "legendary_bonus_mult" : 1,
+#    },
+#    "Rare" : {
+#        "Dmg Bonus" : 15,
+#        "legendary_bonus" : 1,
+#        "legendary_bonus_mult" : 1,
+#    },
+#    "Epic" : {
+#        "Dmg Bonus" : 20,
+#        "legendary_bonus" : 1,
+#        "legendary_bonus_mult" : 1,
+#    },
+#    "Legendary" : {
+#        "Dmg Bonus" : 40,
+#        "legendary_bonus" : 5,
+#        "legendary_bonus_mult" : 2,
+#    },
+#    "Mythical" : {
+#        "Dmg Bonus" : 60,
+#        "legendary_bonus" : 5,
+#        "legendary_bonus_mult" : 2,
+#    },
+#    "Unique" : {
+#        "Dmg Bonus" : 100,
+#        "legendary_bonus" : 10,
+#        "legendary_bonus_mult" : 2,
+#    },
+#}
 
-weapon_current_lvl = 1
-weapon_xp_nxt_lvl = 0
-weapon_xp = 0
-wood_stick = {
-    "Name" : "Wood Stick",
-    "Dmg" : 5,
-    "Material Type" : material["wood"],
-    "Weapon Xp" : weapon_xp,
-    "Weapon Lvl" : weapon_xp_nxt_lvl,
-    "Weapon Next Lvl" : int(150*(1.35*weapon_current_lvl)),
-    "Rarity" : rarity["Very Common"],
-    "Tooltip" : "A pretty pathetic wood stick, 'should probably find something better' ",
-    "Single Handed" : 1,
-    "Two Handed" : 0,
-    "Is Enchanted" : 0,
-    "Enhanced Count" : 0,
-    "Enhancements capped" : 1,
-    "Max Enhancements" : 10
-}
-weapon_material = ''
-club = {
-    "Weapon Material" : weapon_material,
-    "Name" : "Club of {weapon_material}",
-    "Dmg" : 5,
-    "Single Handed" : True,
-    "Two Handed" : False,
-    "Rarity" : "Common",
-    "Tooltip" : "A Blunt Weapon That Is Swung"
-}
-starting_weapon = wood_stick
+def weapon_types(weapon_shape):
+    if weapon_shape == "Sword":
+        return weapon_shape
+    if weapon_shape == "Club":
+        return weapon_shape
+
+def create_weapon(name, weapon_shape, dmg, rarity_name, material_type, tooltip, is_single_handed, is_two_handed, is_enchanted):
+    rarity_index = index_rarity_by_name(rarity_name)
+    dmg_bonus, legendary_bonus = calculate_bonus(rarity_index)
+
+    weapon_xp = 0
+    weapon_xp_nxt_lvl = 10
+    
+    weapon_dict = {
+    "Name" : f"{material}, {weapon_types(weapon_shape)}",
+    "Dmg": dmg,
+    "Material Type": material_type,
+    "Weapon Xp": weapon_xp,
+    "Weapon Lvl": weapon_xp_nxt_lvl,
+    "Weapon Next Lvl": int(150 * (1.35 * 1)),
+    "Rarity": rarity_name,
+    "Dmg Bonus": dmg_bonus,
+    "Legendary Bonus": legendary_bonus,
+    "Tooltip": tooltip,
+    "Single Handed": is_single_handed,
+    "Two Handed": is_two_handed,
+    "Is Enchanted": is_enchanted,
+    "Enhanced Count": 0,
+    "Enhancements capped": 1,
+    "Max Enhancements": 10
+    }
+
+    return weapon_dict
+#Example
+wood_stick = create_weapon("Wood Stick", "Sword", 5, "very common", "Wood", "A pretty pathetic wood stick, 'should probably find something better'", 1, 0, 0)
+print(wood_stick)
+
+    
+#weapon_current_lvl = 1
+#weapon_xp_nxt_lvl = 0
+#weapon_xp = 0
+#wood_stick = {
+#    "Name" : "Wood Stick",
+#    "Dmg" : 5,
+#    "Material Type" : material["wood"],
+#    "Weapon Xp" : weapon_xp,
+#    "Weapon Lvl" : weapon_xp_nxt_lvl,
+#    "Weapon Next Lvl" : int(150*(1.35*weapon_current_lvl)),
+#    "Rarity" : RARITIES["Very Common"],
+#    "Tooltip" : "A pretty pathetic wood stick, 'should probably find something better' ",
+#    "Single Handed" : 1,
+#    "Two Handed" : 0,
+#    "Is Enchanted" : 0,
+#    "Enhanced Count" : 0,
+#    "Enhancements capped" : 1,
+#    "Max Enhancements" : 10
+#}
+#
+#weapon_material = ''
+#club = {
+#    "Weapon Material" : weapon_material,
+#    "Name" : "Club of {weapon_material}",
+#    "Dmg" : 5,
+#    "Single Handed" : True,
+#    "Two Handed" : False,
+#    "Rarity" : "Common",
+#    "Tooltip" : "A Blunt Weapon That Is Swung"
+#}
+#starting_weapon = wood_stick
 
 #Weapons
 
