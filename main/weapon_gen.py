@@ -1,5 +1,5 @@
-from rarity.WeaponRarities import index_rarity_by_name, calculate_bonus
-
+from WeaponRarities import index_rarity_by_name, calculate_bonus
+import json
 
 material = {
     "wood" : {
@@ -306,28 +306,37 @@ material = {
 #}
 
 def weapon_types(weapon_shape):
+    if weapon_shape == "Stick":
+        return weapon_shape
     if weapon_shape == "Sword":
         return weapon_shape
     if weapon_shape == "Club":
         return weapon_shape
 
-def create_weapon(name, weapon_shape, dmg, rarity_name, material_type, tooltip, is_single_handed, is_two_handed, is_enchanted):
+def create_weapon(name, special_name, weapon_shape, dmg, rarity_name, material_type, tooltip, is_single_handed, is_two_handed, is_enchanted):
     rarity_index = index_rarity_by_name(rarity_name)
-    dmg_bonus, legendary_bonus = calculate_bonus(rarity_index)
+    dmg_bonus, legendary_bonus, legendary_bonus_mult = calculate_bonus(rarity_index)
 
     weapon_xp = 0
-    weapon_xp_nxt_lvl = 10
+    weapon_lvl = 0
+    weapon_xp_nxt_lvl = 0
+    
+    if special_name is True:
+        name = (name)
+    else:
+        name = (f"{material_type}, {weapon_shape}")
     
     weapon_dict = {
-    "Name" : f"{material}, {weapon_types(weapon_shape)}",
+    "Name" : name,
     "Dmg": dmg,
     "Material Type": material_type,
     "Weapon Xp": weapon_xp,
-    "Weapon Lvl": weapon_xp_nxt_lvl,
-    "Weapon Next Lvl": int(150 * (1.35 * 1)),
+    "Weapon Lvl": weapon_lvl,
+    "Weapon Next Lvl": weapon_xp_nxt_lvl is int(150 * (1.35 * 1)),
     "Rarity": rarity_name,
     "Dmg Bonus": dmg_bonus,
     "Legendary Bonus": legendary_bonus,
+    "Legendary Bonus Mult": legendary_bonus_mult,
     "Tooltip": tooltip,
     "Single Handed": is_single_handed,
     "Two Handed": is_two_handed,
@@ -338,9 +347,11 @@ def create_weapon(name, weapon_shape, dmg, rarity_name, material_type, tooltip, 
     }
 
     return weapon_dict
+
 #Example
-wood_stick = create_weapon("Wood Stick", "Sword", 5, "very common", "Wood", "A pretty pathetic wood stick, 'should probably find something better'", 1, 0, 0)
-print(wood_stick)
+wood_stick = create_weapon("Wood Stick", "True", "Stick", 5, "very common", "Wood", "A pretty pathetic wood stick, 'should probably find something better'", 1, 0, 0)
+formatted_dict = json.dumps(wood_stick, indent=4)
+print(formatted_dict)
 
     
 #weapon_current_lvl = 1

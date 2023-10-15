@@ -1,5 +1,5 @@
 import json
-import main.weapons.weaponfunctions.weapon_gen as wepn
+import main.weapon_gen as wepn
 import main.locations.locations as loci
 import main.creatures.hostile.enemies as enem
 import random
