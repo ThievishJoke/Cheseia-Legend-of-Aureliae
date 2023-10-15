@@ -1,9 +1,9 @@
 import json
-import main.weapon_gen as wepn
-import main.locations.locations as loci
-import main.creatures.hostile.enemies as enem
+import Main.weapon_gen as wepn
+import Main.locations.locations as loci
+import Main.creatures.hostile.enemies as enem
 import random
-import main.combat.encounter as ectr
+import Main.combat.encounter as ectr
 import pathlib
 import math
 import time

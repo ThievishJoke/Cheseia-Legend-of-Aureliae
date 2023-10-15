@@ -2,7 +2,7 @@
 import random
 import json
 import pathlib
-import main.locations.locations as loci
+import Main.locations.locations as loci
 
 enable_overwrite = True
 range_val = 25
