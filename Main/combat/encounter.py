@@ -1,5 +1,5 @@
 import random
 import math
-import main.creatures.hostile.enemies as enemies
+import Main.creatures.hostile.enemies as enemies
 
 encounter_type = ''
