@@ -13,23 +13,23 @@
     - alloys
 - make armor_gen
 - make jewerly_gen
-- refactor all enemies into seprate groups
+- refactor all enemies into separate groups
     - add function so that depending on player location specific enemies appear in random encounters
     - scripted encounters
-    - have enemies scale so that the weaker enemies so that forced encounters with weakers enemies still offer decent rewards (make the interaction worth something)
-- make combat work / rebuild it
-    - redo player all of the players actions
+    - have enemies scale so that the weaker enemies forced encounters with the weaker enemies still offer decent rewards (make the interaction worth something)
+- make combat work/rebuild it
+    - redo player all of the player's actions
     - make player armor/clothing do something (flat and or percent damage reduction)(passive effects)
-    - make player jewerly do something (passive effects)
+    - make player jewelry do something (passive effects)
     - pack enemies
-    - make enemy ai
+    - make enemy AI
         - make humanoid enemies use consumables (if they have them)
         - have some strong enemies with stronger physical dmg than magical prowess that can buff themselves with the magical knowledge they do have (and maybe something alike for strong magic users with decent physical dmg)
-- bosses (maybe do one or two as base line)
+- bosses (maybe do one or two as a baseline)
     - individual boss mechanics & ai
     - boss loot
 - the various world location types and their functions
-    - town and cities are enterable
+    - Towns and cities are enterable
     - dungeons are enterable
     - ruins are enterable
     - dens are enterable
@@ -39,18 +39,18 @@
     - smithy (Enhancing Weapons, Crafting weapons)
     - armory (Buying armor, Enhancing Armor)
     - gemstore (Buying gems for Enchanting/Crafting)
-    - tavern/inn (replenishing comsummables, replenishing health/stamina/mana)
-    - restaurant (buying extra comsummables, temporary buffs from food?, lore?)
-    - town hall (gathering area for npcs, taking on tasks from npc, quests from npcs, lore?)
-        - allow the generated npc to randomly interact with player
+    - tavern/inn (replenishing consumables, replenishing health/stamina/mana)
+    - restaurant (buying extra consumables, temporary buffs from food? lore?)
+    - town hall (gathering area for NPC, taking on tasks from NPC, quests from NPC, lore?)
+        - allow the generated NPC to randomly interact with the player
     - guild hall (taking on guild tasks/quests, tasks being repeatable means of making coin)
     - castle for speaking with Aureliae herself (quests, lore, yuri :3)
     - dock traveling to & from locations along rivers/coastlines
 --- Lowest Priority ---
-    - city hall (similiar to town halls)
+    - city hall (similar to town halls)
     - jail (exsists for questing purposes(maybe other stuff idk :shrug:))
     - castle dungeon (same as above)
-    - estates/npc houses (same as jail)
-    - playerhousing
+    - estates/NPC houses (same as jail)
+    - player housing
 
 ## completed: 
