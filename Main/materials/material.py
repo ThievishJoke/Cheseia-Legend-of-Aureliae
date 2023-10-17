@@ -15,7 +15,14 @@ class raw_material(material):
         self.material = material
         self.mining_lvl = mining_lvl
         self.bonus_percent = bonus_percent
-    pass
+    def print_material(self):
+        print(self.material.name)
+        print(self.material.is_sellable)
+        print(self.material.is_rewardable)
+        print(self.material.is_craftable)
+        print(self.mining_lvl)
+        print(self.bonus_percent)
+
 
 class raw_metals(raw_material):
     pass
@@ -46,6 +53,17 @@ class refined_materials(raw_metals, raw_naturals):
             pass
         pass
 
+    def print_material(self):
+        material.name
+        material.is_sellable
+        material.is_rewardable
+        material.is_craftable
+        self.crafting_lvl
+        self.bonus_percent
+
+
 iron_ore = raw_material(material("iron ore", True, True, False), 1, 0)
 
 isinstance(iron_ore, raw_material)
+x = iron_ore
+x.print_material()
