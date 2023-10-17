@@ -7,21 +7,45 @@ class material: # Defines A material
         self.is_craftable = is_craftable
 
     def craft(self):
-        if self.is_sellable == True:
+        if self.is_craftable == True:
             pass
 
 class raw_material(material):
-    def __init__(self, mining_lvl = 1, bonus_percent = 0):
+    def __init__(self, material, mining_lvl = 1, bonus_percent = 0):
+        self.material = material
         self.mining_lvl = mining_lvl
         self.bonus_percent = bonus_percent
     pass
 
-class metal(raw_material):
+class raw_metals(raw_material):
     pass
 
-class natural(raw_material):
+class raw_naturals(raw_material):
     pass
 
-class refined_material():
-    pass
+class refined_materials(raw_metals, raw_naturals):
+    def __init__(self, is_metal, is_natural, crafting_lvl = 1, bonus_percent = 0):
+        self.is_metal = is_metal
+        self.is_natural = is_natural
+        self.crafting_lvl = crafting_lvl
+        self.bonus_percent = bonus_percent
+    
+    def smelt(self):
+        if(self.is_metal == True): #check if material is metal
+            pass
 
+        if(self.crafting_lvl == required_lvl): #craft item you meet lvl requirement
+            pass
+        pass
+
+    def refine(self):
+        if(self.is_natural == True): #check if material is metal
+            pass
+
+        if(self.crafting_lvl == required_lvl): #craft item you meet lvl requirement
+            pass
+        pass
+
+iron_ore = raw_material(material("iron ore", True, True, False), 1, 0)
+
+isinstance(iron_ore, raw_material)
