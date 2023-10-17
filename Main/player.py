@@ -1,20 +1,3 @@
-"""
-here will be the file that will define all player logic
-17th of october: making the player class basics and trying to make an inventory system for the player
-the idea for the inventory is as follows: 
-- I wanted to make an inventory class that will work more or less the same for all the things that have one
-  with the player and player stashes (idk if they will be added or not) to be always saved in the save of the game
-  and called for when needed (when crafting or when opening up the inventory)
-  npc inventories are another thing, I don't want to have them loaded on the RAM for the entire game so a similar
-  thing of loading on interaction will be made, I think for example, shops will have a loot table to get what they
-  sell and after its loaded they get a seed of sorts that will be placed in a JSON file with their npc ID
-  so when you go to interact with them, they can decipher the seed and load the inventory meaning you need to keep
-  track of fewer things in the save file, that should be simple.
-  a similar system can be used to the player inventory when I think about it. more heavy on the cpu but less ram usage
-  I mean comes on how hard would it be to decipher the first letter of an item and a number lol.
-  as per saving prices that will come later.
-  today I focus on the player and try to make a general inventory class
-"""
 import re
 
 
@@ -58,6 +41,7 @@ class Inventory:
 
     def add_item(self, item: Item, amount):
         # find if already exists in inventory and add if it is there
+        
         x = re.findall(r"(\d+{})".format(item.inventory_name), self.seed)
         if not x:
             # if not, lets append it to the inventory string
@@ -73,6 +57,7 @@ class Inventory:
     def remove_item(self, item: Item, amount):
         # look for item in inventory and remove if you have enough to remove if not enough or none exist then return
         # None
+
         x = re.findall(r"(\d+{})".format(item.inventory_name), self.seed)
         if not x:
             return None  # didn't find in inventory
@@ -141,12 +126,12 @@ class Player:
                 else:
                     return None
 
-
 a = Species("cat person", 100, 50, 10, 5, 2, [None], 80, 5)
 
 c = Class("knight", 2, 3, 0, 4, 0, 5, ["for the glory"])
 
 b = Player(a, "Lina", [0, 0], "idk some magic shit", "female", ["cute", "funny"], c)
+
 
 invn = Inventory("")
 itm = Item("iron ore", "io")

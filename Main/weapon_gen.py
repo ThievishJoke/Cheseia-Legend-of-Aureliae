@@ -318,7 +318,7 @@ def weapon_types(weapon_shape):
 
 
 def create_weapon(name, special_name, weapon_shape, dmg, rarity_name, material_type, tooltip, is_single_handed,
-                  is_two_handed, is_enchanted, enhancements_capped, max_enhancements=99999):
+    is_two_handed, is_enchanted, enhancements_capped, max_enhancements=99999):
     rarity_index = index_rarity_by_name(rarity_name)
     dmg_bonus, legendary_bonus, legendary_bonus_mult = calculate_bonus(rarity_index)
 
@@ -360,7 +360,7 @@ wood_stick_tooltip = "A pretty pathetic wood stick, 'should probably find someth
 wood_stick = create_weapon("Wood Stick", True, "Stick", 5, "very common", "Wood", wood_stick_tooltip, 1, 0, 0, True, 5)
 faeroot_katana_tooltip = "A pretty decent blade"
 shinaie_katana = create_weapon("Katana", False, "Katana", 5, "rare", material["Faeroot"]["Name"],
-                               faeroot_katana_tooltip, 1, 0, 0, False)
+    faeroot_katana_tooltip, 1, 0, 0, False)
 weapons_list = [wood_stick, shinaie_katana]
 formatted_dict = json.dumps(weapons_list, indent=4)
 print(formatted_dict)
