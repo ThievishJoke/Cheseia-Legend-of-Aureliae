@@ -1,8 +1,3 @@
-"""
-here will be the file that will define all player logic
-17th of october: all the goals have been achieved
-18th of october: start working on races and making JSON's <too many fucking definitions with no functions yayyyyy >
-"""
 import re
 
 
@@ -46,33 +41,36 @@ class Inventory:
 
     def add_item(self, item: Item, amount):
         # find if already exists in inventory and add if it is there
-        x = re.findall(r"(\d+[a-zA-z]+)", self.seed)
-        for each_item in x:
-            inv_name = re.split(r"([a-zA-Z]+)", each_item)
-            if inv_name[1] == item.inventory_name:
-                number = int(inv_name[0]) + amount
-                change = str(number) + inv_name[1]
-                self.seed = re.sub(each_item, change, self.seed)
-                return  # if found and applied change then we are done!
-        # if not, lets append it to the inventory string
-        self.seed = self.seed + str(amount) + item.inventory_name
+        
+        x = re.findall(r"(\d+{})".format(item.inventory_name), self.seed)
+        if not x:
+            # if not, lets append it to the inventory string
+            self.seed = self.seed + str(amount) + item.inventory_name
+            return
+        inv_name = re.split(r"([a-zA-Z]+)", x[0])
+        if inv_name[1] == item.inventory_name:
+            number = int(inv_name[0]) + amount
+            change = str(number) + inv_name[1]
+            self.seed = re.sub(x[0], change, self.seed)
+            return
 
     def remove_item(self, item: Item, amount):
         # look for item in inventory and remove if you have enough to remove if not enough or none exist then return
         # None
-        x = re.findall(r"(\d+[a-zA-z]+)", self.seed)
-        for each_item in x:
-            inv_name = re.split(r"([a-zA-Z]+)", each_item)
-            if inv_name[1] == item.inventory_name:
-                if int(inv_name[0]) >= amount:
-                    number = int(inv_name[0]) - amount
-                else:
-                    return None  # return None if you don't have enough
-                change = str(number) + inv_name[1]
-                self.seed = re.sub(each_item, change, self.seed)
-                pass
-        return None  # if it gets to this point, that means we looped through the entire inventory and didn't find it
 
+        x = re.findall(r"(\d+{})".format(item.inventory_name), self.seed)
+        if not x:
+            return None  # didn't find in inventory
+        inv_name = re.split(r"([a-zA-Z]+)", x[0])
+        if inv_name[1] == item.inventory_name:
+            if int(inv_name[0]) >= amount >= 0:
+                number = int(inv_name[0]) - amount
+                if number > 0:
+                    change = str(number) + inv_name[1]
+                else:  # if its 0 then we need to remove the item from the inventory
+                    change = ""
+                self.seed = re.sub(x[0], change, self.seed)
+                return 1  # 1 means success
 
 class Player:
     def __init__(self, species, name, location, affinity, gender, extra_passives: list, Class):
@@ -96,6 +94,37 @@ class Player:
         self.magic_resist = species.base_magic_resist + Class.bonus_magic_resist
         self.inventory = Inventory("")  # empty seed is empty inventory
 
+    def transfer_inventory(self, inv: Inventory, action, item: Item,
+                           amount):  # function to transfer item from a player inv
+        # to another one or reverse
+        #  action is a string that is either T for take or G for give
+        # based on the action we either check the player first or the other inventory first
+        if action == "T":
+            #  if we are taking items from an inventory we should check if it ahs the amount we want to take first
+            x = re.findall(r"(\d+{})".format(item.inventory_name), inv.seed)
+            if not x:
+                return None  # didn't find in inventory
+            inv_name = re.split(r"([a-zA-Z]+)", x[0])
+            if inv_name[1] == item.inventory_name:
+                if int(inv_name[0]) >= amount >= 0:  # if found, and we are taking a normal amount then just remove and add :>
+                    inv.remove_item(item, amount)
+                    self.inventory.add_item(item, amount)
+                    return 1
+                else:  # if you wanted to take more then there is in the inv then return None
+                    return None
+        elif action == "G":
+            #  same but in reverse now
+            x = re.findall(r"(\d+{})".format(item.inventory_name), self.inventory.seed)
+            if not x:
+                return None  # didn't find in inventory
+            inv_name = re.split(r"([a-zA-Z]+)", x[0])
+            if inv_name[1] == item.inventory_name:
+                if int(inv_name[0]) >= amount >= 0:  # if found, and we are taking a normal amount then just remove and add :>
+                    self.inventory.remove_item(item, amount)
+                    inv.add_item(item, amount)
+                    return 1
+                else:
+                    return None
 
 a = Species("cat person", 100, 50, 10, 5, 2, [None], 80, 5)
 
@@ -103,10 +132,13 @@ c = Class("knight", 2, 3, 0, 4, 0, 5, ["for the glory"])
 
 b = Player(a, "Lina", [0, 0], "idk some magic shit", "female", ["cute", "funny"], c)
 
-invn = Inventory("34io")
+
+invn = Inventory("")
 itm = Item("iron ore", "io")
-invn.add_item(itm, 10)
-invn.remove_item(itm, 50)
-if invn.remove_item(itm, 50) is None:
+invn.add_item(itm, 20)
+if invn.remove_item(itm, 20) is None:
     print("failed to remove item you don't have enough!")
+
+b.transfer_inventory(invn, "T", itm, 10)
 print(invn.seed)
+print(b.inventory.seed)
