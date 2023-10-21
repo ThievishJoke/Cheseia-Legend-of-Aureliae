@@ -3,7 +3,7 @@ import re
 
 class Species:
     def __init__(self, name, base_health, base_mana, base_magic_dmg, base_magic_resist, base_armor,
-                 passive_abilities: list,
+                 passive_abilities: list, base_movement,
                  stamina, base_dmg):
         self.name = name
         self.baseHealth = base_health
@@ -14,11 +14,12 @@ class Species:
         self.passive_abilities = passive_abilities
         self.stamina = stamina
         self.base_dmg = base_dmg
+        self.base_movement = base_movement
 
 
 class Class:
     def __init__(self, name, bonus_dmg, bonus_mana, bonus_magic_dmg, bonus_health, bonus_magic_resist, bonus_armor,
-                 passive_abilities: list):
+                 passive_abilities: list, bonus_movement):
         self.name = name
         self.bonus_dmg = bonus_dmg
         self.bonus_mana = bonus_mana
@@ -27,6 +28,7 @@ class Class:
         self.bonus_magic_resist = bonus_magic_resist
         self.bonus_armor = bonus_armor
         self.passive_abilities = passive_abilities
+        self.bonus_movement = bonus_movement
 
 
 class Item:
@@ -35,13 +37,24 @@ class Item:
         self.inventory_name = inventory_name
 
 
+class equipable(Item):
+    def __init__(self, durability, current_durability, name, inventory_name: str, enchantment: list):
+        super().__init__(name, inventory_name)
+        self.max_durability = durability
+        self.current_durability = current_durability
+        self.enchantments = enchantment
+
+    def update_durability(self, durability):  # simple updating function when in use
+        self.current_durability = durability
+
+
 class Inventory:
     def __init__(self, seed: str):
         self.seed = seed
 
     def add_item(self, item: Item, amount):
         # find if already exists in inventory and add if it is there
-        
+
         x = re.findall(r"(\d+{})".format(item.inventory_name), self.seed)
         if not x:
             # if not, lets append it to the inventory string
@@ -72,13 +85,16 @@ class Inventory:
                 self.seed = re.sub(x[0], change, self.seed)
                 return 1  # 1 means success
 
+
 class Player:
-    def __init__(self, species, name, location, affinity, gender, extra_passives: list, Class):
+    def __init__(self, species, name, location, affinity, gender, extra_passives: list, Class,
+                 inventory=Inventory("NNNNNNNNNN")):
         # nerd shit
         self.species = species  # so I could inherit everything from species without being a subclass of it
         self.cords = location
         # self.city = do the things where you find where you are
         # self.region =
+        # self.closest_checkpoint = I assume to be defined once a map class is created
         self.affinity = affinity
         self.Class = Class
         extra_passives.extend(Class.passive_abilities)
@@ -92,7 +108,9 @@ class Player:
         self.armor = species.base_armor + Class.bonus_armor
         self.mana = species.baseMana + Class.bonus_mana
         self.magic_resist = species.base_magic_resist + Class.bonus_magic_resist
-        self.inventory = Inventory("")  # empty seed is empty inventory
+        self.inventory = inventory  # we will need to load the inventory dipshit why did you think making it
+        # blank is a good idea
+        self.move = species.base_movement + Class.bonus_movement
 
     def transfer_inventory(self, inv: Inventory, action, item: Item,
                            amount):  # function to transfer item from a player inv
@@ -106,7 +124,8 @@ class Player:
                 return None  # didn't find in inventory
             inv_name = re.split(r"([a-zA-Z]+)", x[0])
             if inv_name[1] == item.inventory_name:
-                if int(inv_name[0]) >= amount >= 0:  # if found, and we are taking a normal amount then just remove and add :>
+                if int(inv_name[0]) >= amount >= 0:  # if found, and we are taking a normal amount then just remove
+                    # and add :>
                     inv.remove_item(item, amount)
                     self.inventory.add_item(item, amount)
                     return 1
@@ -119,26 +138,29 @@ class Player:
                 return None  # didn't find in inventory
             inv_name = re.split(r"([a-zA-Z]+)", x[0])
             if inv_name[1] == item.inventory_name:
-                if int(inv_name[0]) >= amount >= 0:  # if found, and we are taking a normal amount then just remove and add :>
+                if int(inv_name[0]) >= amount >= 0:  # if found, and we are taking a normal amount then just remove and
+                    # add :>
                     self.inventory.remove_item(item, amount)
                     inv.add_item(item, amount)
                     return 1
                 else:
                     return None
 
-a = Species("cat person", 100, 50, 10, 5, 2, [None], 80, 5)
+    def move(self, location: list[int, int]):  # take pos and use current position plus moves to move in that direction
+        # do diagonal moves count as one or 2 moves?
+        pass
 
-c = Class("knight", 2, 3, 0, 4, 0, 5, ["for the glory"])
-
-b = Player(a, "Lina", [0, 0], "idk some magic shit", "female", ["cute", "funny"], c)
-
-
-invn = Inventory("")
-itm = Item("iron ore", "io")
-invn.add_item(itm, 20)
-if invn.remove_item(itm, 20) is None:
-    print("failed to remove item you don't have enough!")
-
-b.transfer_inventory(invn, "T", itm, 10)
-print(invn.seed)
-print(b.inventory.seed)
+    def equip(self, item: Item):
+        # I will handle main equipment as what is the first thing that is in your inventory seed
+        # as per armor I think it should follow the rest of the letters and if there is no valid armor in those slots
+        # the default will be NN which will stand for None
+        # I will have to implement Binary search or some other searching algorythm to make looking for items in lists
+        # fast
+        # I guess I will do the thing that will equip to hand
+        if item.equipable is None:
+            pass
+        else:
+            # first we look for this item
+            x = re.search(r"(\d+{})".format(item.inventory_name), self.inventory.seed)
+            if not x:  # thinking about this when we have a UI it's not needed but still adding a measure just in case
+                return None  # didn't find in inventory
