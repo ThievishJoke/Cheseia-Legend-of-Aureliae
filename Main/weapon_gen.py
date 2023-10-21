@@ -10,89 +10,69 @@ material = {
     # Alloys
 
     "Fae-Gold": {
-        "Class Affinities": ("Rogue", "Mage"),
         "Description": "A shimmering alloy created by combining Fae Ore and Gold. It harnesses the enchanting qualities of Fae Ore and the precious nature of gold, resulting in a material that enhances magical abilities, offers protection against magical attacks, and radiates a captivating aura.",
     },
     "Luminite Steel": {
-        "Class Affinities": "Healer",
         "Description": "An alloy created by combining Radiant Ore and Iron. It infuses the radiant properties of Radiant Ore with the strength and versatility of iron, resulting in a metal that is highly resistant to dark magic and possesses excellent durability and workability.",
     },
     "Celestial Silver": {
-        "Class Affinities": "Bard",
         "Description": "An alloy created by combining Celestite Ore and Silver. It combines the celestial essence of Celestite Ore with the purity and mystical properties of silver, resulting in a material that can repel dark forces, enhance magical abilities, and channel divine energy.",
     },
     "Prismatic Bronze": {
-        "Class Affinities": ("Bard", "Mage", "Paladin", "Healer"),
         "Description": "An alloy created by combining Prismium and Bronze. It blends the refractive qualities of Prismium with the durability and versatility of bronze, resulting in a metal that can refract and manipulate light, offering improved magical conductivity and resistance.",
     },
     "Stormglass": {
-        "Class Affinities": ("Ranger", "Thief", "Mage", "Fighter"),
         "Description": "An alloy created by combining Stormite and Glass. It combines the storm-charged nature of Stormite with the transparency and fragility of glass, resulting in a material that can store and discharge electrical energy, while also allowing the user to see and interact with storms on a mystical level.",
     },
     "Umbral Silversteel": {
-        "Class Affinities": "Fighter",
         "Description": "An alloy created by combining Umbrite Ore, Silver, and Steel. It combines the shadow-absorbing properties of Umbrite Ore with the mystical and antimagic qualities of silver, as well as the strength and versatility of steel, resulting in a metal that can nullify magic, absorb shadows, and provide exceptional durability.",
     },
     "Solium Crystal": {
-        "Class Affinities": ("Mage", "Fighter"),
         "Description": "An alloy created by combining Solwood and Crystal Quartz. It fuses the radiant and light-enhancing properties of Solwood with the clarity and amplification qualities of Crystal Quartz, resulting in a material that can channel solar energy, enhance magical effects, and provide protection against light-based attacks."
     },
     "Voidsteel": {
-        "Class Affinities": ("Mage", "Paladin", "Fighter", "Thief"),
         "Description": "An alloy created by combining Voidstone and Steel. It merges the dark and void-manipulating properties of Voidstone with the strength and durability of steel, resulting in a metal that can cut through magical barriers, resist magical attacks, and disrupt magical energy."
     },
     "Ethereal Mithril": {
-        "Class Affinities": ("Mage", "Paladin", "Ranger", "Healer"),
         "Description": "An alloy created by combining Spirit Ore and Mithril. It combines the ethereal and spiritual properties of Spirit Ore with the lightweight and versatile nature of mithril, resulting in a metal that enhances spiritual connections, grants agility and flexibility, and provides protection against supernatural entities."
     },
     "Starfire Titanium": {
-        "Class Affinities": ("Mage", "Paladin", "Fighter", "Ranger"),
         "Description": "An alloy created by combining Starfall and Titanium. It incorporates the celestial energy and radiant qualities of Starfall with the strength and lightness of titanium, resulting in a material that can harness stellar energy, enhance magical abilities, and offer exceptional durability."
     },
     "Faesilk Steel": {
-        "Class Affinities": ("Bard", "Thief", "Mage", "Paladin"),
         "Description": "An alloy created by combining Fae Ore and Steel. It combines the enchanting properties of Fae Ore with the strength and utility of steel, resulting in a metal that possesses enhanced magical conductivity, resists enchantments, and can be shaped into intricate and durable structures."
     },
     "Emberleaf Bronze": {
-        "Class Affinities": ("Warrior", "Mage", "Ranger", "Paladin"),
         "Description": "An alloy created by combining Blazeite Ore and Bronze. It merges the fiery properties of Blazeite Ore with the durability and versatility of bronze, resulting in a metal that can withstand high temperatures, enhance fire-based abilities, and resist heat-based attacks."
     },
     "Seashimmer Pearlsteel": {
-        "Class Affinities": ("Ranger", "Paladin", "Healer", "Bard"),
         "Description": "An alloy created by combining Seashine Ore and Pearlescent. It combines the oceanic essence and conductivity of Seashine Ore with the ir"
     },
     "Quartzite Ebonsteel": {
-        "Class Affinities": ("Fighter", "Paladin", "Rogue", "Mage"),
         "Description": "An alloy created by combining Quartzite and Ebonite Ore. It blends the amplification and purifying properties of Quartzite with the dark and resilient qualities of Ebonite Ore, resulting in a metal that enhances magical effects, provides protection against dark forces, and has a high resistance to magical corruption."
     },
     "Hematite Carnalite": {
         "Elemental Affinity": "Blood",
-        "Class Affinities": ("Warrior", "Mage", "Ranger", "Paladin"),
         "Description": "An alloy created by combining Hematite Ore and Carnelian Ore. It combines the grounding and protective properties of Hematite Ore with the passionate and vitalizing qualities of Carnelian Ore, resulting in a metal that enhances physical strength and endurance, stimulates passion and courage, and provides a strong defense against negative energies."
     },
     "Spiritwood Ash": {
         "Elemental Affinity": ("Natural", "Soul"),
-        "Class Affinities": ("Mage", "Healer", "Bard"),
         "Description": "An alloy created by combining Spiritbark and Ashwood. It merges the ethereal and soulful properties of Spiritbark with the resilience and natural qualities of Ashwood, resulting in a wood material that enhances spiritual connections, wards off dark forces, and possesses exceptional durability and resistance to magical influences."
     },
     "Starfall Silverleaf": {
         "Elemental Affinity": "Lunar",
-        "Class Affinities": ("Ranger", "Paladin", "Mage"),
         "Description": "An alloy created by combining Starfall and Silverleaf. It combines the celestial energy and radiant qualities of Starfall with the shimmering and malleable properties of Silverleaf, resulting in a material that can harness stellar energy, reflect and amplify magical effects, and possesses remarkable flexibility and craftsmanship."
     },
     "Necrotite Obsidian": {
         "Elemental Affinity": "Soul",
-        "Class Affinities": ("Rogue", "Fighter", "Mage"),
         "Description": "An alloy created by combining Necrotite Ore and Obsidian. It fuses the life-draining and necrotic properties of Necrotite Ore with the sharpness and darkness-absorbing qualities of Obsidian, resulting in a material that can inflict and absorb life force, cut through magical barriers, and resist dark magic."
     },
     "Vitae Crimsonsteel": {
         "Elemental Affinity": "Blood",
-        "Class Affinities": ("Healer", "Paladin", "Ranger"),
         "Description": "An alloy created by combining Vitae Ore and Crimsonite Ore. It combines the life-infusing and vitalizing properties of Vitae Ore with the intense and fiery qualities of Crimsonite Ore, resulting in a metal that enhances healing abilities, grants increased vitality and regeneration, and can withstand high temperatures."
     },
     "Selene Moonglow": {
         "Elemental Affinity": "Lunar",
-        "Class Affinities": ("Ranger", "Paladin", "Bard"),
         "Description": "An alloy created by combining Selene Ore and Moonglow Opal. It combines the lunar essence and enchanting properties of Selene Ore with the shimmering and otherworldly qualities of Moonglow Opal, resulting in a material that enhances moon-based magic, grants heightened intuition and perception, and emits a soothing, ethereal glow in the dark."
     },
 }
