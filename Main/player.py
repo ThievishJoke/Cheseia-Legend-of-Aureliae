@@ -1,6 +1,7 @@
 import re
 import math
 
+
 class Species:
     def __init__(self, name, base_health, base_mana, base_magic_dmg, base_magic_resist, base_armor,
                  passive_abilities: list, base_movement,
@@ -38,11 +39,12 @@ class Item:
 
 
 class equipable(Item):
-    def __init__(self, durability, current_durability, name, inventory_name: str, enchantment: list):
+    def __init__(self, durability, current_durability, name, inventory_name: str, enchantment: list, slot: str):
         super().__init__(name, inventory_name)
         self.max_durability = durability
         self.current_durability = current_durability
         self.enchantments = enchantment
+        self.slot = slot
 
     def update_durability(self, durability):  # simple updating function when in use
         self.current_durability = durability
@@ -149,9 +151,9 @@ class Player:
     def move(self, location: list[int, int]):  # take pos and use current position plus moves to move in that direction
         # okay so distance comes first
         distance = math.dist(self.cords, location)
-        if distance <= self.movement: # within range of our movement radius
+        if distance <= self.movement:  # within range of our movement radius
             self.cords = location
-            # we dont need to update the move per turn since you would be able to move once per turn anyways 
+            # we dont need to update the move per turn since you would be able to move once per turn anyways
             return 1
         else:
             return None
@@ -162,7 +164,8 @@ class Player:
             return None  # didn't find in inventory
         # I don't need to split it since the durability is coming with the thing
         # okay so I found it and now i need to transfer it to the hand which is the first item in the inventory
-        if self.inventory.seed[1] is "N":
+        slots = {"hand": 0, "helm": 1, "chest": 2, "legs": 3, "boots": 4}
+        if self.inventory.seed[1] == "N":
             # meaning if it's not equipped
             self.inventory.seed = re.sub("N", x[0], self.inventory.seed)
         else:
@@ -171,3 +174,4 @@ class Player:
             self.inventory.seed = re.sub(y[0], x[0], self.inventory.seed, 1)
             self.inventory.seed = re.sub(x[0], y[0], self.inventory.seed, 1)
             # just swap the items lol
+
