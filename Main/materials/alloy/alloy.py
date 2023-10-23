@@ -1,5 +1,5 @@
 from Main.materials.material import refined_materials
-from rarity import RARITIES
+#from rarity import RARITIES
 
 print("hello")
 

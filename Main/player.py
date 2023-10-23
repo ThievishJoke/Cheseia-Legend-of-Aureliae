@@ -37,12 +37,14 @@ class Item:
 
 
 class equipable(Item):
-    def __init__(self, durability, current_durability, name, inventory_name: str, enchantment: list, slot: str):
+    def __init__(self, durability, current_durability, name, inventory_name: str, enchantment: list, slot: str
+                 , ID: int):
         super().__init__(name, inventory_name)
         self.max_durability = durability
         self.current_durability = current_durability
         self.enchantments = enchantment
         self.slot = slot
+        self.ID = ID
 
     def update_durability(self, durability):  # simple updating function when in use
         self.current_durability = durability
