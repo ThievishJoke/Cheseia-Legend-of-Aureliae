@@ -1,4 +1,4 @@
-from Main.materials.Material import refined_materials
+from Main.materials.material import refined_materials
 from rarity import RARITIES
 
 print("hello")

@@ -4,8 +4,7 @@ import math
 
 class Species:
     def __init__(self, name, base_health, base_mana, base_magic_dmg, base_magic_resist, base_armor,
-                 passive_abilities: list, base_movement,
-                 stamina, base_dmg):
+                 passive_abilities: list, base_movement, base_dmg):
         self.name = name
         self.baseHealth = base_health
         self.baseMana = base_mana
@@ -13,7 +12,6 @@ class Species:
         self.base_magic_resist = base_magic_resist
         self.base_armor = base_armor
         self.passive_abilities = passive_abilities
-        self.stamina = stamina
         self.base_dmg = base_dmg
         self.base_movement = base_movement
 
@@ -165,13 +163,30 @@ class Player:
         # I don't need to split it since the durability is coming with the thing
         # okay so I found it and now i need to transfer it to the hand which is the first item in the inventory
         slots = {"hand": 0, "helm": 1, "chest": 2, "legs": 3, "boots": 4}
-        if self.inventory.seed[1] == "N":
+        print(slots[item.slot])
+        N = re.search(r"N", self.inventory.seed) # need location data :/
+        if not N:
             # meaning if it's not equipped
-            self.inventory.seed = re.sub("N", x[0], self.inventory.seed)
+            self.inventory.seed = re.sub("N", x[0], self.inventory.seed, 1)
         else:
             # if there is somthing there and you just want to swap
             y = re.findall(r"(\d+[a-zA-z]+)", self.inventory.seed)
-            self.inventory.seed = re.sub(y[0], x[0], self.inventory.seed, 1)
-            self.inventory.seed = re.sub(x[0], y[0], self.inventory.seed, 1)
+            self.inventory.seed = re.sub(y[slots[item.slot]], x[0], self.inventory.seed, 1)
+            self.inventory.seed = re.sub(x[0], y[slots[item.slot]], self.inventory.seed, 1)
             # just swap the items lol
 
+
+human = Species("human", 100, 50, 0, 0, 2, ["sweating", "power in numbers"], 5, 10)
+op_wizshit = Class("legit class", 5, 10, 50, 30, 30, 2, ["kill goku(impossible)"], 3)
+starter_inv = Inventory("NNNNN100is100ih100ib")
+iron_helm = equipable(100, 100, "iron helmet", "io", [None], "helm")
+iron_sword = equipable(100, 100, "iron sword", "is", [None], "hand")
+iron_boots = equipable(100, 100, "iron boots", "ib", [None], "boots")
+player = Player(human, "Lina", [0, 0], "affinity to Hana<3", "gurl thing", ["big girlfag energy"], op_wizshit,
+                starter_inv)
+
+print(player.inventory.seed)
+player.equip(iron_sword)
+print(player.inventory.seed)
+player.equip(iron_boots)
+print(player.inventory.seed)
