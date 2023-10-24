@@ -27,17 +27,17 @@ class raw_material(material):
         print(self.bonus_percent)
 
 class raw_metals(raw_material):
-    def __init__(self, description):
+    def __init__(self, raw_material, description):
         self.description = description
         pass
 
 class raw_naturals(raw_material):
-    def __init__(self, description):
+    def __init__(self, raw_material, description):
         self.description = description
         pass
 
 class raw_resources(raw_material):
-    def __init__(self, description):
+    def __init__(self, raw_material, description):
         self.description = description
         pass
 

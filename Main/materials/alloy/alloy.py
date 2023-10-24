@@ -1,16 +1,14 @@
 from Main.materials.material import refined_materials
-#from rarity import RARITIES
-
-print("hello")
+from Main.rarity.item_rarities import RARITIES
 
 class Alloy_Material(refined_materials):
     def validate_rarity(rarity):
         pass
- #       #check if rarity is valid
- #       if rarity != RARITIES():
- #           return "Error: Rarity Not valid"
- #       else:
- #           return rarity
+        #check if rarity is valid
+        if rarity != RARITIES():
+            return "Error: Rarity Not valid"
+        else:
+            return rarity
     
 
     def __init__(self, name, description, affinity, alloy_passive, alloy_lvl = 1):
