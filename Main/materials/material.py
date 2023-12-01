@@ -77,6 +77,7 @@ class refined_materials(raw_metals, raw_naturals):
 
 iron_ore = raw_metals(raw_material(material("iron ore", True, True, False), "None", 1, 0),
     "ahh good old iron.")
+
 blazeite_ore = raw_metals(raw_material(material("blazeite ore", True, True, False), "Fire", 1, 0),
     "a fiery and volatile ore that burns with intense heat and can be used to imbue weapons with fire elemental power.")
 seashine_ore = raw_metals(raw_material(material("seashine ore", True, True, False), "Aqua", 1, 0),
@@ -152,7 +153,7 @@ spiritbark = raw_naturals(raw_material(material("spiritbark", True, True, False)
     "None")
 shadowrot = raw_naturals(raw_material(material("shadowrot", True, True, False), "Soul", 1, 0),
     "None")
-crimsonheart = raw_naturals(raw_material(material("crimsonheart", True, True, False), "Blood", 1, 0),
+crimson_heart = raw_naturals(raw_material(material("crimsonheart", True, True, False), "Blood", 1, 0),
     "None")
 vitalscar = raw_naturals(raw_material(material("vitalscar", True, True, False), "Blood", 1, 0),
     "None")
@@ -164,6 +165,6 @@ leather = raw_resources(raw_material(material("leather", True, True, False), "No
 glass = raw_resources(raw_material(material("glass", True, True, False), "None", 1, 0), "transparent material, has many uses")
 fiber = raw_resources(raw_material(material("fiber", True, True, False), "None", 1, 0), "long loose material")
 fabric = raw_resources(raw_material(material("fabric", True, True, False), "None", 1, 0), "versatile material used for clothing and light equipment.")
-
+silk = raw_resources(raw_material(material("silk", True, "True", True), "None", 1, 0), "An expensive and higher quality fabric")
 
 isinstance(iron_ore, raw_metals)
