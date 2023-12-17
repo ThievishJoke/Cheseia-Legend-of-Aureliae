@@ -28,5 +28,20 @@ class unstackable(item):
         super().__init__(name, description, value, id, category)
         # go through all the itmes with number values in the entire game that are loaded in somwhere and decide
         # what nuber to give
-        
+
         self.ID = id
+
+class inventory:
+    def __init__(self):
+        self.list = []
+        #fuck idk how i define a general inventory i will have to think about this, maybe make a few files and when you
+        #make a new inv then you need to decide which file it uses?
+        pass
+
+    def save_inv(self):
+        #load list to file
+        pass
+
+    def load_inv(self):
+        #load list from file to here
+        pass
