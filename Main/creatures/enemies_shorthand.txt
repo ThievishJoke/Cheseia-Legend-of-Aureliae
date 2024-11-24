@@ -1,0 +1,168 @@
+Enemies
+---------------------------------------------
+Slime
+	Green
+	Red
+	Cosmic
+---------------------------------------------
+Spider
+	Widower
+	Giant Spider
+	Death Widow
+	Driders
+	Moth Spiderling
+	Crimson Brood
+	Wolf Spider
+---------------------------------------------
+Reptile
+	Wild Snake
+	Savage Alligator
+	Silver Serpent
+	Naga
+		Sea
+		Forest
+	Dragon	
+		Fire
+		Aqua
+		Earth
+		Air
+		Lightning
+		Light
+		Dark
+		Eclipse
+		Lunar
+		Zombie
+		Soul
+		Blood
+	Drake
+	Flying Serpent
+	Nogard
+	Hydra
+---------------------------------------------
+Human
+	Hybrid
+		Kistune
+		Lamia
+		Changeling
+	Pirate
+		Deckhand
+        Gunslinger
+        First Mate
+		Quartermaster
+        Powder Monkey
+        Captian
+	Bandit
+		Bandit
+		Bandit Chief
+	Cultist
+		Cultist Grunt
+		Cultist Wizard
+		Cultist Grand Wizard
+	Pickpocket
+	Prowler
+	Myrmidon
+	Assassin
+---------------------------------------------
+Demon
+	Pure
+		Demon
+		Arch Demon
+		Devil
+		Blood Devil
+		Incubi
+		Succubi
+	Hybrid
+		Dire
+		Cambion
+		Demon Halfling
+---------------------------------------------
+Undead
+	Skeleton
+	Zombie
+		Ghoul
+		Beserking Ghoul
+		Draugr
+		Revenant
+---------------------------------------------
+Ghost
+	Banshee
+		Grotto Banshee
+		Forest Banshee
+		Fortress Banshee
+	Shade
+	Shadow
+	Wisp
+	Soul
+		Fire
+		Aqua
+		Earth
+		Air
+		Lightning
+		Light
+---------------------------------------------
+Canine
+	Wolves
+		Wolf
+		Dire Wolf
+	Jackel
+	Dahrk Hound
+---------------------------------------------
+Sea Creatures
+	Titan
+	Merfolk
+		Female (Mermaid)
+		Female (Siren)
+		Male (Merman)
+		Merfolk Gaurd
+	Spirit
+		Oceanid
+		Undine
+	Fish
+		Shark
+---------------------------------------------
+Land Creatures/Monsters
+	Mammals
+		Deer
+			Deer
+			Faun
+			Elk
+		Rat
+	Ent
+		Ent
+		Towering Ent
+		Oak Wood Ent
+		Birch Wood Ent
+		Baarker Wood Ent
+		Iron Wood Ent
+		Silver Wood Ent
+		Golden Wood Ent
+		Rose Wood Ent
+		Diamond Wood Ent
+	Mysticals
+		Nymph
+			Blue Nymph
+			Red Nymph
+			Yellow Nymph
+			Elegant Nymph
+			Shining Nymph
+		Spriggan
+		Dryad
+		Forest Spirit
+			Forest Sylph
+			Forest Undine
+		Fairy
+			Fairy
+		Golem
+			Rock Golem
+			Steam Golem
+			Cyrstal Golem
+---------------------------------------------
+Monsters
+	Frohst
+	Mimic
+	Orge
+	Giant
+	Goblin
+	Kobold
+		Kobolds
+		Kobold Knight
