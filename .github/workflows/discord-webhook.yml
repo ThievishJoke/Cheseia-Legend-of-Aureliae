@@ -1,0 +1,53 @@
+name: Notify Discord on Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send commit info to Discord
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const commit = context.payload.head_commit;
+            const author = commit.author.name;
+            const message = commit.message;
+            const changes = commit.modified.join("\n") || "No files modified.";
+
+            // Build the embed object for Discord
+            const embed = {
+              title: `New Commit by ${author}`,
+              description: message,
+              color: 3066993, // Discord Embed color
+              fields: [
+                {
+                  name: 'Changed Files',
+                  value: changes,
+                },
+                {
+                  name: 'Commit URL',
+                  value: commit.url,
+                }
+              ],
+              author: {
+                name: author,
+              },
+            };
+
+            // Send the message to Discord
+            await fetch(process.env.DISCORD_WEBHOOK_URL, {
+              method: 'POST',
+              body: JSON.stringify({
+                content: `New commit by ${author}`,
+                embeds: [embed],
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
