@@ -3,7 +3,7 @@ name: Notify Discord on Push
 on:
   push:
     branches:
-      - main
+      - main  # Replace with your branch name if different
 
 jobs:
   notify:
@@ -14,9 +14,13 @@ jobs:
         with:
           script: |
             const commit = context.payload.head_commit;
-            const author = commit.author.name;
-            const message = commit.message;
-            const changes = commit.modified.join("\n") || "No files modified.";
+            if (!commit) {
+              throw new Error("No commit data available.");
+            }
+
+            const author = commit.author.name || "Unknown Author";
+            const message = commit.message || "No commit message provided.";
+            const changes = commit.modified ? commit.modified.join("\n") : "No files modified.";
 
             // Build the embed object for Discord
             const embed = {
