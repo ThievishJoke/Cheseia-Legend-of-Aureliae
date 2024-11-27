@@ -1,158 +1,393 @@
-class Material:  # Base class for all materials
-    def __init__(self, name, is_sellable, is_rewardable, is_craftable):
+# Base Material class (unchanged)
+class Material:
+    def __init__(self, name):
         self.name = name
-        self.is_sellable = is_sellable
-        self.is_rewardable = is_rewardable
-        self.is_craftable = is_craftable
 
-    def __str__(self):
-        return f"{self.name} (Sellable: {self.is_sellable}, Rewardable: {self.is_rewardable}, Craftable: {self.is_craftable})"
-
-    def craft(self):
-        if self.is_craftable:
-            print(f"{self.name} can be crafted.")
-        else:
-            print(f"{self.name} cannot be crafted.")
-
-
-class RawMaterial(Material):
-    def __init__(self, name, is_sellable, is_rewardable, is_craftable, affinity, mining_lvl=1, bonus_percent=0):
-        super().__init__(name, is_sellable, is_rewardable, is_craftable)
-        self.affinity = affinity  # Elemental affinity (e.g., Fire, Water)
+# RawMaterial class (with description)
+class RawMaterial:
+    def __init__(self, material, affinity, mining_lvl=1, bonus_percent=0, description=None):
+        self.material = material
+        self.name = material.name  # Share the same name as the base material
+        self.affinity = affinity
         self.mining_lvl = mining_lvl
         self.bonus_percent = bonus_percent
-
-    def __str__(self):
-        base = super().__str__()
-        return f"{base}, Affinity: {self.affinity}, Mining Level: {self.mining_lvl}, Bonus: {self.bonus_percent}%"
-
-
-class RawMetals(RawMaterial):
-    def __init__(self, name, is_sellable, is_rewardable, is_craftable, affinity, mining_lvl=1, bonus_percent=0, description=""):
-        super().__init__(name, is_sellable, is_rewardable, is_craftable, affinity, mining_lvl, bonus_percent)
         self.description = description
 
-    def __str__(self):
-        base = super().__str__()
-        return f"{base}, Description: {self.description}"
-
-
-class RawNaturals(RawMaterial):
-    def __init__(self, name, is_sellable, is_rewardable, is_craftable, affinity, mining_lvl=1, bonus_percent=0, description=""):
-        super().__init__(name, is_sellable, is_rewardable, is_craftable, affinity, mining_lvl, bonus_percent)
-        self.description = description
+        # Register this material only if it's the first one of its kind
+        if not MaterialRegistry.is_material_registered(self.name):
+            MaterialRegistry.register_material(self.material)
 
     def __str__(self):
-        base = super().__str__()
-        return f"{base}, Description: {self.description}"
+        return (f"{self.name} (Affinity: {self.affinity}, Mining Level: {self.mining_lvl}, "
+                f"Bonus: {self.bonus_percent}%)\nDescription: {self.description}")
 
-
-class RefinedMaterials(RawMaterial):
-    def __init__(self, name, is_sellable, is_rewardable, is_craftable, affinity, crafting_lvl=1, bonus_percent=0, is_metal=False, is_natural=False):
-        super().__init__(name, is_sellable, is_rewardable, is_craftable, affinity)
-        self.crafting_lvl = crafting_lvl
+# RefinedMaterial class
+class RefinedMaterial:
+    def __init__(self, material, affinity, mining_lvl=1, bonus_percent=0, refining_level=1, description=None):
+        self.material = material
+        self.name = material.name  # Share the same name as the base material
+        self.affinity = affinity
+        self.mining_lvl = mining_lvl
         self.bonus_percent = bonus_percent
-        self.is_metal = is_metal
-        self.is_natural = is_natural
+        self.refining_level = refining_level  # Added refining_level attribute
+        self.description = description
+
+        # Register the refined material, ensuring it hasn't been registered already
+        if not MaterialRegistry.is_material_registered(self.name):
+            MaterialRegistry.register_material(self.material)
 
     def __str__(self):
-        base = super().__str__()
-        return (f"{base}, Crafting Level: {self.crafting_lvl}, Bonus: {self.bonus_percent}%, "
-                f"Metal: {self.is_metal}, Natural: {self.is_natural}")
+        return (f"Refined {self.name} (Refining Level: {self.refining_level}, "
+                f"Affinity: {self.affinity}, Mining Level: {self.mining_lvl}, "
+                f"Bonus: {self.bonus_percent}%)\nDescription: {self.description}")
+
+# MaterialRegistry
+class MaterialRegistry:
+    _materials = {}
+
+    @classmethod
+    def register_material(cls, material):
+        if material.name in cls._materials:
+            raise ValueError(f"Material '{material.name}' is already registered!")
+        cls._materials[material.name] = material
+
+    @classmethod
+    def get_material(cls, name):
+        return cls._materials.get(name)
+
+    @classmethod
+    def is_material_registered(cls, name):
+        return name in cls._materials
 
 
-#Raw metals
 
-iron_ore = RawMetals(RawMaterial(Material("iron ore", True, True, False), "None", 1, 0),
-    "ahh good old iron.")
+# ------------------------------------------------------
 
-blazeite_ore = raw_metals(raw_material(material("blazeite ore", True, True, False), "Fire", 1, 0),
-    "a fiery and volatile ore that burns with intense heat and can be used to imbue weapons with fire elemental power.")
-seashine_ore = raw_metals(raw_material(material("seashine ore", True, True, False), "Aqua", 1, 0),
-    "a luminescent ore that can be found in shallow waters, it is often used to make underwater lights.")
-quartzite_ore = raw_metals(raw_material(material("quartzite ore", True, True, False), "Earth", 1, 0),
-    "a hard, translucent ore that can be found in underground mines and can be used to create powerful, long-lasting batteries.")
-fae_ore = raw_metals(raw_material(material("fae ore", True, True, False), "Natural", 1, 0),
-    "a glowing green ore that can be found within enchanted glades, it is said to have the power to transport the user to other dimensions.")
-stormite_ore = raw_metals(raw_material(material("stormite ore", True, True, False), "Air", 1, 0),
-    "a dark, stormy ore that can be found during thunderstorms, it can be used to create items that generate powerful gusts of wind.")
-thunderstone_ore = raw_metals(raw_material(material("thunderstone ore", True, True, False), "Lightning", 1, 0),
-    "an ore that generates lightning bolts when struck, it can be used to create items that grant the user control over electricity.")
-radiant_ore = raw_metals(raw_material(material("radiant ore", True, True, False), "Light", 1, 0),
-    "a glittering ore that can be found in the presence of bright light, it can be used to imbue weapons with the power of the sun.")
-prismium_ore = raw_metals(raw_material(material("prismium ore", True, True, False), "Light", 1, 0),
-    "a rainbow-colored ore that can be used to create items that refract light and create dazzling displays.")
-starsteel_ore = raw_metals(raw_material(material("starsteel ore", True, True, False), "Light", 1, 0),
-    "a rare and precious ore that is said to have fallen from the heavens, it can be used to create weapons with incredible accuracy and precision.")
-ebonite_ore = raw_metals(raw_material(material("ebonite ore", True, True, False), "Dark", 1, 0),
-    "a jet-black ore that can be used to create weapons that absorb the life force of enemies.")
-umbrite_ore = raw_metals(raw_material(material("umbrite ore", True, True, False), "Eclipse", 1, 0),
-    "an ore that can only be found during eclipses, it can be used to create items that grant the user the power of darkness and light.")
-celestite_ore = raw_metals(raw_material(material("celestite ore", True, True, False), "Lunar", 1, 0),
-    "a pale blue ore that can be found within the stars, it can be used to create items that grant the user the power of the heavens.")
-selene_ore = raw_metals(raw_material(material("selene ore", True, True, False), "Lunar", 1, 0),
-    "a rare and precious ore that can only be found during certain lunar phases, it can be used to create items that grant the user the power of the tides.")
-starfall_ore = raw_metals(raw_material(material("starfall ore", True, True, False), "Lunar", 1, 0),
-    "an ore that falls from the sky during meteor showers, it can be used to create items that grant the user the power of the stars.")
-necrotite_ore = raw_metals(raw_material(material("necrotite ore", True, True, False), "Soul", 1, 0),
-    "a powerful ore that can be found in the presence of death, it can be used to create items that grant the user control over undead creatures.")
-anima_ore = raw_metals(raw_material(material("anima ore", True, True, False), "Soul", 1, 0),
-    "a glowing ore that can be found within places of great spiritual energy, it can be used to create items that grant the user the power of the soul.")
-spirit_ore = raw_metals(raw_material(material("spirit ore", True, True, False), "Soul", 1, 0),
-    "an ethereal ore that can be found in places of great emotional significance, it can be used to create items that harness the power of the soul.")
-hematite_ore = raw_metals(raw_material(material("starfall ore", True, True, False), "Blood", 1, 0),
-    "a shimmering ore that generates a red liquid when struck, it can be used to create items that grant the user incredible strength.")
-crimsonite_ore = raw_metals(raw_material(material("starfall ore", True, True, False), "Blood", 1, 0),
-    "a red ore that can be found in the presence of blood.")
-vitae_ore = raw_metals(raw_material(material("starfall ore", True, True, False), "Blood", 1, 0),
-    "a rare and precious ore that contains the essence of life, it can be used to create items that grant the user the power to heal wounds and revive the dead.")
-carnelian_ore = raw_metals(raw_material(material("starfall ore", True, True, False), "Blood", 1, 0),
-    "a dark red ore that can be found in the presence of bloodshed, it can be used to create items that grant the user incredible speed and agility.")
 
-#Raw Naturals
+# Raw Metals
+iron_ore = RawMaterial(
+    material=Material("Iron Ore"),
+    affinity="None",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A common ore used as a cornerstone in metallurgy and construction."
+)
 
-ignitionrot = raw_naturals(raw_material(material("ignitionrot", True, True, False), "Fire", 1, 0),
-    "None")
-ocean_breath = raw_naturals(raw_material(material("ocean's breath", True, True, False), "Aqua", 1, 0),
-    "None")
-stonebark_pine = raw_naturals(raw_material(material("stonebark pine", True, True, False), "Earth", 1, 0),
-    "None")
-gaea_embrace = raw_naturals(raw_material(material("gaea's embrace", True, True, False), "Earth", 1, 0),
-    "None")
-faeroot = raw_naturals(raw_material(material("faeroot", True, True, False), "Natural", 1, 0),
-    "None")
-aetherwood = raw_naturals(raw_material(material("aetherwood", True, True, False), "Air", 1, 0),
-    "None")
-shockedstump = raw_naturals(raw_material(material("shockedstump", True, True, False), "Lightning", 1, 0),
-    "None")
-solwood = raw_naturals(raw_material(material("solwood", True, True, False), "Light", 1, 0),
-    "None")
-cimmerian_mahogany = raw_naturals(raw_material(material("cimmerian mahogany", True, True, False), "Dark", 1, 0),
-    "None")
-shadowmire = raw_naturals(raw_material(material("shadowmire", True, True, False), "Dark", 1, 0),
-    "None")
-nightfallen = raw_naturals(raw_material(material("nightfallen", True, True, False), "Eclipse", 1, 0),
-    "None")
-celestiax = raw_naturals(raw_material(material("celestiax", True, True, False), "Eclipse", 1, 0),
-    "None")
-moonshade = raw_naturals(raw_material(material("moonshade", True, True, False), "Lunar", 1, 0),
-    "None")
-spiritbark = raw_naturals(raw_material(material("spiritbark", True, True, False), "Soul", 1, 0),
-    "None")
-shadowrot = raw_naturals(raw_material(material("shadowrot", True, True, False), "Soul", 1, 0),
-    "None")
-crimson_heart = raw_naturals(raw_material(material("crimsonheart", True, True, False), "Blood", 1, 0),
-    "None")
-vitalscar = raw_naturals(raw_material(material("vitalscar", True, True, False), "Blood", 1, 0),
-    "None")
+blazeite_ore = RawMaterial(
+    material=Material("Blazeite Ore"),
+    affinity="Fire",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A fiery and volatile ore that burns with intense heat and can be used to imbue weapons with fire elemental power."
+)
 
-#Raw Resources
+seashine_ore = RawMaterial(
+    material=Material("Seashine Ore"),
+    affinity="Aqua",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A luminescent ore that can be found in shallow waters, often used to make underwater lights."
+)
 
-coal = raw_resources(raw_material(material("coal", True, True, False), "None", 1, 0), "we're cookin now")
-leather = raw_resources(raw_material(material("leather", True, True, False), "None", 1, 0), "good old reliable, good for light/studded armor")
-glass = raw_resources(raw_material(material("glass", True, True, False), "None", 1, 0), "transparent material, has many uses")
-fiber = raw_resources(raw_material(material("fiber", True, True, False), "None", 1, 0), "long loose material")
-fabric = raw_resources(raw_material(material("fabric", True, True, False), "None", 1, 0), "versatile material used for clothing and light equipment.")
-silk = raw_resources(raw_material(material("silk", True, "True", True), "None", 1, 0), "An expensive and higher quality fabric")
+quartzite_ore = RawMaterial(
+    material=Material("Quartzite Ore"),
+    affinity="Earth",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A hard, translucent ore found in underground mines, used to create powerful, long-lasting batteries."
+)
 
-isinstance(iron_ore, raw_metals)
+fae_ore = RawMaterial(
+    material=Material("Fae Ore"),
+    affinity="Natural",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A glowing green ore found in enchanted glades, rumored to transport users to other dimensions."
+)
+
+stormite_ore = RawMaterial(
+    material=Material("Stormite Ore"),
+    affinity="Air",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A dark, stormy ore found during thunderstorms, used to create items generating powerful gusts of wind."
+)
+
+thunderstone_ore = RawMaterial(
+    material=Material("Thunderstone Ore"),
+    affinity="Lightning",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="An ore that generates lightning bolts when struck, used to create items that grant control over electricity."
+)
+
+radiant_ore = RawMaterial(
+    material=Material("Radiant Ore"),
+    affinity="Light",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A glittering ore found in bright light, used to imbue weapons with the power of the sun."
+)
+
+prismium_ore = RawMaterial(
+    material=Material("Prismium Ore"),
+    affinity="Light",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A rainbow-colored ore used to create items that refract light and produce dazzling displays."
+)
+
+starsteel_ore = RawMaterial(
+    material=Material("Starsteel Ore"),
+    affinity="Light",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A rare ore said to have fallen from the heavens, used to forge weapons with incredible precision."
+)
+
+ebonite_ore = RawMaterial(
+    material=Material("Ebonite Ore"),
+    affinity="Dark",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A jet-black ore used to create weapons that absorb the life force of enemies."
+)
+
+umbrite_ore = RawMaterial(
+    material=Material("Umbrite Ore"),
+    affinity="Eclipse",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="An ore found during eclipses, used to craft items harnessing the power of both darkness and light."
+)
+
+celestite_ore = RawMaterial(
+    material=Material("Celestite Ore"),
+    affinity="Lunar",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A pale blue ore from the stars, used to create items granting celestial power."
+)
+
+selene_ore = RawMaterial(
+    material=Material("Selene Ore"),
+    affinity="Lunar",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A rare ore found during lunar phases, used to craft items with tidal influence."
+)
+
+starfall_ore = RawMaterial(
+    material=Material("Starfall Ore"),
+    affinity="Lunar",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="An ore falling during meteor showers, used to create items harnessing the power of the stars."
+)
+
+necrotite_ore = RawMaterial(
+    material=Material("Necrotite Ore"),
+    affinity="Soul",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A powerful ore found near death, used to craft items granting control over undead creatures."
+)
+
+anima_ore = RawMaterial(
+    material=Material("Anima Ore"),
+    affinity="Soul",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A glowing ore found in places of great spiritual energy, granting power over the soul."
+)
+
+spirit_ore = RawMaterial(
+    material=Material("Spirit Ore"),
+    affinity="Soul",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="An ethereal ore from places of emotional significance, harnessing the power of the soul."
+)
+
+hematite_ore = RawMaterial(
+    material=Material("Hematite Ore"),
+    affinity="Blood",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A shimmering ore generating a red liquid when struck, used to create items granting immense strength."
+)
+
+crimsonite_ore = RawMaterial(
+    material=Material("Crimsonite Ore"),
+    affinity="Blood",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A red ore found in the presence of blood, granting power over bloodshed."
+)
+
+vitae_ore = RawMaterial(
+    material=Material("Vitae Ore"),
+    affinity="Blood",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A rare ore containing the essence of life, used to craft items for healing and resurrection."
+)
+
+carnelian_ore = RawMaterial(
+    material=Material("Carnelian Ore"),
+    affinity="Blood",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="A dark red ore found near bloodshed, used to craft items granting speed and agility."
+)
+# ------------------------------------------------------
+# Raw Naturals
+ignitionrot = RawMaterial(
+    material=Material("Ignitionrot"),
+    affinity="Fire",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+ocean_breath = RawMaterial(
+    material=Material("Ocean's Breath"),
+    affinity="Aqua",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+stonebark_pine = RawMaterial(
+    material=Material("Stonebark Pine"),
+    affinity="Earth",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+gaea_embrace = RawMaterial(
+    material=Material("Gaea's Embrace"),
+    affinity="Earth",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+faeroot = RawMaterial(
+    material=Material("Faeroot"),
+    affinity="Natural",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+aetherwood = RawMaterial(
+    material=Material("Aetherwood"),
+    affinity="Air",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+shockedstump = RawMaterial(
+    material=Material("Shockedstump"),
+    affinity="Lightning",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+solwood = RawMaterial(
+    material=Material("Solwood"),
+    affinity="Light",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+cimmerian_mahogany = RawMaterial(
+    material=Material("Cimmerian Mahogany"),
+    affinity="Dark",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+shadowmire = RawMaterial(
+    material=Material("Shadowmire"),
+    affinity="Dark",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+nightfallen = RawMaterial(
+    material=Material("Nightfallen"),
+    affinity="Eclipse",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+celestiax = RawMaterial(
+    material=Material("Celestiax"),
+    affinity="Eclipse",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+moonshade = RawMaterial(
+    material=Material("Moonshade"),
+    affinity="Lunar",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+spiritbark = RawMaterial(
+    material=Material("Spiritbark"),
+    affinity="Soul",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+shadowrot = RawMaterial(
+    material=Material("Shadowrot"),
+    affinity="Soul",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+crimson_heart = RawMaterial(
+    material=Material("Crimsonheart"),
+    affinity="Blood",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+vitalscar = RawMaterial(
+    material=Material("Vitalscar"),
+    affinity="Blood",
+    mining_lvl=1,
+    bonus_percent=0,
+    description="None"
+)
+
+print("Successfully Imported Materials")
+#print(iron_ore)
+
+#
+##Raw Resources
+#
+#coal = raw_resources(raw_material(material("coal", True, True, False), "None", 1, 0), "we're cookin now")
+#leather = raw_resources(raw_material(material("leather", True, True, False), "None", 1, 0), "good old reliable, good for light/studded armor")
+#glass = raw_resources(raw_material(material("glass", True, True, False), "None", 1, 0), "transparent material, has many uses")
+#fiber = raw_resources(raw_material(material("fiber", True, True, False), "None", 1, 0), "long loose material")
+#fabric = raw_resources(raw_material(material("fabric", True, True, False), "None", 1, 0), "versatile material used for clothing and light equipment.")
+#silk = raw_resources(raw_material(material("silk", True, "True", True), "None", 1, 0), "An expensive and higher quality fabric")
+#

@@ -54,3 +54,21 @@ class Rarity:
         return (f"Rarity: {self.name} (Index: {self.index}), "
                 f"Damage Bonus: {self.dmg_bonus}, Legendary Bonus: {self.legendary_bonus}, "
                 f"Multiplier: {self.legendary_bonus_mult}")
+    
+    @classmethod
+    def get_rarity_by_name(cls, rarity_name):
+        """
+        Class method to get a Rarity object by its name.
+        """
+        return cls(rarity_name)
+    
+    @classmethod
+    def get_rarity_by_index(cls, rarity_index):
+        """
+        Class method to get a Rarity object by its index.
+        """
+        if 0 <= rarity_index < len(RARITIES):
+            return cls(RARITIES[rarity_index])
+        else:
+            return cls("very common")  # Default to "very common" if index is out of range
+
