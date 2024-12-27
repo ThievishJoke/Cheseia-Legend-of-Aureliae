@@ -39,15 +39,15 @@ class Armor(Wearable):
 # Example Armor using Iron Ore
 def create_armor_example():
     # Fetch material from registry
-    iron_ore = MaterialRegistry.get_material("Iron Ore")
+    refined_iron = MaterialRegistry.get_material("Refined Iron")
 
-    if not iron_ore:
+    if not refined_iron:
         raise ValueError("Material 'Iron Ore' is not registered!")
 
     # Create an armor piece using the fetched material
     iron_armor = Armor(
         name="Iron Chestplate",
-        material=iron_ore,  # Use the material retrieved from registry
+        material=refined_iron,  # Use the material retrieved from registry
         physical_resistance=50,
         magical_resistance=20,
         weight=30,

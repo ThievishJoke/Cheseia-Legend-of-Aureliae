@@ -1,3 +1,120 @@
+class Enemy:
+    def __init__(self, name, max_health, health, max_mana, mana, 
+                 affinity,
+                 attack_power, physical_resistance, magical_resistance, 
+                 weapons=None, inventory=None,
+                 xp_reward=0, description=None):
+        self.name = name
+        self.max_health = max_health
+        self.health = health
+        self.max_mana = max_mana
+        self.mana = mana
+        self.affinity = affinity
+        self.attack_power = attack_power
+        self.physical_resistance = physical_resistance
+        self.magical_resistance = magical_resistance
+        self.weapons = weapons if weapons else []  # List of Weapon objects (default empty)
+        self.inventory = inventory if inventory else []  # List of Item objects (default empty)
+        self.xp_reward = xp_reward
+        self.description = description
+
+    @property
+    def is_alive(self):
+        """Returns True if the enemy's health is greater than 0, otherwise False."""
+        return self.health > 0
+
+    def attack(self, player, weapon=None):
+        """Handles the enemy's attack."""
+        if weapon:
+            damage = self.attack_power + weapon.damage_amount
+            if weapon.damage_type == "magic":
+                damage += self.base_magic_dmg  # If the weapon is magic, apply magic damage
+        else:
+            damage = self.attack_power  # Just use the attack power for regular attacks
+        
+        # Apply the player's resistance (magic vs physical)
+        if weapon and weapon.damage_type == "magic":
+            damage = max(damage - player.magic_resist, 0)
+        else:
+            damage = max(damage - player.armor, 0)
+        
+        # Deal damage to the player
+        player.take_damage(damage)
+        return damage
+
+    def take_damage(self, damage):
+        if isinstance(damage, str):  # Check for potential string input
+            print(f"Error: Damage should be an integer, not {type(damage)}")
+        else:
+            self.health -= damage
+            if self.health < 0:
+                self.health = 0
+            print(f"{self.name} took {damage} damage. Health: {self.health}/{self.max_health}")
+
+class EnemyRegistry:
+    _enemies = {}
+
+    @classmethod
+    def register_enemy(cls, enemy):
+        """
+        Registers an enemy in the registry.
+        """
+        if not isinstance(enemy, Enemy):
+            raise TypeError("Only instances of Enemy can be registered.")
+        if enemy.name in cls._enemies:
+            raise ValueError(f"Enemy '{enemy.name}' is already registered!")
+        cls._enemies[enemy.name] = enemy
+
+    @classmethod
+    def get_enemy(cls, name):
+        """
+        Retrieves an enemy by name.
+        Returns None if the enemy is not found.
+        """
+        return cls._enemies.get(name)
+
+    @classmethod
+    def is_enemy_registered(cls, name):
+        """
+        Checks if an enemy with the given name is registered.
+        """
+        return name in cls._enemies
+
+    @classmethod
+    def list_enemies(cls):
+        """
+        Returns a list of all registered enemy names.
+        """
+        return list(cls._enemies.keys())
+
+    @classmethod
+    def remove_enemy(cls, name):
+        """
+        Removes an enemy from the registry by name.
+        Raises a KeyError if the enemy is not found.
+        """
+        if name not in cls._enemies:
+            raise KeyError(f"Enemy '{name}' is not registered!")
+        del cls._enemies[name]
+
+green_slime = Enemy(
+    name="Green Slime",
+    max_health=25,
+    health=25,
+    max_mana=0,
+    mana=0,
+    affinity="Water",
+    attack_power=5,
+    physical_resistance=0,
+    magical_resistance=0,
+    weapons=[],
+    inventory=[],
+    xp_reward=50,
+    description="A small green blob of living goo"
+)
+EnemyRegistry.register_enemy(green_slime)
+
+print("Successfully Imported Enemies")
 
 #Enemy Dictionary
 enemies = {

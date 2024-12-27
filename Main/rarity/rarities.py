@@ -72,3 +72,4 @@ class Rarity:
         else:
             return cls("very common")  # Default to "very common" if index is out of range
 
+print("Successfully Imported Rarities")

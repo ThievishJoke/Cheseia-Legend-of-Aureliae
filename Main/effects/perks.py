@@ -15,3 +15,5 @@ class Perk:
 
     def __str__(self):
         return f"Perk: {self.name} - {self.description}"
+    
+print("Successfully Imported Perks")
