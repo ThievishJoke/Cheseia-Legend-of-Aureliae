@@ -59,8 +59,6 @@ class EnemyRegistry:
         """
         Registers an enemy in the registry.
         """
-        if not isinstance(enemy, Enemy):
-            raise TypeError("Only instances of Enemy can be registered.")
         if enemy.name in cls._enemies:
             raise ValueError(f"Enemy '{enemy.name}' is already registered!")
         cls._enemies[enemy.name] = enemy
@@ -97,10 +95,35 @@ class EnemyRegistry:
             raise KeyError(f"Enemy '{name}' is not registered!")
         del cls._enemies[name]
 
+def create_enemy(specie, type_name, overrides=None):
+    """Create and register an enemy with optional overrides."""
+    base_stats = {
+        "max_health": 65,
+        "health": 65,
+        "max_mana": 0,
+        "mana": 0,
+        "affinity": "",
+        "attack_power": 20,
+        "physical_resistance": 0,
+        "magical_resistance": 0,
+        "weapons": [],
+        "inventory": [],
+        "xp_reward": 50,
+        "description": f"A {specie.lower()} {type_name.lower()} prowling the lands.",
+    }
+    # Apply overrides if provided
+    if overrides:
+        base_stats.update(overrides)
+
+    # Create and register the enemy
+    enemy = Enemy(name=f"{specie} {type_name}", **base_stats)
+    EnemyRegistry.register_enemy(enemy)
+    return enemy
+
 green_slime = Enemy(
     name="Green Slime",
-    max_health=25,
-    health=25,
+    max_health=10,
+    health=10,
     max_mana=0,
     mana=0,
     affinity="Water",
@@ -112,195 +135,243 @@ green_slime = Enemy(
     xp_reward=50,
     description="A small green blob of living goo"
 )
+red_slime = Enemy(
+    name="Red Slime",
+    max_health=15,
+    health=15,
+    max_mana=0,
+    mana=0,
+    affinity="Water",
+    attack_power=7,
+    physical_resistance=0,
+    magical_resistance=0,
+    weapons=[],
+    inventory=[],
+    xp_reward=50,
+    description="A small red blob of living goo"
+)
+widower_arachnid = Enemy(
+    name="Widower Arachnid",
+    max_health=15,
+    health=15,
+    max_mana=0,
+    mana=0,
+    affinity="Soul",
+    attack_power=10,
+    physical_resistance=0,
+    magical_resistance=0,
+    weapons=[],
+    inventory=[],
+    xp_reward=50,
+    description=""
+)
+giant_spider = Enemy(
+    name="Giant Spider",
+    max_health=20,
+    health=20,
+    max_mana=0,
+    mana=0,
+    affinity="",
+    attack_power=12,
+    physical_resistance=0,
+    magical_resistance=0,
+    weapons=[],
+    inventory=[],
+    xp_reward=50,
+    description=""
+)
+death_widow = Enemy(
+    name="Death Widow",
+    max_health=20,
+    health=20,
+    max_mana=0,
+    mana=0,
+    affinity="",
+    attack_power=15,
+    physical_resistance=0,
+    magical_resistance=0,
+    weapons=[],
+    inventory=[],
+    xp_reward=50,
+    description=""
+)
+moth_spiderling = Enemy(
+    name="Moth Spiderling",
+    max_health=20,
+    health=20,
+    max_mana=0,
+    mana=0,
+    affinity="Water",
+    attack_power=15,
+    physical_resistance=0,
+    magical_resistance=0,
+    weapons=[],
+    inventory=[],
+    xp_reward=50,
+    description=""
+)
+crimson_brood = Enemy(
+    name="Crimson Brood",
+    max_health=25,
+    health=25,
+    max_mana=0,
+    mana=0,
+    affinity="",
+    attack_power=30,
+    physical_resistance=0,
+    magical_resistance=0,
+    weapons=[],
+    inventory=[],
+    xp_reward=50,
+    description=""
+)
+wolf_spider = Enemy(
+    name="Wolf Spider",
+    max_health=20,
+    health=20,
+    max_mana=0,
+    mana=0,
+    affinity="",
+    attack_power=17,
+    physical_resistance=0,
+    magical_resistance=0,
+    weapons=[],
+    inventory=[],
+    xp_reward=50,
+    description=""
+)
+frostbite_spider = Enemy(
+    name="Frostbite Spider",
+    max_health=30,
+    health=30,
+    max_mana=0,
+    mana=0,
+    affinity="Aqua",
+    attack_power=25,
+    physical_resistance=0,
+    magical_resistance=0,
+    weapons=[],
+    inventory=[],
+    xp_reward=50,
+    description=""
+)
+
+weakend_drider = Enemy(
+    name="Weakend Drider",
+    max_health=25,
+    health=25,
+    max_mana=0,
+    mana=0,
+    affinity="",
+    attack_power=15,
+    physical_resistance=0,
+    magical_resistance=0,
+    weapons=[],
+    inventory=[],
+    xp_reward=50,
+    description=""
+)
+vigored_drider= Enemy(
+    name="Vidgored Drider",
+    max_health=50,
+    health=50,
+    max_mana=0,
+    mana=0,
+    affinity="",
+    attack_power=20,
+    physical_resistance=0,
+    magical_resistance=0,
+    weapons=[],
+    inventory=[],
+    xp_reward=50,
+    description=""
+)
+tenacious_drider = Enemy(
+    name="Solid Drider",
+    max_health=75,
+    health=75,
+    max_mana=0,
+    mana=0,
+    affinity="Earth",
+    attack_power=30,
+    physical_resistance=0,
+    magical_resistance=0,
+    weapons=[],
+    inventory=[],
+    xp_reward=50,
+    description=""
+)
+drider_princess = Enemy(
+    name="Drider Princess",
+    max_health=85,
+    health=85,
+    max_mana=0,
+    mana=0,
+    affinity="",
+    attack_power=7,
+    physical_resistance=0,
+    magical_resistance=0,
+    weapons=[],
+    inventory=[],
+    xp_reward=50,
+    description=""
+)
+drider_queen = Enemy(
+    name="Drider Queen",
+    max_health=100,
+    health=100,
+    max_mana=0,
+    mana=0,
+    affinity="",
+    attack_power=65,
+    physical_resistance=0,
+    magical_resistance=0,
+    weapons=[],
+    inventory=[],
+    xp_reward=50,
+    description=""
+)
+
+species = ["Human", "Drider", "Kitsune", "Demon", "Cambion", "Demon Halfling", "Lamia", "Changeling"]
+enem_types = ["Pickpocket", "Prowler", 
+              "Myrmidon", "Assassin", "Warrior", "Bandit", "Bandit Chief"]
+
+'''for specie in species:
+    for enem_type in enem_types:
+        if enem_type == "Warrior":
+            create_enemy(specie, enem_type, overrides={"max_health": 70, "health": 70})
+        if enem_type == "Bandit":
+            create_enemy(specie, enem_type, overrides={"max_health": 70, "health": 70})
+        if enem_type == "Bandit Chief":
+            create_enemy(specie, enem_type, overrides={"max_health": 85, "health": 85})
+        else:
+            create_enemy(specie, enem_type)'''
+
+for specie in species:
+    for enem_type in enem_types:
+        if enem_type == "Pickpocket":
+            create_enemy(specie, "Pickpocket", overrides={"max_health": 70, "health": 70})
+        if enem_type == "Prowler":
+            create_enemy(specie, "Prowler", overrides={"max_health": 70, "health": 70})
+        if enem_type == "Myrmidon":
+            create_enemy(specie, "Myrmidon", overrides={"max_health": 70, "health": 70})
+        if enem_type == "Assassin":
+            create_enemy(specie, "Assassin", overrides={"max_health": 70, "health": 70})
+        if enem_type == "Warrior":
+            create_enemy(specie, enem_type, overrides={"max_health": 70, "health": 70})
+        if enem_type == "Bandit":
+            create_enemy(specie, enem_type, overrides={"max_health": 70, "health": 70})
+        if enem_type == "Bandit Chief":
+            create_enemy(specie, enem_type, overrides={"max_health": 85, "health": 85})
+
 EnemyRegistry.register_enemy(green_slime)
+EnemyRegistry.register_enemy(red_slime)
 
 print("Successfully Imported Enemies")
 
 #Enemy Dictionary
 enemies = {
-    "Slime" : { #"type", Stats, And Ect.
-        "1" : { #"Green Slime"
-            "Name" : ("Green Slime"),
-            "Health" : 5,
-            "Damage" : 4, 
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Dense Forest"),
-            "Frequency" : 8,
-            "Level Requirement" : 0,
-        },
-        "2" : { #"Red Slime"
-            "Name" : ("Red Slime"),
-            "Health" : 15,
-            "Damage" : 6, 
-            "Magic Damage" : 0,
-            "Magic Resistance" : 10,
-            "Armor" : 0,
-            "Location Type" : ("Dense Forest"),
-            "Frequency" : 2,
-            "Level Requirement" : 0,
-        },
-        "3" : { #"Cosmic Slime"
-            "Name" : ("Cosmic Slime"),
-            "Health" : 5000,
-            "Damage" : 5000, 
-            "Magic Damage" : 0,
-            "Magic Resistance" : 40,
-            "Armor" : 300,
-            "Location Type" : ("Dense Forest"),
-            "Frequency" : 0.5,
-            "Level Requirement" : 100,
-        },
-    },
-    "Spider" : { #Spider
-        "1" : { #Windower
-            "Name" : ("Widower Arachnid"),
-            "Health" : 5,
-            "Damage" : 5,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Dense Forest", "Grove", "Town"),
-            "Frequency" : 8,
-            "Level Requirement" : 0,
-        },
-        "2" : { #Giant Spider
-            "Name" : ("Giant Spider"),
-            "Health" : 15,
-            "Damage" : 10,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Dense Forest"),
-            "Frequency" : 7,
-            "Level Requirement" : 0,
-        },
-        "3" : { #Death Widow
-            "Name" : ("Death Widow"),
-            "Health" : 20,
-            "Damage" : 15,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Cave"),
-            "Frequency" : 2,
-            "Level Requirement" : 5,
-        },
-        "4" : { #Moth Spiderling
-            "Name" : ("Moth Spiderling"),
-            "Health" : 20,
-            "Damage" : 10,
-            "Magic Damage" : 15,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Orchard"),
-            "Frequency" : 2,
-            "Level Requirement" : 5,
-        },
-        "5" : { #Crimson Brood
-            "Name" : ("Crimson Brood"),
-            "Health" : 25,
-            "Damage" : 30,
-            "Magic Damage" : 15,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Forest"),
-            "Frequency" : 2,
-            "Level Requirement" : 5,
-        },
-        "6" : { #Wolf Spider
-            "Name" : ("Wolf Spider"),
-            "Health" : 20,
-            "Damage" : 10,
-            "Magic Damage" : 15,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Plain/Meadow", "Grove", "Dense Forest", "Den"),
-            "Frequency" : 2,
-            "Level Requirement" : 5,
-        },
-        "7" : { #Frostbite Spider
-            "Name" : ("Frostbite Spider"),
-            "Health" : 30,
-            "Damage" : 5,
-            "Magic Damage" : 20,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Tundra"),
-            "Frequency" : 2,
-            "Level Requirement" : 5,
-        },
-    },
-    "Driders" : { #Driders
-        "1" : {
-            "Name" : ("Weakend Drider"),
-            "Health" : 25,
-            "Damage" : 10,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Dense Forest", "Cave", "Den", "Marsh", "Dungeon"),
-            "Frequency" : 2,
-            "Level Requirement" : 5,
-        },
-        "2" : {
-            "Name" : ("Vigored Drider"),
-            "Health" : 50,
-            "Damage" : 20,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Dense Forest", "Cave", "Den", "Marsh", "Dungeon"),
-            "Frequency" : 2,
-            "Level Requirement" : 10,
-        },
-        "3" : {
-            "Name" : ("Solid Drider"),
-            "Health" : 75,
-            "Damage" : 15,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Dense Forest", "Cave", "Den", "Marsh", "Dungeon"),
-            "Frequency" : 2,
-            "Level Requirement" : 10,
-        },
-        "4" : {
-            "Name" : ("Tenacious Drider"),
-            "Health" : 75,
-            "Damage" : 30,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Dense Forest", "Cave", "Den", "Marsh", "Dungeon"),
-            "Frequency" : 2,
-            "Level Requirement" : 10,
-        },
-        "5" : {
-            "Name" : ("Drider Princess"),
-            "Health" : 85,
-            "Damage" : 40,
-            "Magic Damage" : 10,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Cave", "Den", "Dungeon"),
-            "Frequency" : 2,
-            "Level Requirement" : 10,
-        },
-        "6" : {
-            "Name" : ("Drider Queen"),
-            "Health" : 100,
-            "Damage" : 50,
-            "Magic Damage" : 15,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Cave", "Den", "Dungeon"),
-            "Frequency" : 2,
-            "Level Requirement" : 15,
-            
-        },
-    },
+    
     "Reptile" : { #Reptile
         1 : { #Wild Snake
             "Name" : ("Wild Snake"),
@@ -709,94 +780,7 @@ enemies = {
             "Level Requirement" : 30,
         },
     },
-    "Human" : {
-        1 : { #Pickpocket
-            "Name" : ("Pickpocket"),
-            "Description" : "",
-            "Health" : 65,
-            "Damage" : 20,
-            "Magic Damage" : 0,
-            "Magic_Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 10,
-        },
-        2 : { #Prowler
-            "Name" : ("Prowler"),
-            "Description" : "",
-            "Health" : 65,
-            "Damage" : 20,
-            "Magic Damage" : 0,
-            "Magic_Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 10,
-        },
-        3 : { #Myrmidon
-            "Name" : ("Myrmidon"),
-            "Description" : "",
-            "Health" : 65,
-            "Damage" : 20,
-            "Magic Damage" : 0,
-            "Magic_Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 10,
-        },
-        4 : { #Assassin
-            "Name" : ("Assassin"),
-            "Description" : "",
-            "Health" : 80,
-            "Damage" : 20,
-            "Magic Damage" : 0,
-            "Magic_Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 10,
-        },
-    },
-    "Human Hybrid" : {
-        1 : { #Kitsune
-            "Name" : ("Kitsune"),
-            "Description" : "",
-            "Health" : 70,
-            "Damage" : 20,
-            "Magic Damage" : 0,
-            "Magic_Resistace" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Dense Forest", "Forest", "Isle", "City", "Town", "Capital City"),
-            "Frequency" : 1,
-            "Level Requirement" : 5,
-        },
-        2 : { #Lamia
-            "Name" : ("Lamia"),
-            "Description" : "",
-            "Health" : 70,
-            "Damage" : 20,
-            "Magic Damage" : 0,
-            "Magic_Resistace" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Dense Forest", "Forest", "City", "Town", "Capital City", "Dungeon", "Fortress"),
-            "Frequency" : 1,
-            "Level Requirement" : 5,
-        },
-        3 : { #Changeling
-            "Name" : ("Changeling"),
-            "Description" : "",
-            "Health" : 70,
-            "Damage" : 20,
-            "Magic Damage" : 0,
-            "Magic_Resistace" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Dense Forest", "Den", "Valley"),
-            "Frequency" : 1,
-            "Level Requirement" : 5,
-        },
-    },
+
     "Pirate" : {
         1 : { #Deckhand
             "Name" : ("Deckhand"),
@@ -871,32 +855,7 @@ enemies = {
             "Level Requirement" : 15,
         },
     },
-    "Bandit" : {
-        1 : { #Bandit
-            "Name" : ("Bandit"),
-            "Description" : "",
-            "Health" : 65,
-            "Damage" : 20,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 10,
-        },
-        2 : { #Bandit Chief
-            "Name" : ("Bandit Chief"),
-            "Description" : "",
-            "Health" : 85,
-            "Damage" : 20,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 15,
-        },
-    },
+    
     "Cultist" : {
         1 : { #Cultist Grunt
             "Name" : ("Cultist Grunt"),
@@ -1007,26 +966,6 @@ enemies = {
             "Magic Resistance" : 23,
             "Armor" : 11,
             "Location Type" : ("Dense Forest", "Capital City"),
-        },
-        2 : { #Cambion
-            "Name" : ("Cambion"),
-            "Description" : "",
-            "Health" : 136,
-            "Damage" : 35,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 20,
-            "Armor" : 12,
-            "Location Type" : ("Dense Forest"),
-        },
-        3 : { #Demon Halfling
-            "Name" : ("Demon Halfling"),
-            "Description" : "",
-            "Health" : 53,
-            "Damage" : 23,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 12,
-            "Armor" : 9,
-            "Location Type" : ("Dense Forest", "City"),
         }
     },
     "Skeleton" : {
@@ -1246,553 +1185,538 @@ enemies = {
             "Level Requirement" : 0,
         },
     },
-    #"Sea Creatures": {
-    #    1 : { #Titan
-    #        "Titan" : {
-    #            "Name" : ("Titan"),
-    #            "Description" : "",
-    #            "Health" : 250,
-    #            "Damage" : 35,
-    #            "Magic Damage" : 0,
-    #            "Magic_Resistace" : 0,
-    #            "Armor" : 0
-    #        },
-    #    },
-    #    2 : { #Merfolk
-    #        "Merfolk" : {
-    #            1 : { #Merfolk
-    #                1 : { #Female (Mermaid)
-    #                    "Name" : ("Mermaid"),
-    #                    "Description" : "",
-    #                    "Health" : 70,
-    #                    "Damage" : 25,
-    #                    "Magic Damage" : 0,
-    #                    "Magic_Resistace" : 0,
-    #                    "Armor" : 0 
-    #                },
-    #                2 : { #Famale (Siren)
-    #                    "Name" : ("Siren"),
-    #                    "Description" : "",
-    #                    "Health" : 70,
-    #                    "Damage" : 25,
-    #                    "Magic Damage" : 0,
-    #                    "Magic_Resistace" : 0,
-    #                    "Armor" : 0 
-    #                }
-    #            },
-    #            2 : { #Male (Merman)
-    #                "Name" : ("Merman"),
-    #                "Description" : "",
-    #                "Health" : 70,
-    #                "Damage" : 25,
-    #                "Magic Damage" : 0,
-    #                "Magic_Resistace" : 0,
-    #                "Armor" : 0
-    #            },
-    #            3 : { #Merfolk Gaurd
-    #                "Name" : ("Merfolk Gaurd"),
-    #                "Description" : "",
-    #                "Health" : 0,
-    #                "Damage" : 0,
-    #                "Magic Damage" : 0,
-    #                "Magic_Resistace" : 0,
-    #                "Armor" : 0 
-    #            }
-    #        },
-    #    },
-    #    3 : { #Spirit
-    #        "Spirit" : {
-    #            1 : { #Oceanid
-    #                "Name" : ("Oceanid"),
-    #                "Description" : "",
-    #                "Health" : 75,
-    #                "Damage" : 25,
-    #                "Magic Damage" : 0,
-    #                "Magic_Resistace" : 0,
-    #                "Armor" : 0 
-    #            },
-    #            2 : { #Undine
-    #                "Name" : ("Undine"),
-    #                "Description" : "",
-    #                "Health" : 75,
-    #                "Damage" : 25,
-    #                "Magic Damage" : 0,
-    #                "Magic_Resistace" : 0,
-    #                "Armor" : 0 
-    #            },
-    #        },
-    #    },
-    #    4 : { #Fish
-    #        "Fish" : {
-    #            1 : { #Shark
-    #                "Name" : ("Shark"),
-    #                "Description" : "",
-    #                "Health" : 110,
-    #                "Damage" : 35,
-    #                "Magic Damage" : 0,
-    #                "Magic_Resistace" : 0,
-    #                "Armor" : 0 
-    #            },
-    #            2 : { #
-    #                "Name" : (""),
-    #                "Description" : "",
-    #                "Health" : 0,
-    #                "Damage" : 0,
-    #                "Magic Damage" : 0,
-    #                "Magic_Resistace" : 0,
-    #                "Armor" : 0 
-    #            },
-    #        },
-    #    },
-    #},
-    #"Land Creatures/Monsters" : {
-    #    1 : { #Mammals
-    #        "Mammals" : {
-    #            1 : { #Deer
-    #                "Deer" : {
-    #                    1 : { #Deer
-    #                        "Name" : ("Deer"),
-    #                        "Description" : "",
-    #                        "Health" : 25,
-    #                        "Damage" : 5,
-    #                        "Magic Damage" : 0,
-    #                        "Magic_Resistace" : 0,
-    #                        "Armor" : 0 
-    #                    },
-    #                    2 : { #Faun
-    #                        "Name" : ("Faun"),
-    #                        "Description" : "",
-    #                        "Health" : 20,
-    #                        "Damage" : 5,
-    #                        "Magic Damage" : 0,
-    #                        "Magic_Resistace" : 0,
-    #                        "Armor" : 0 
-    #                    },
-    #                    3 : { #Elk
-    #                        "Name" : ("Elk"),
-    #                        "Description" : "",
-    #                        "Health" : 40,
-    #                        "Damage" : 5,
-    #                        "Magic Damage" : 0,
-    #                        "Magic_Resistace" : 0,
-    #                        "Armor" : 0 
-    #                    },
-    #                },
-    #            },
-    #            2 : { #Rat
-    #                    "Name" : ("Rats"),
-    #                    "Description" : "",
-    #                    "Health" : 5,
-    #                    "Damage" : 5,
-    #                    "Magic Damage" : 0,
-    #                    "Magic_Resistace" : 0,
-    #                    "Armor" : 0
-    #                    },
-    #            },
-    #        },
-    #    2 : { #ENT
-    #        "Ent" : {
-    #            1 : { #Ent
-    #                "Name" : ("Ent"),
-    #                "Description" : "",
-    #                "Health" : 150,
-    #                "Damage" : 0,
-    #                "Magic Damage" : 5,
-    #                "Magic_Resistace" : 0,
-    #                "Armor" : 5
-    #            },
-    #            2 : { #Towering Ent
-    #                "Name" : ("Towering Ent"),
-    #                "Description" : "",
-    #                "Health" : 175,
-    #                "Damage" : 0,
-    #                "Magic Damage" : 5,
-    #                "Magic_Resistace" : 0,
-    #                "Armor" : 40 
-    #            },
-    #            3 : { #Oak Wood Ent
-    #                "Name" : ("Oak Wood Ent"),
-    #                "Description" : "",
-    #                "Health" : 200,
-    #                "Damage" : 0,
-    #                "Magic Damage" : 5,
-    #                "Magic_Resistace" : 15,
-    #                "Armor" : 10
-    #            },
-    #            4 : { #Birch Wood Ent
-    #                "Name" : ("Birch Wood Ent"),
-    #                "Description" : "",
-    #                "Health" : 230,
-    #                "Damage" : 0,
-    #                "Magic Damage" : 5,
-    #                "Magic_Resistace" : 20,
-    #                "Armor" : 20
-    #            },
-    #            5 : { #Baarker Wood Ent
-    #                "Name" : ("Baarker Wood Ent"),
-    #                "Description" : "",
-    #                "Health" : 250,
-    #                "Damage" : 0,
-    #                "Magic Damage" : 5,
-    #                "Magic_Resistace" : 15,
-    #                "Armor" : 15 
-    #            },
-    #            6 : { #Iron Wood Ent
-    #                "Name" : ("Iron Wood Ent"),
-    #                "Description" : "",
-    #                "Health" : 255,
-    #                "Damage" : 0,
-    #                "Magic Damage" : 5,
-    #                "Magic_Resistace" : 5,
-    #                "Armor" : 20
-    #            },
-    #            7 : { #Silver Wood Ent
-    #                "Name" : ("Silver Wood Ent"),
-    #                "Description" : "",
-    #                "Health" : 260,
-    #                "Damage" : 0,
-    #                "Magic Damage" : 5,
-    #                "Magic_Resistace" : 5,
-    #                "Armor" : 30
-    #            },
-    #            8 : { #Golden Wood Ent
-    #                "Name" : ("Golden Wood Ent"),
-    #                "Description" : "",
-    #                "Health" : 275,
-    #                "Damage" : 0,
-    #                "Magic Damage" : 5,
-    #                "Magic_Resistace" : 40,
-    #                "Armor" : 10
-    #            },
-    #            9 : { #Rose Wood Ent
-    #                "Name" : ("Rose Wood Ent"),
-    #                "Description" : "",
-    #                "Health" : 290,
-    #                "Damage" : 0,
-    #                "Magic Damage" : 5,
-    #                "Magic_Resistace" : 50,
-    #                "Armor" : 0
-    #            },
-    #            10 : { #Diamond Wood Ent
-    #                "Name" : ("Diamond Wood Ent"),
-    #                "Description" : "",
-    #                "Health" : 300,
-    #                "Damage" : 0,
-    #                "Magic Damage" : 5,
-    #                "Magic_Resistace" : 0,
-    #                "Armor" : 45
-    #            },
-    #        },
-    #    },
-    #    3 : { #Mysticals
-    #        "Mysticals" : {
-    #            1 : { #Nymph
-    #                "Nymph" : {
-    #                    1 : { #Blue Nymph
-    #                        "Name" : ("Blue Nymph"),
-    #                        "Description" : "",
-    #                        "Health" : 30,
-    #                        "Damage" : 0,
-    #                        "Magic Damage" : 10,
-    #                        "Magic_Resistace" : 0,
-    #                        "Armor" : 0
-    #                    },
-    #                    2 : { #Red Nymph
-    #                        "Name" : ("Red Nymph"),
-    #                        "Description" : "",
-    #                        "Health" : 30,
-    #                        "Damage" : 0,
-    #                        "Magic Damage" : 10,
-    #                        "Magic_Resistace" : 0,
-    #                        "Armor" : 0
-    #                    },
-    #                    3 : { #Yellow Nymph
-    #                        "Name" : ("Yellow Nymph"),
-    #                        "Description" : "",
-    #                        "Health" : 30,
-    #                        "Damage" : 0,
-    #                        "Magic Damage" : 10,
-    #                        "Magic_Resistace" : 0,
-    #                        "Armor" : 0
-    #                    },
-    #                    4 : { #Elegant Nymph
-    #                        "Name" : ("Elegant Nymph"),
-    #                        "Description" : "",
-    #                        "Health" : 30,
-    #                        "Damage" : 0,
-    #                        "Magic Damage" : 10,
-    #                        "Magic_Resistace" : 0,
-    #                        "Armor" : 0
-    #                    },
-    #                    5 : { #Shining Nymph
-    #                        "Name" : ("Shining Nymph"),
-    #                        "Description" : "",
-    #                        "Health" : 30,
-    #                        "Damage" : 0,
-    #                        "Magic Damage" : 10,
-    #                        "Magic_Resistace" : 0,
-    #                        "Armor" : 0
-    #                    },
-    #                },
-    #            },
-    #            2 : { # Spriggan
-    #                "Spriggan" : {
-    #                    1 : {
-    #                        "Name" : ("Spriggan"),
-    #                        "Description" : "",
-    #                        "Health" : 75,
-    #                        "Damage" : 12,
-    #                        "Magic Damage" : 13,
-    #                        "Magic_Resistace" : 0,
-    #                        "Armor" : 0
-    #                    },
-    #                },
-    #            },
-    #            3 : { # Dryad
-    #                    "Dryad" : {
-    #                        1 : {
-    #                            "Name" : ("Dryad"),
-    #                            "Description" : "",
-    #                            "Health" : 75,
-    #                            "Damage" : 5,
-    #                            "Magic Damage" : 20,
-    #                            "Magic_Resistace" : 0,
-    #                            "Armor" : 0
-    #                            },
-    #                        },
-    #                        2 : {
-    #                            "Name" : ("Oak Wood Dryad"),
-    #                            "Description" : "",
-    #                            "Health" : 75,
-    #                            "Damage" : 5,
-    #                            "Magic Damage" : 20,
-    #                            "Magic_Resistace" : 0,
-    #                            "Armor" : 0
-    #                        },
-    #                        3 : {
-    #                            "Name" : ("Birch Wood Dryad"),
-    #                            "Description" : "",
-    #                            "Health" : 75,
-    #                            "Damage" : 5,
-    #                            "Magic Damage" : 20,
-    #                            "Magic_Resistace" : 0,
-    #                            "Armor" : 0
-    #                        },
-    #                        4 : {
-    #                            "Name" : ("Baarker Wood Dryad"),
-    #                            "Description" : "",
-    #                            "Health" : 75,
-    #                            "Damage" : 5,
-    #                            "Magic Damage" : 20,
-    #                            "Magic_Resistace" : 0,
-    #                            "Armor" : 0
-    #                        },
-    #                        5 : {
-    #                            "Name" : ("Iron Wood Dryad"),
-    #                            "Description" : "",
-    #                            "Health" : 75,
-    #                            "Damage" : 5,
-    #                            "Magic Damage" : 20,
-    #                            "Magic_Resistace" : 0,
-    #                            "Armor" : 0
-    #                        },
-    #                        6 : {
-    #                            "Name" : ("Silver Wood Dryad"),
-    #                            "Description" : "",
-    #                            "Health" : 75,
-    #                            "Damage" : 5,
-    #                            "Magic Damage" : 20,
-    #                            "Magic_Resistace" : 0,
-    #                            "Armor" : 0
-    #                        },
-    #                        7 : {
-    #                            "Name" : ("Golden Wood Dryad"),
-    #                            "Description" : "",
-    #                            "Health" : 75,
-    #                            "Damage" : 5,
-    #                            "Magic Damage" : 20,
-    #                            "Magic_Resistace" : 0,
-    #                            "Armor" : 0
-    #                        },
-    #                        8 : {
-    #                            "Name" : ("Rose Wood Dryad"),
-    #                            "Description" : "",
-    #                            "Health" : 75,
-    #                            "Damage" : 5,
-    #                            "Magic Damage" : 20,
-    #                            "Magic_Resistace" : 0,
-    #                            "Armor" : 0
-    #                        },
-    #                        9 : {
-    #                            "Name" : ("Diamond Wood Dryad"),
-    #                            "Description" : "",
-    #                            "Health" : 75,
-    #                            "Damage" : 5,
-    #                            "Magic Damage" : 20,
-    #                            "Magic_Resistace" : 0,
-    #                            "Armor" : 0
-    #                        },
-    #                        10 : {
-    #                            "Name" : ("Dryad"),
-    #                            "Description" : "",
-    #                            "Health" : 75,
-    #                            "Damage" : 10,
-    #                            "Magic Damage" : 15,
-    #                            "Magic_Resistace" : 0,
-    #                            "Armor" : 0
-    #                        },
-    #                    },
-    #            4 : { # Forest Spirit
-    #                "Forest Spirit" : {
-    #                    1 : { #Forest Sylph
-    #                            "Name" : ("Forest Sylph"),
-    #                            "Description" : "",
-    #                            "Health" : 5,
-    #                            "Damage" : 0,
-    #                            "Magic Damage" : 5,
-    #                            "Magic_Resistace" : 0,
-    #                            "Armor" : 0
-    #                            },
-    #                    2 : { #Forest Undine
-    #                        "Name" : ("Forest Undine"),
-    #                        "Description" : "",
-    #                        "Health" : 65,
-    #                        "Damage" : 5,
-    #                        "Magic Damage" : 10,
-    #                        "Magic_Resistace" : 0,
-    #                        "Armor" : 0
-    #                    },
-    #                },
-    #            },
-    #            5 : { # Fairy
-    #                "Fairy" : {
-    #                    1 : { #Fairy
-    #                        "Name" : ("Fairy"),
-    #                        "Description" : "",
-    #                        "Health" : 5,
-    #                        "Damage" : 0,
-    #                        "Magic Damage" : 5,
-    #                        "Magic_Resistace" : 0,
-    #                        "Armor" : 0
-    #                    },
-    #                },
-    #            },
-    #            6 : { # Golem
-    #                "Golem" : {
-    #                    1 : { #Rock Golem
-    #                        "Name" : ("Rock Golem"),
-    #                        "Description" : "",
-    #                        "Health" : 100,
-    #                        "Damage" : 10,
-    #                        "Magic Damage" : 25,
-    #                        "Magic_Resistace" : 0,
-    #                        "Armor" : 0
-    #                    },
-    #                    2 : { #Steam Golem
-    #                        "Name" : ("Steam Golem"),
-    #                        "Description" : "",
-    #                        "Health" : 100,
-    #                        "Damage" : 10,
-    #                        "Magic Damage" : 25,
-    #                        "Magic_Resistace" : 0,
-    #                        "Armor" : 0
-    #                    },
-    #                    3 : { #Crystal Golem
-    #                        "Name" : ("Crystal Golem"),
-    #                        "Description" : "",
-    #                        "Health" : 100,
-    #                        "Damage" : 10,
-    #                        "Magic Damage" : 25,
-    #                        "Magic_Resistace" : 0,
-    #                        "Armor" : 0
-    #                    },
-    #                },
-    #            },
-    #        },
-    #    },
-    #    4 : { #Monters
-    #        1 : { #Frohst
-    #            "Name" : ("Frohst"),
-    #            "Description" : "",
-    #            "Health" : 90,
-    #            "Damage" : 0,
-    #            "Magic Damage" : 3,
-    #            "Magic_Resistace" : 0,
-    #            "Armor" : 0
-    #        },
-    #        2 : { #Mimic
-    #            "Name" : ("Mimic"),
-    #            "Description" : "",
-    #            "Health" : 50,
-    #            "Damage" : 20,
-    #            "Magic Damage" : 0,
-    #            "Magic_Resistace" : 0,
-    #            "Armor" : 0
-    #        },
-    #        3 : { #Orge
-    #            "Name" : ("Orge"),
-    #            "Description" : "",
-    #            "Health" : 60,
-    #            "Damage" : 20,
-    #            "Magic Damage" : 0,
-    #            "Magic_Resistace" : 0,
-    #            "Armor" : 0
-    #        },
-    #        4 : { #Giant
-    #            "Name" : ("Giant"),
-    #            "Description" : "",
-    #            "Health" : 65,
-    #            "Damage" : 20,
-    #            "Magic Damage" : 0,
-    #            "Magic_Resistace" : 0,
-    #            "Armor" : 0
-    #        },
-    #        5 : { #Goblin
-    #            "Name" : ("Goblin"),
-    #            "Description" : "",
-    #            "Health" : 10,
-    #            "Damage" : 5,
-    #            "Magic Damage" : 0,
-    #            "Magic_Resistace" : 0,
-    #            "Armor" : 0
-    #        },
-    #        6 : { #Kobold
-    #            "Kobold" : {
-    #                1 : { #Kobolds
-    #                    "Name" : ("Kobolds"),
-    #                    "Description" : "",
-    #                    "Health" : 10,
-    #                    "Damage" : 4,
-    #                    "Magic Damage" : 1,
-    #                    "Magic_Resistace" : 0,
-    #                    "Armor" : 0
-    #                },
-    #                2 : { #Kobold Knight
-    #                    "Name" : ("Kobold Knight"),
-    #                    "Description" : "",
-    #                    "Health" : 40,
-    #                    "Damage" : 10,
-    #                    "Magic Damage" : 5,
-    #                    "Magic_Resistace" : 0,
-    #                    "Armor" : 0
-    #                }
-    #            },
-    #        },
-    #    },
-    #},#<--End of Land Creatures/Monsters
+    "Sea Creatures": {
+        1 : { #Titan
+            "Titan" : {
+                "Name" : ("Titan"),
+                "Description" : "",
+                "Health" : 250,
+                "Damage" : 35,
+                "Magic Damage" : 0,
+                "Magic_Resistace" : 0,
+                "Armor" : 0
+            },
+        },
+        2 : { #Merfolk
+            "Merfolk" : {
+                1 : { #Merfolk
+                    1 : { #Female (Mermaid)
+                        "Name" : ("Mermaid"),
+                        "Description" : "",
+                        "Health" : 70,
+                        "Damage" : 25,
+                        "Magic Damage" : 0,
+                        "Magic_Resistace" : 0,
+                        "Armor" : 0 
+                    },
+                    2 : { #Famale (Siren)
+                        "Name" : ("Siren"),
+                        "Description" : "",
+                        "Health" : 70,
+                        "Damage" : 25,
+                        "Magic Damage" : 0,
+                        "Magic_Resistace" : 0,
+                        "Armor" : 0 
+                    }
+                },
+                2 : { #Male (Merman)
+                    "Name" : ("Merman"),
+                    "Description" : "",
+                    "Health" : 70,
+                    "Damage" : 25,
+                    "Magic Damage" : 0,
+                    "Magic_Resistace" : 0,
+                    "Armor" : 0
+                },
+                3 : { #Merfolk Gaurd
+                    "Name" : ("Merfolk Gaurd"),
+                    "Description" : "",
+                    "Health" : 0,
+                    "Damage" : 0,
+                    "Magic Damage" : 0,
+                    "Magic_Resistace" : 0,
+                    "Armor" : 0 
+                }
+            },
+        },
+        3 : { #Spirit
+            "Spirit" : {
+                1 : { #Oceanid
+                    "Name" : ("Oceanid"),
+                    "Description" : "",
+                    "Health" : 75,
+                    "Damage" : 25,
+                    "Magic Damage" : 0,
+                    "Magic_Resistace" : 0,
+                    "Armor" : 0 
+                },
+                2 : { #Undine
+                    "Name" : ("Undine"),
+                    "Description" : "",
+                    "Health" : 75,
+                    "Damage" : 25,
+                    "Magic Damage" : 0,
+                    "Magic_Resistace" : 0,
+                    "Armor" : 0 
+                },
+            },
+        },
+        4 : { #Fish
+            "Fish" : {
+                1 : { #Shark
+                    "Name" : ("Shark"),
+                    "Description" : "",
+                    "Health" : 110,
+                    "Damage" : 35,
+                    "Magic Damage" : 0,
+                    "Magic_Resistace" : 0,
+                    "Armor" : 0 
+                },
+                2 : { #
+                    "Name" : (""),
+                    "Description" : "",
+                    "Health" : 0,
+                    "Damage" : 0,
+                    "Magic Damage" : 0,
+                    "Magic_Resistace" : 0,
+                    "Armor" : 0 
+                },
+            },
+        },
+    },
+    "Land Creatures/Monsters" : {
+        1 : { #Mammals
+            "Mammals" : {
+                1 : { #Deer
+                    "Deer" : {
+                        1 : { #Deer
+                            "Name" : ("Deer"),
+                            "Description" : "",
+                            "Health" : 25,
+                            "Damage" : 5,
+                            "Magic Damage" : 0,
+                            "Magic_Resistace" : 0,
+                            "Armor" : 0 
+                        },
+                        2 : { #Faun
+                            "Name" : ("Faun"),
+                            "Description" : "",
+                            "Health" : 20,
+                            "Damage" : 5,
+                            "Magic Damage" : 0,
+                            "Magic_Resistace" : 0,
+                            "Armor" : 0 
+                        },
+                        3 : { #Elk
+                            "Name" : ("Elk"),
+                            "Description" : "",
+                            "Health" : 40,
+                            "Damage" : 5,
+                            "Magic Damage" : 0,
+                            "Magic_Resistace" : 0,
+                            "Armor" : 0 
+                        },
+                    },
+                },
+                2 : { #Rat
+                        "Name" : ("Rats"),
+                        "Description" : "",
+                        "Health" : 5,
+                        "Damage" : 5,
+                        "Magic Damage" : 0,
+                        "Magic_Resistace" : 0,
+                        "Armor" : 0
+                        },
+                },
+            },
+        2 : { #ENT
+            "Ent" : {
+                1 : { #Ent
+                    "Name" : ("Ent"),
+                    "Description" : "",
+                    "Health" : 150,
+                    "Damage" : 0,
+                    "Magic Damage" : 5,
+                    "Magic_Resistace" : 0,
+                    "Armor" : 5
+                },
+                2 : { #Towering Ent
+                    "Name" : ("Towering Ent"),
+                    "Description" : "",
+                    "Health" : 175,
+                    "Damage" : 0,
+                    "Magic Damage" : 5,
+                    "Magic_Resistace" : 0,
+                    "Armor" : 40 
+                },
+                3 : { #Oak Wood Ent
+                    "Name" : ("Oak Wood Ent"),
+                    "Description" : "",
+                    "Health" : 200,
+                    "Damage" : 0,
+                    "Magic Damage" : 5,
+                    "Magic_Resistace" : 15,
+                    "Armor" : 10
+                },
+                4 : { #Birch Wood Ent
+                    "Name" : ("Birch Wood Ent"),
+                    "Description" : "",
+                    "Health" : 230,
+                    "Damage" : 0,
+                    "Magic Damage" : 5,
+                    "Magic_Resistace" : 20,
+                    "Armor" : 20
+                },
+                5 : { #Baarker Wood Ent
+                    "Name" : ("Baarker Wood Ent"),
+                    "Description" : "",
+                    "Health" : 250,
+                    "Damage" : 0,
+                    "Magic Damage" : 5,
+                    "Magic_Resistace" : 15,
+                    "Armor" : 15 
+                },
+                6 : { #Iron Wood Ent
+                    "Name" : ("Iron Wood Ent"),
+                    "Description" : "",
+                    "Health" : 255,
+                    "Damage" : 0,
+                    "Magic Damage" : 5,
+                    "Magic_Resistace" : 5,
+                    "Armor" : 20
+                },
+                7 : { #Silver Wood Ent
+                    "Name" : ("Silver Wood Ent"),
+                    "Description" : "",
+                    "Health" : 260,
+                    "Damage" : 0,
+                    "Magic Damage" : 5,
+                    "Magic_Resistace" : 5,
+                    "Armor" : 30
+                },
+                8 : { #Golden Wood Ent
+                    "Name" : ("Golden Wood Ent"),
+                    "Description" : "",
+                    "Health" : 275,
+                    "Damage" : 0,
+                    "Magic Damage" : 5,
+                    "Magic_Resistace" : 40,
+                    "Armor" : 10
+                },
+                9 : { #Rose Wood Ent
+                    "Name" : ("Rose Wood Ent"),
+                    "Description" : "",
+                    "Health" : 290,
+                    "Damage" : 0,
+                    "Magic Damage" : 5,
+                    "Magic_Resistace" : 50,
+                    "Armor" : 0
+                },
+                10 : { #Diamond Wood Ent
+                    "Name" : ("Diamond Wood Ent"),
+                    "Description" : "",
+                    "Health" : 300,
+                    "Damage" : 0,
+                    "Magic Damage" : 5,
+                    "Magic_Resistace" : 0,
+                    "Armor" : 45
+                },
+            },
+        },
+        3 : { #Mysticals
+            "Mysticals" : {
+                1 : { #Nymph
+                    "Nymph" : {
+                        1 : { #Blue Nymph
+                            "Name" : ("Blue Nymph"),
+                            "Description" : "",
+                            "Health" : 30,
+                            "Damage" : 0,
+                            "Magic Damage" : 10,
+                            "Magic_Resistace" : 0,
+                            "Armor" : 0
+                        },
+                        2 : { #Red Nymph
+                            "Name" : ("Red Nymph"),
+                            "Description" : "",
+                            "Health" : 30,
+                            "Damage" : 0,
+                            "Magic Damage" : 10,
+                            "Magic_Resistace" : 0,
+                            "Armor" : 0
+                        },
+                        3 : { #Yellow Nymph
+                            "Name" : ("Yellow Nymph"),
+                            "Description" : "",
+                            "Health" : 30,
+                            "Damage" : 0,
+                            "Magic Damage" : 10,
+                            "Magic_Resistace" : 0,
+                            "Armor" : 0
+                        },
+                        4 : { #Elegant Nymph
+                            "Name" : ("Elegant Nymph"),
+                            "Description" : "",
+                            "Health" : 30,
+                            "Damage" : 0,
+                            "Magic Damage" : 10,
+                            "Magic_Resistace" : 0,
+                            "Armor" : 0
+                        },
+                        5 : { #Shining Nymph
+                            "Name" : ("Shining Nymph"),
+                            "Description" : "",
+                            "Health" : 30,
+                            "Damage" : 0,
+                            "Magic Damage" : 10,
+                            "Magic_Resistace" : 0,
+                            "Armor" : 0
+                        },
+                    },
+                },
+                2 : { # Spriggan
+                    "Spriggan" : {
+                        1 : {
+                            "Name" : ("Spriggan"),
+                            "Description" : "",
+                            "Health" : 75,
+                            "Damage" : 12,
+                            "Magic Damage" : 13,
+                            "Magic_Resistace" : 0,
+                            "Armor" : 0
+                        },
+                    },
+                },
+                3 : { # Dryad
+                        "Dryad" : {
+                            1 : {
+                                "Name" : ("Dryad"),
+                                "Description" : "",
+                                "Health" : 75,
+                                "Damage" : 5,
+                                "Magic Damage" : 20,
+                                "Magic_Resistace" : 0,
+                                "Armor" : 0
+                                },
+                            },
+                            2 : {
+                                "Name" : ("Oak Wood Dryad"),
+                                "Description" : "",
+                                "Health" : 75,
+                                "Damage" : 5,
+                                "Magic Damage" : 20,
+                                "Magic_Resistace" : 0,
+                                "Armor" : 0
+                            },
+                            3 : {
+                                "Name" : ("Birch Wood Dryad"),
+                                "Description" : "",
+                                "Health" : 75,
+                                "Damage" : 5,
+                                "Magic Damage" : 20,
+                                "Magic_Resistace" : 0,
+                                "Armor" : 0
+                            },
+                            4 : {
+                                "Name" : ("Baarker Wood Dryad"),
+                                "Description" : "",
+                                "Health" : 75,
+                                "Damage" : 5,
+                                "Magic Damage" : 20,
+                                "Magic_Resistace" : 0,
+                                "Armor" : 0
+                            },
+                            5 : {
+                                "Name" : ("Iron Wood Dryad"),
+                                "Description" : "",
+                                "Health" : 75,
+                                "Damage" : 5,
+                                "Magic Damage" : 20,
+                                "Magic_Resistace" : 0,
+                                "Armor" : 0
+                            },
+                            6 : {
+                                "Name" : ("Silver Wood Dryad"),
+                                "Description" : "",
+                                "Health" : 75,
+                                "Damage" : 5,
+                                "Magic Damage" : 20,
+                                "Magic_Resistace" : 0,
+                                "Armor" : 0
+                            },
+                            7 : {
+                                "Name" : ("Golden Wood Dryad"),
+                                "Description" : "",
+                                "Health" : 75,
+                                "Damage" : 5,
+                                "Magic Damage" : 20,
+                                "Magic_Resistace" : 0,
+                                "Armor" : 0
+                            },
+                            8 : {
+                                "Name" : ("Rose Wood Dryad"),
+                                "Description" : "",
+                                "Health" : 75,
+                                "Damage" : 5,
+                                "Magic Damage" : 20,
+                                "Magic_Resistace" : 0,
+                                "Armor" : 0
+                            },
+                            9 : {
+                                "Name" : ("Diamond Wood Dryad"),
+                                "Description" : "",
+                                "Health" : 75,
+                                "Damage" : 5,
+                                "Magic Damage" : 20,
+                                "Magic_Resistace" : 0,
+                                "Armor" : 0
+                            },
+                            10 : {
+                                "Name" : ("Dryad"),
+                                "Description" : "",
+                                "Health" : 75,
+                                "Damage" : 10,
+                                "Magic Damage" : 15,
+                                "Magic_Resistace" : 0,
+                                "Armor" : 0
+                            },
+                        },
+                4 : { # Forest Spirit
+                    "Forest Spirit" : {
+                        1 : { #Forest Sylph
+                                "Name" : ("Forest Sylph"),
+                                "Description" : "",
+                                "Health" : 5,
+                                "Damage" : 0,
+                                "Magic Damage" : 5,
+                                "Magic_Resistace" : 0,
+                                "Armor" : 0
+                                },
+                        2 : { #Forest Undine
+                            "Name" : ("Forest Undine"),
+                            "Description" : "",
+                            "Health" : 65,
+                            "Damage" : 5,
+                            "Magic Damage" : 10,
+                            "Magic_Resistace" : 0,
+                            "Armor" : 0
+                        },
+                    },
+                },
+                5 : { # Fairy
+                    "Fairy" : {
+                        1 : { #Fairy
+                            "Name" : ("Fairy"),
+                            "Description" : "",
+                            "Health" : 5,
+                            "Damage" : 0,
+                            "Magic Damage" : 5,
+                            "Magic_Resistace" : 0,
+                            "Armor" : 0
+                        },
+                    },
+                },
+                6 : { # Golem
+                    "Golem" : {
+                        1 : { #Rock Golem
+                            "Name" : ("Rock Golem"),
+                            "Description" : "",
+                            "Health" : 100,
+                            "Damage" : 10,
+                            "Magic Damage" : 25,
+                            "Magic_Resistace" : 0,
+                            "Armor" : 0
+                        },
+                        2 : { #Steam Golem
+                            "Name" : ("Steam Golem"),
+                            "Description" : "",
+                            "Health" : 100,
+                            "Damage" : 10,
+                            "Magic Damage" : 25,
+                            "Magic_Resistace" : 0,
+                            "Armor" : 0
+                        },
+                        3 : { #Crystal Golem
+                            "Name" : ("Crystal Golem"),
+                            "Description" : "",
+                            "Health" : 100,
+                            "Damage" : 10,
+                            "Magic Damage" : 25,
+                            "Magic_Resistace" : 0,
+                            "Armor" : 0
+                        },
+                    },
+                },
+            },
+        },
+        4 : { #Monters
+            1 : { #Frohst
+                "Name" : ("Frohst"),
+                "Description" : "",
+                "Health" : 90,
+                "Damage" : 0,
+                "Magic Damage" : 3,
+                "Magic_Resistace" : 0,
+                "Armor" : 0
+            },
+            2 : { #Mimic
+                "Name" : ("Mimic"),
+                "Description" : "",
+                "Health" : 50,
+                "Damage" : 20,
+                "Magic Damage" : 0,
+                "Magic_Resistace" : 0,
+                "Armor" : 0
+            },
+            3 : { #Orge
+                "Name" : ("Orge"),
+                "Description" : "",
+                "Health" : 60,
+                "Damage" : 20,
+                "Magic Damage" : 0,
+                "Magic_Resistace" : 0,
+                "Armor" : 0
+            },
+            4 : { #Giant
+                "Name" : ("Giant"),
+                "Description" : "",
+                "Health" : 65,
+                "Damage" : 20,
+                "Magic Damage" : 0,
+                "Magic_Resistace" : 0,
+                "Armor" : 0
+            },
+            5 : { #Goblin
+                "Name" : ("Goblin"),
+                "Description" : "",
+                "Health" : 10,
+                "Damage" : 5,
+                "Magic Damage" : 0,
+                "Magic_Resistace" : 0,
+                "Armor" : 0
+            },
+            6 : { #Kobold
+                "Kobold" : {
+                    1 : { #Kobolds
+                        "Name" : ("Kobolds"),
+                        "Description" : "",
+                        "Health" : 10,
+                        "Damage" : 4,
+                        "Magic Damage" : 1,
+                        "Magic_Resistace" : 0,
+                        "Armor" : 0
+                    },
+                    2 : { #Kobold Knight
+                        "Name" : ("Kobold Knight"),
+                        "Description" : "",
+                        "Health" : 40,
+                        "Damage" : 10,
+                        "Magic Damage" : 5,
+                        "Magic_Resistace" : 0,
+                        "Armor" : 0
+                    }
+                },
+            },
+        },
+    },#<--End of Land Creatures/Monsters
 }#END
-
-
-#print(enemies["type"]["Spider"]["1"]["Location Type"][0])
-
-#print(enemies)
-
-example = { #named/numbered
-    "Name" : (""),
-    "Description" : "",
-    "Health" : 15,
-    "Damage" : 10,
-    "Magic Damage" : 15,
-    "Magic Resistance" : 0,
-    "Armor" : 0
-    }

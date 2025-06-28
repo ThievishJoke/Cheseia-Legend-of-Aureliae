@@ -19,7 +19,7 @@ class Player:
         self.armor = species.base_armor + player_class.bonus_armor
         self.magic_resist = species.base_magic_resist + player_class.bonus_magic_resist
         self.dmg = species.base_dmg + player_class.bonus_dmg
-        self.movement = species.base_movement + player_class.bonus_movement
+        self.speed = species.base_speed + player_class.bonus_speed
         self.passive_abilities = species.passive_abilities + player_class.passive_abilities
         self.is_alive = True  # Assuming the player is alive at the start
         
@@ -88,5 +88,31 @@ class Player:
     def regenerate_mana(self, amount):
         # Regenerate mana but do not exceed max mana
         self.mana = min(self.mana + amount, self.max_mana)
+
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "species": self.species.name,
+            "affinity": self.affinity,
+            "gender": self.gender,
+            "inventory": [weapon.to_dict() for weapon in self.inventory],
+            "player_class": self.player_class.name,  # Or use .to_dict() if it's an object
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        species = Species.from_dict(data["species"])
+        weapons = [weapons.from_dict(w) for w in data["inventory"]]
+        player_class = get_player_class(data["player_class"])
+        
+        return cls(
+            species,
+            data["name"],
+            data["position"],
+            data["affinity"],
+            data["gender"],
+            weapons,
+            player_class
+        )
 
 print("Successfully Imported Player")

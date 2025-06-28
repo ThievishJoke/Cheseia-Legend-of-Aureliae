@@ -1,11 +1,9 @@
 from rarity.rarities import Rarity
 
-# Base Material class (unchanged)
 class Material:
     def __init__(self, name):
         self.name = name
 
-# RawMaterial class (with rarity integration)
 class RawMaterial:
     def __init__(self, material, rarity_name, affinity, mining_lvl=1, bonus_percent=0, description=None):
         self.material = material
@@ -25,7 +23,6 @@ class RawMaterial:
                 f"Affinity: {self.affinity}, Mining Level: {self.mining_lvl}, "
                 f"Bonus: {self.bonus_percent}%)\nDescription: {self.description}")
 
-# RefinedMaterial class (with rarity integration)
 class RefinedMaterial:
     def __init__(self, material, rarity_name, affinity, refining_level=1, bonus_percent=0, description=None):
         self.material = material

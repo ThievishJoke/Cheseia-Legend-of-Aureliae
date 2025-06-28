@@ -32,10 +32,10 @@ class Combat:
         elif action == "defend":
             print("You brace yourself for the next attack, reducing damage!")
             # Assuming physical_resistance is a temporary buff for the round:
-            original_resistance = self.player.physical_resistance
-            self.player.physical_resistance += 0.1  # Temporary increase in resistance for this round
-            self.player.physical_resistance = max(0, self.player.physical_resistance)  # Ensure it's not negative
-            print(f"Your defense is increased by 0.1! Current resistance: {self.player.physical_resistance}")
+            original_resistance = self.player.armor
+            self.player.armor += 0.1  # Temporary increase in resistance for this round
+            self.player.armor = max(0, self.player.armor)  # Ensure it's not negative
+            print(f"Your defense is increased by 0.1! Current resistance: {self.player.armor}")
 
         elif action == "use item":
             if self.player.inventory:

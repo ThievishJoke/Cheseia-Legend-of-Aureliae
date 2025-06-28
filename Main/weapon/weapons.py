@@ -31,6 +31,24 @@ class Weapon:
                 f"Range: {self.range}, Weight: {self.weight}, Mana Bonus: {self.mana_bonus}\n"
                 f"Skill Requirement: {self.skill_requirement}, Craftable: {self.craftable}\n"
                 f"Perks: {perks_str}")
+    
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "material": self.material.name if self.material else None,
+            "weapon_range": self.range,
+            "weapon_type": self.weapon_type,
+            "affinity": self.affinity,
+            "damage_type": self.damage_type,
+            "is_two_handed": self.is_two_handed,
+            "damage_amount": self.damage_amount,
+            "weight": self.weight,
+            "mana_bonus": self.mana_bonus,
+            "skill_requirement": self.skill_requirement,
+            "perks": [perk.name for perk in self.perks] if self.perks else [],
+            "rarity_name": self.rarity.name if self.rarity else None,
+            "craftable": self.craftable
+        }
 
 class WeaponRegistry:
     _weapons = {}

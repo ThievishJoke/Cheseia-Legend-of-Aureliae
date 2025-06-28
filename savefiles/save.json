@@ -1,62 +1,44 @@
 {
-  "PlayerName": "Florai",
-  "Titles": "",
-  "Gender": "Female",
-  "Class": "Healer",
-  "Region": "Puregarde",
-  "Location": "Loch Cudgami",
-  "Cord": [
-    -2,
-    10
-  ],
-  "Elemental Affinity": "Soul",
-  "Max Hp": 25,
-  "Hp": 25,
-  "Bonus Physical Critical Hit Rate": 0,
-  "Bonus Magic Critical Hit Rate": 0,
-  "Dmg": 5,
-  "Stamina": 80,
-  "Magic Dmg": 4,
-  "Mana": 160,
-  "Spell Mana": 160,
-  "Magic Resistance": 0,
-  "Armor": 0,
-  "Player Xp": 0,
-  "Current Lvl": 1,
-  "Xp Needed": 120,
-  "Total Xp": 0,
-  "Perk Points": 0,
-  "Aureliaen Gold Coins": 50,
-  "Gem Count": 0,
-  "Elemental Gem": 0,
-  "Potion Count": 0,
-  "Passive Abilities": {},
-  "Current Weapon": {
-    "Name": "Wood Stick",
-    "Dmg": 5,
-    "Material Type": {
-      "Discription": "Wood is a strong and sturdy natural material, rots quickly"
-    },
-    "Weapon Xp": 0,
-    "Weapon Lvl": 0,
-    "Weapon Next Lvl": 202,
-    "Rarity": {
-      "Dmg Bonus": 0,
-      "legendary_bonus": 1,
-      "legendary_bonus_mult": 1
-    },
-    "Tooltip": "A pretty pathetic wood stick, 'should probably find something better' ",
-    "Single Handed": 1,
-    "Two Handed": 0,
-    "Is Enchanted": 0,
-    "Enhanced Count": 0,
-    "Enhancements capped": 1,
-    "Max Enhancements": 15
+  "name": "Hana",
+  "species": {
+    "name": "Human",
+    "base_health": 100,
+    "base_max_health": 200,
+    "base_mana": 50,
+    "base_max_mana": 100,
+    "base_magic_dmg": 20,
+    "base_magic_resist": 0,
+    "base_armor": 0,
+    "passive_abilities": [
+      "resilient",
+      "quick"
+    ],
+    "base_dmg": 15,
+    "base_speed": 10
   },
-  "Inventory": {
-    "Weapons": "",
-    "Materials": "",
-    "Collectables": "",
-    "Key Items": ""
-  }
+  "position": [
+    0,
+    0
+  ],
+  "affinity": "Aqua",
+  "gender": "Male",
+  "inventory": [
+    {
+      "name": "Iron Long Sword",
+      "material": "Refined Iron",
+      "weapon_range": 1,
+      "weapon_type": "Sword",
+      "affinity": null,
+      "damage_type": "Slashing",
+      "is_two_handed": false,
+      "damage_amount": 25,
+      "weight": 10,
+      "mana_bonus": 0,
+      "skill_requirement": 5,
+      "perks": [],
+      "rarity_name": "common",
+      "craftable": true
+    }
+  ],
+  "player_class": "Bard"
 }
