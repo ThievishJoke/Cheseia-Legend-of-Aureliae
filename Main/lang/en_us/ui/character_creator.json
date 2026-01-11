@@ -1,0 +1,37 @@
+{
+  "character_creator.insert_name": "Insert a name",
+  "character_creator.ask_sir_name": "Do you want a Sir Name? Yes |1| | No |0|",
+  "character_creator.insert_sir_name": "Insert a Sir Name",
+
+  "character_creator.available_species": "Specie:",
+  "character_creator.choose_species": "Choose a species",
+  "character_creator.invalid_species": "Invalid species chosen.",
+
+  "character_creator.available_genders": "Genders:",
+  "character_creator.choose_gender": "Pick a Gender",
+  "character_creator.choose_valid_gender": "Please choose a valid gender: Male | Female | Other",
+
+  "character_creator.available_elements": "Affinities:",
+  "character_creator.choose_element": "Pick an affinity",
+  "character_creator.choose_valid_element": "Please choose a valid afinity",
+
+  "character_creator.available_classes": "Classes",
+  "character_creator.choose_class": "Pick a Class",
+  "character_creator.invalid_element": "Please choose a valid class",
+
+  "character_creator.player_created_summary": "Player {name} created with the following details: ",
+  "character_creator.species": "Species: {species}",
+  "character_creator.class_name": "Class: {class_name}",
+  "character_creator.affinity": "Affinity: {affinity}",
+  "character_creator.health": "Health: {health}",
+  "character_creator.max_health": "Max Health: {max_health}",
+  "character_creator.mana": "Mana: {mana}",
+  "character_creator.max_mana": "Max Mana: {max_mana}",
+  "character_creator.armor": "Armor: {armor}",
+  "character_creator.magic_resist": "Magic Resist: {magic_resist}",
+  "character_creator.speed": "Speed: {speed}",
+
+  "character_creator.confirm_choice": "Are you sure?",
+  "character_creator.return": "Return",
+  "character_creator.confirm_final_character": "Confirm Character"
+}

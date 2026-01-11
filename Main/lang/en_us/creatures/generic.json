@@ -1,0 +1,16 @@
+{
+  "generic.gender.female": "Female",
+  "generic.gender.male": "Male",
+  "generic.gender.other": "Other",
+  "generic.affinity.fire": "Fire",
+  "generic.affinity.aqua": "Aqua",
+  "generic.affinity.earth": "Earth",
+  "generic.affinity.air": "Air",
+  "generic.affinity.lightning": "Lightning",
+  "generic.affinity.light": "Light",
+  "generic.affinity.dark": "Dark",
+  "generic.affinity.eclipse": "Eclipse",
+  "generic.affinity.lunar": "Lunar",
+  "generic.affinity.soul": "Soul",
+  "generic.affinity.blood": "Blood"
+}

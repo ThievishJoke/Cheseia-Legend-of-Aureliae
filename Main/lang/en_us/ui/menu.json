@@ -1,0 +1,14 @@
+{
+    "menu.start.new_game": "New Game",
+    "menu.start.continue": "Continue",
+    "menu.start.quit": "Quit",
+    "menu.start.select_save": "Select Save: ",
+    "menu.start.cancel_option": "Cancel",
+    "menu.start.backing_out": "Returning To Main Menu",
+    "menu.start.quit_message": "Closing Game",
+    "menu.start.loading_save": "Loading",
+    "menu.start.using_empty_slot": "Creating New Save: ",
+    "menu.start.save_created": "New Save Created: ",
+    "menu.start.confirm_overwrite": "Overite A Save? ",
+    "menu.start.save_slot_display": "{name} (Level {level}) ({gender}) (Species: {species}) (Affinity: {affinity}) (Class: {player_class})"
+}

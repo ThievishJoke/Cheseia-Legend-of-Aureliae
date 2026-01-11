@@ -1,0 +1,25 @@
+{
+  "classes.warrior.name": "Krieger",
+  "classes.warrior.description": "Ein starker Kämpfer, spezialisiert auf Nahkampf.",
+
+  "classes.fighter.name": "Kämpfer",
+  "classes.fighter.description": "Ein vielseitiger Krieger mit ausgewogenen Offensiv- und Defensivfähigkeiten.",
+
+  "classes.mage.name": "Magier",
+  "classes.mage.description": "Ein Zauberwirker, der mächtige magische Angriffe einsetzt.",
+
+  "classes.bard.name": "Barde",
+  "classes.bard.description": "Eine Unterstützerklasse, die Musik und Magie einsetzt, um Verbündete zu unterstützen.",
+
+  "classes.thief.name": "Dieb",
+  "classes.thief.description": "Ein flinker Schurke, der sich durch Tarnung und schnelle Angriffe auszeichnet.",
+
+  "classes.paladin.name": "Paladin",
+  "classes.paladin.description": "Ein heiliger Krieger mit Heil- und Verteidigungsfähigkeiten.",
+
+  "classes.healer.name": "Heiler",
+  "classes.healer.description": "Ein unterstützender Zauberwirker, der sich auf Heilung und Stärkungszauber konzentriert.",
+  
+  "classes.ranger.name": "Waldläufer",
+  "classes.ranger.description": "Ein Fernkämpfer, der im Umgang mit Bögen und Naturmagie geübt ist."
+}

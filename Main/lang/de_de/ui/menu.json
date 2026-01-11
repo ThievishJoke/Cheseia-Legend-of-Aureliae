@@ -1,0 +1,11 @@
+{
+    "menu.start.new_game": "Neues Spiel",
+    "menu.start.continue": "Fortsetzen",
+    "menu.start.quit": "Beenden",
+    "menu.start.select_save": "Spielstand auswählen: ",
+    "menu.start.cancel_option": "Abbrechen",
+    "menu.start.backing_out": "Zurück zum Hauptmenü",
+    "menu.start.quit_message": "Spiel wird beendet",
+    "menu.start.loading_save": "Wird geladen",
+    "menu.start.save_slot_display": "{name} (Level {level}) ({gender}) (Spezies: {species}) (Affinität: {affinity}) (Klasse: {player_class})"
+}

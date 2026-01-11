@@ -1,0 +1,14 @@
+{
+  "guard.Guard_Darel.name": "Wachmann Darel: ",
+  "guard.Guard_Darel.greeting": {
+    "Male": "Seid gegrüßt, Sir!",
+    "Female": "Seid gegrüßt, Ma'am!",
+    "Other": "Seid gegrüßt!"
+  },
+  "guard.Guard_Darel.quip1": {
+    "Male": "Ich war früher auch ein Abenteurer wie du, junger Mann. Dann habe ich einen Feuerball auf die Schulter bekommen.",
+    "Female": "Ich war früher auch eine Abenteurerin wie du, junge Frau. Dann habe ich einen Feuerball auf die Schulter bekommen.",
+    "Other": "Ich war früher auch ein Abenteurer wie du. Dann habe ich einen Feuerball auf die Schulter bekommen."
+  },
+  "guard.Guard_Darel.farewell": "Sei vorsichtig da draußen, Abenteurer. Man weiß nie, was diese Magier so treiben..."
+}

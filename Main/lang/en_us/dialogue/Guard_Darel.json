@@ -1,0 +1,14 @@
+{
+  "guard.Guard_Darel.name": "Guard Darel: ",
+  "guard.Guard_Darel.greeting": {
+    "Male":   "Greetings, Sir!",
+    "Female": "Greetings, Ma'am!",
+    "Other":  "Greetings!."
+  },
+  "guard.Guard_Darel.quip1": {
+    "Male":   "I Used To Be An Adventurer Like You Lad. Then I Took A Fireball To The Shoulder",
+    "Female": "I Used To Be An Adventurer Like You Lass. Then I Took A Fireball To The Shoulder",
+    "Other":  "I Used To Be An Adventurer Like You. Then I Took A Fireball To The Shoulder"
+  },
+  "guard.Guard_Darel.farewell": "Careful Out There Adventurer, Never Know With Those Mages About..."
+}

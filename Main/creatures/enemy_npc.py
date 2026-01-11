@@ -1,9 +1,25 @@
+from copy import deepcopy
+import random
+from language.localization import translate
 class Enemy:
-    def __init__(self, name, max_health, health, max_mana, mana, 
-                 affinity,
-                 attack_power, physical_resistance, magical_resistance, 
-                 weapons=None, inventory=None,
-                 xp_reward=0, description=None):
+    def __init__(self, 
+                 id: str,
+                 name: str, 
+                 max_health: int,  
+                 health: int,  
+                 max_mana: int,  
+                 mana: int,  
+                 affinity: str, 
+                 attack_power: int,  
+                 physical_resistance: int, 
+                 magical_resistance: int, 
+                 weapons=None,
+                 inventory=None,
+                 xp_reward=0, 
+                 description=None,
+                 base_level=1,
+                 loot_table=None):
+        self.id = id.lower()
         self.name = name
         self.max_health = max_health
         self.health = health
@@ -17,6 +33,13 @@ class Enemy:
         self.inventory = inventory if inventory else []  # List of Item objects (default empty)
         self.xp_reward = xp_reward
         self.description = description
+        self.base_level = base_level
+        self.loot_table = loot_table if loot_table else []  # List of Loot objects (default empty)
+
+    def __str__(self):
+        return f"{self.name} (HP: {self.health}/{self.max_health}, MP: {self.mana}/{self.max_mana})"
+
+    __repr__ = __str__  
 
     @property
     def is_alive(self):
@@ -24,23 +47,24 @@ class Enemy:
         return self.health > 0
 
     def attack(self, player, weapon=None):
-        """Handles the enemy's attack."""
+        base_damage = self.attack_power
         if weapon:
-            damage = self.attack_power + weapon.damage_amount
+            base_damage += weapon.damage_amount
             if weapon.damage_type == "magic":
-                damage += self.base_magic_dmg  # If the weapon is magic, apply magic damage
-        else:
-            damage = self.attack_power  # Just use the attack power for regular attacks
-        
-        # Apply the player's resistance (magic vs physical)
+                base_damage += getattr(self, "base_magic_dmg", 0)
+
+        # --- Damage variance
+        variance = random.uniform(0.75, 1.15)
+        damage = int(base_damage * variance)
+
+        # --- Apply player's resistance
         if weapon and weapon.damage_type == "magic":
-            damage = max(damage - player.magic_resist, 0)
+            damage_amount = max(damage - player.magic_resist, 0)
         else:
-            damage = max(damage - player.armor, 0)
-        
-        # Deal damage to the player
-        player.take_damage(damage)
-        return damage
+            damage_amount = max(damage - player.armor, 0)
+      
+        player.take_damage(damage_amount)
+        return damage_amount
 
     def take_damage(self, damage):
         if isinstance(damage, str):  # Check for potential string input
@@ -51,26 +75,186 @@ class Enemy:
                 self.health = 0
             print(f"{self.name} took {damage} damage. Health: {self.health}/{self.max_health}")
 
-class EnemyRegistry:
-    _enemies = {}
+    def roll_loot(self):
+        """
+        Returns a list of items dropped by this enemy based on their loot table.
+        Could support multiple drops with probability.
+        """
+        dropped = []
+        for item, weight in self.loot_table:
+            if random.random() < weight:
+                dropped.append(item)
+        return dropped
+
+class EnemySpecies:
+    """Defines a base enemy species"""
+
+    _species_registry: dict[str, "EnemySpecies"] = {}
+
+    def __init__(
+        self,
+        id: str,
+        name: str,
+        base_stats: dict,
+        name_key: str | None = None,
+        description_key: str | None = None,
+    ):
+        self.id = id.lower()
+        self._name = name
+        self.name_key = name_key
+        self.description_key = description_key
+        self.base_stats = base_stats
+
+        if self.id in EnemySpecies._species_registry:
+            raise ValueError(f"Species ID '{self.id}' already registered!")
+
+        EnemySpecies._species_registry[self.id] = self
+
+    # ---- Display / translation layer ----
+
+    def display_name(self) -> str:
+        """
+        Returns the translated display name.
+        Hook this into your localization system later.
+        """
+        if self.name_key:
+            return translate(self.name_key)  # your i18n hook
+        return self._name
+    
+    def display_description(self) -> str:
+        if self.description_key:
+            return translate(self.description_key)
+        return self.base_stats.get("description", "")
+
+    # ---- Registry lookups ----
 
     @classmethod
-    def register_enemy(cls, enemy):
+    def get_species(cls, species_id: str) -> "EnemySpecies | None":
+        return cls._species_registry.get(species_id.lower())
+
+    @classmethod
+    def get_species_by_display_name(cls, display_name: str) -> "EnemySpecies | None":
+        display_name_lower = display_name.lower()
+        for species in cls._species_registry.values():
+            if species.display_name().lower() == display_name_lower:
+                return species
+        return None
+
+    @classmethod
+    def normalize_species(cls, value: str) -> str:
+        """
+        Normalize arbitrary input into a canonical species ID.
+        Accepts ID or display name.
+        """
+        value = value.lower()
+
+        # Already an ID
+        if value in cls._species_registry:
+            return value
+
+        # Try display name
+        species = cls.get_species_by_display_name(value)
+        if species:
+            return species.id
+
+        raise ValueError(f"Unknown enemy species: {value}")
+
+    @classmethod
+    def list_species(cls) -> list[str]:
+        return list(cls._species_registry.keys())
+    
+class EnemyType:
+    """Defines a subtype of an EnemySpecies (like 'green slime')."""
+
+    _type_registry: dict[str, "EnemyType"] = {}
+
+    def __init__(
+        self,
+        id: str,
+        species: str,
+        name: str,
+        overrides: dict | None = None,
+        name_key: str | None = None,
+        description_key: str | None = None,
+    ):
+        species_id = EnemySpecies.normalize_species(species)
+        species_obj = EnemySpecies.get_species(species_id)
+
+        self.id = id.lower()
+        self.name = name
+        self.name_key = name_key
+        self.description_key = description_key
+        self.species_id = species_id
+        self.species = species_obj
+
+        self.stats = deepcopy(species_obj.base_stats)
+        if overrides:
+            self.stats.update(overrides)
+
+        if self.id in EnemyType._type_registry:
+            raise ValueError(f"EnemyType ID '{self.id}' already registered!")
+
+        EnemyType._type_registry[self.id] = self
+
+    def create_enemy(self, display_name=None):
+        final_name = display_name or f"{self.name} {self.species.display_name()}"
+
+        return Enemy(
+            id=final_name.lower(),
+            name=final_name,
+            **self.stats
+        )
+    
+    def display_name(self) -> str:
+        if self.name_key:
+            return translate(self.name_key)
+        return f"{self.name} {self.species.display_name()}"
+
+    def display_description(self) -> str:
+        if self.description_key:
+            return translate(self.description_key)
+        return self.stats.get("description", "")
+
+    def create_enemy(self, display_name=None):
+        final_name = display_name or self.display_name()
+
+        return Enemy(
+            id=self.id,
+            name=final_name,
+            **self.stats
+        )
+
+    @classmethod
+    def get_type(cls, type_id: str) -> "EnemyType | None":
+        return cls._type_registry.get(type_id.lower())
+
+    @classmethod
+    def list_types(cls) -> list[str]:
+        return list(cls._type_registry.keys())
+
+class EnemyRegistry:
+    _enemies: dict[str, Enemy] = {}
+
+    @classmethod
+    def register_enemy(cls, enemy: Enemy):
         """
         Registers an enemy in the registry.
         """
-        if enemy.name in cls._enemies:
-            raise ValueError(f"Enemy '{enemy.name}' is already registered!")
-        cls._enemies[enemy.name] = enemy
+        if enemy.id in cls._enemies:
+            raise ValueError(f"Enemy ID '{enemy.id}' is already registered!")
+        cls._enemies[enemy.id] = enemy
 
     @classmethod
-    def get_enemy(cls, name):
+    def get_enemy(cls, enemy_type_id: str):
         """
         Retrieves an enemy by name.
         Returns None if the enemy is not found.
         """
-        return cls._enemies.get(name)
-
+        enemy_type = EnemyType.get_type(enemy_type_id)
+        if enemy_type is None:
+            return None
+        return enemy_type.create_enemy()
+    
     @classmethod
     def is_enemy_registered(cls, name):
         """
@@ -95,277 +279,120 @@ class EnemyRegistry:
             raise KeyError(f"Enemy '{name}' is not registered!")
         del cls._enemies[name]
 
-def create_enemy(specie, type_name, overrides=None):
-    """Create and register an enemy with optional overrides."""
-    base_stats = {
-        "max_health": 65,
-        "health": 65,
-        "max_mana": 0,
-        "mana": 0,
-        "affinity": "",
-        "attack_power": 20,
-        "physical_resistance": 0,
-        "magical_resistance": 0,
-        "weapons": [],
-        "inventory": [],
-        "xp_reward": 50,
-        "description": f"A {specie.lower()} {type_name.lower()} prowling the lands.",
-    }
-    # Apply overrides if provided
-    if overrides:
-        base_stats.update(overrides)
+def create_enemy(specie, type_name, overrides=None, display_name=None):
+    """
+    Create and register an enemy with optional overrides, base level, and loot table.
 
-    # Create and register the enemy
-    enemy = Enemy(name=f"{specie} {type_name}", **base_stats)
+    Example usage:
+    >>> enemy1 = create_enemy("Slime", "Green Slime", overrides={"max_health": 70, "health": 70})
+    >>> enemy2 = create_enemy(
+    ...     "Spider",
+    ...     "Venom Arachnid",
+    ...     display_name="Venomous Arachnid",
+    ...     overrides={"base_level": 5, "loot_table": [(health_potion, 0.5)]}
+    ... )
+    """
+
+    # Normalize species (accepts ID or display name)
+    species_id = EnemySpecies.normalize_species(specie)
+
+    # Prepare normalized type_name for matching
+    type_name_norm = type_name.replace("_", " ").strip().lower()
+
+    # Find matching EnemyType by species + name
+    enemy_type = None
+    for et in EnemyType._type_registry.values():
+        if et.species_id != species_id:
+            continue
+
+        full_name_norm = f"{et.name} {et.species.display_name()}".replace("_", " ").strip().lower()
+
+        if et.name.lower() == type_name_norm or full_name_norm == type_name_norm:
+            enemy_type = et
+            break
+
+    if not enemy_type:
+        raise ValueError(f"EnemyType '{type_name}' not found for species '{specie}'")
+
+    # Create enemy from type
+    enemy = enemy_type.create_enemy(display_name=display_name)
+
+    # Apply per-instance overrides (do NOT mutate the type)
+    if overrides:
+        for key, value in overrides.items():
+            if not hasattr(enemy, key):
+                raise AttributeError(f"Enemy has no attribute '{key}'")
+            setattr(enemy, key, value)
+
+    # Register and return
     EnemyRegistry.register_enemy(enemy)
     return enemy
 
-green_slime = Enemy(
-    name="Green Slime",
-    max_health=10,
-    health=10,
-    max_mana=0,
-    mana=0,
-    affinity="Water",
-    attack_power=5,
-    physical_resistance=0,
-    magical_resistance=0,
-    weapons=[],
-    inventory=[],
-    xp_reward=50,
-    description="A small green blob of living goo"
-)
-red_slime = Enemy(
-    name="Red Slime",
-    max_health=15,
-    health=15,
-    max_mana=0,
-    mana=0,
-    affinity="Water",
-    attack_power=7,
-    physical_resistance=0,
-    magical_resistance=0,
-    weapons=[],
-    inventory=[],
-    xp_reward=50,
-    description="A small red blob of living goo"
-)
-widower_arachnid = Enemy(
-    name="Widower Arachnid",
-    max_health=15,
-    health=15,
-    max_mana=0,
-    mana=0,
-    affinity="Soul",
-    attack_power=10,
-    physical_resistance=0,
-    magical_resistance=0,
-    weapons=[],
-    inventory=[],
-    xp_reward=50,
-    description=""
-)
-giant_spider = Enemy(
-    name="Giant Spider",
-    max_health=20,
-    health=20,
-    max_mana=0,
-    mana=0,
-    affinity="",
-    attack_power=12,
-    physical_resistance=0,
-    magical_resistance=0,
-    weapons=[],
-    inventory=[],
-    xp_reward=50,
-    description=""
-)
-death_widow = Enemy(
-    name="Death Widow",
-    max_health=20,
-    health=20,
-    max_mana=0,
-    mana=0,
-    affinity="",
-    attack_power=15,
-    physical_resistance=0,
-    magical_resistance=0,
-    weapons=[],
-    inventory=[],
-    xp_reward=50,
-    description=""
-)
-moth_spiderling = Enemy(
-    name="Moth Spiderling",
-    max_health=20,
-    health=20,
-    max_mana=0,
-    mana=0,
-    affinity="Water",
-    attack_power=15,
-    physical_resistance=0,
-    magical_resistance=0,
-    weapons=[],
-    inventory=[],
-    xp_reward=50,
-    description=""
-)
-crimson_brood = Enemy(
-    name="Crimson Brood",
-    max_health=25,
-    health=25,
-    max_mana=0,
-    mana=0,
-    affinity="",
-    attack_power=30,
-    physical_resistance=0,
-    magical_resistance=0,
-    weapons=[],
-    inventory=[],
-    xp_reward=50,
-    description=""
-)
-wolf_spider = Enemy(
-    name="Wolf Spider",
-    max_health=20,
-    health=20,
-    max_mana=0,
-    mana=0,
-    affinity="",
-    attack_power=17,
-    physical_resistance=0,
-    magical_resistance=0,
-    weapons=[],
-    inventory=[],
-    xp_reward=50,
-    description=""
-)
-frostbite_spider = Enemy(
-    name="Frostbite Spider",
-    max_health=30,
-    health=30,
-    max_mana=0,
-    mana=0,
-    affinity="Aqua",
-    attack_power=25,
-    physical_resistance=0,
-    magical_resistance=0,
-    weapons=[],
-    inventory=[],
-    xp_reward=50,
-    description=""
-)
+              
+#aList = ["Snake", "Spider", "Mouse", "Walking Corpse", "Skeleton", "Ghoul", 
+#         "Banshee", "Ghost", "Soul", "Wolf", "Jackel", "Dahrk Hound"]
+#enem_sub_types = ["Pirate Deckhand", "Pirate Gunslinger", "Pirate First Mate", "Pirate Quartermaster", 
+#                  "Pirate Powder Monkey", "Pirate Captian", "Pirate Grunt", "Bandit Chief",
+#                  "Cultist Grunt", "Cultist Wizard", "Cultist Priest", "Cultist Grand Wizard", 
+#                  "Arch Demon", "Blood Demon", "Succubi Demon",
+#                  "Incubi Demon", "Beserking Ghoul", "Revenant", "Forest Banshee", "Ghrotto Banshee", 
+#                  "Fortress Banshee", "Ghost Shade", "Ghost Shadow", "Ghost Wisp", "Fire Soul", "Aqua Soul",
+#                  "Earth Soul", "Air Soul", "Lightning Soul", "Light Soul", "Brown Wolf", "Snow Wolf", "Gray Wolf", 
+#                  "Dire Wolf", ]
 
-weakend_drider = Enemy(
-    name="Weakend Drider",
-    max_health=25,
-    health=25,
-    max_mana=0,
-    mana=0,
-    affinity="",
-    attack_power=15,
-    physical_resistance=0,
-    magical_resistance=0,
-    weapons=[],
-    inventory=[],
-    xp_reward=50,
-    description=""
-)
-vigored_drider= Enemy(
-    name="Vidgored Drider",
-    max_health=50,
-    health=50,
-    max_mana=0,
-    mana=0,
-    affinity="",
-    attack_power=20,
-    physical_resistance=0,
-    magical_resistance=0,
-    weapons=[],
-    inventory=[],
-    xp_reward=50,
-    description=""
-)
-tenacious_drider = Enemy(
-    name="Solid Drider",
-    max_health=75,
-    health=75,
-    max_mana=0,
-    mana=0,
-    affinity="Earth",
-    attack_power=30,
-    physical_resistance=0,
-    magical_resistance=0,
-    weapons=[],
-    inventory=[],
-    xp_reward=50,
-    description=""
-)
-drider_princess = Enemy(
-    name="Drider Princess",
-    max_health=85,
-    health=85,
-    max_mana=0,
-    mana=0,
-    affinity="",
-    attack_power=7,
-    physical_resistance=0,
-    magical_resistance=0,
-    weapons=[],
-    inventory=[],
-    xp_reward=50,
-    description=""
-)
-drider_queen = Enemy(
-    name="Drider Queen",
-    max_health=100,
-    health=100,
-    max_mana=0,
-    mana=0,
-    affinity="",
-    attack_power=65,
-    physical_resistance=0,
-    magical_resistance=0,
-    weapons=[],
-    inventory=[],
-    xp_reward=50,
-    description=""
-)
+enemy_type_overrides = {
+    "pickpocket": {"max_health": 70, "health": 70},
+    "prowler": {"max_health": 70, "health": 70},
+    "myrmidon": {"max_health": 70, "health": 70},
+    "assassin": {"max_health": 70, "health": 70},
+    "warrior": {"max_health": 70, "health": 70},
+    "bandit": {"max_health": 70, "health": 70},
+    "bandit_chief": {"max_health": 85, "health": 85},
+}
 
-species = ["Human", "Drider", "Kitsune", "Demon", "Cambion", "Demon Halfling", "Lamia", "Changeling"]
-enem_types = ["Pickpocket", "Prowler", 
-              "Myrmidon", "Assassin", "Warrior", "Bandit", "Bandit Chief"]
+def register_species_archetypes(species_id: str, base_stats: dict, name_prefix=None):
+    """
+    Generic helper to register a species and all its archetypes.
+    
+    Args:
+        species_id: ID for the species (e.g., "human", "drider")
+        base_stats: dict of base stats for the species
+        name_prefix: Optional display name prefix for archetypes
+    Returns:
+        list of instantiated Enemy objects
+    """
+    from creatures.enemy_npc import EnemySpecies, EnemyType, EnemyRegistry, enemy_type_overrides
 
-'''for specie in species:
-    for enem_type in enem_types:
-        if enem_type == "Warrior":
-            create_enemy(specie, enem_type, overrides={"max_health": 70, "health": 70})
-        if enem_type == "Bandit":
-            create_enemy(specie, enem_type, overrides={"max_health": 70, "health": 70})
-        if enem_type == "Bandit Chief":
-            create_enemy(specie, enem_type, overrides={"max_health": 85, "health": 85})
-        else:
-            create_enemy(specie, enem_type)'''
+    name_prefix = name_prefix or species_id.replace("_", " ").title()
+    
+    # species
+    species_obj = EnemySpecies(
+        id=species_id,
+        name=name_prefix,
+        base_stats=base_stats,
+        name_key=f"creatures.species.{species_id}.name",
+        description_key=f"creatures.species.{species_id}.description"
+    )
 
-for specie in species:
-    for enem_type in enem_types:
-        if enem_type == "Pickpocket":
-            create_enemy(specie, "Pickpocket", overrides={"max_health": 70, "health": 70})
-        if enem_type == "Prowler":
-            create_enemy(specie, "Prowler", overrides={"max_health": 70, "health": 70})
-        if enem_type == "Myrmidon":
-            create_enemy(specie, "Myrmidon", overrides={"max_health": 70, "health": 70})
-        if enem_type == "Assassin":
-            create_enemy(specie, "Assassin", overrides={"max_health": 70, "health": 70})
-        if enem_type == "Warrior":
-            create_enemy(specie, enem_type, overrides={"max_health": 70, "health": 70})
-        if enem_type == "Bandit":
-            create_enemy(specie, enem_type, overrides={"max_health": 70, "health": 70})
-        if enem_type == "Bandit Chief":
-            create_enemy(specie, enem_type, overrides={"max_health": 85, "health": 85})
+    # archetypes
+    registered_enemies = []
+    for archetype_name, overrides in enemy_type_overrides.items():
+        type_id = f"{species_id}_{archetype_name}"
 
-EnemyRegistry.register_enemy(green_slime)
-EnemyRegistry.register_enemy(red_slime)
+        # Create EnemyType
+        EnemyType(
+            id=type_id,
+            species=species_id,
+            name=archetype_name.replace("_", " ").title(),
+            overrides=overrides
+        )
+
+        # Instantiate the enemy and register it
+        enemy_instance = EnemyType.get_type(type_id).create_enemy()
+        EnemyRegistry.register_enemy(enemy_instance)
+        registered_enemies.append(enemy_instance)
+
+    return registered_enemies
 
 print("Successfully Imported Enemies")
 
@@ -477,186 +504,6 @@ enemies = {
             "Location Type" : ("Dense Forest", "Grove", "Forest"),
             "Frequency" : 3,
             "Level Requirement" : 12,
-        },
-    },
-    "Dragon" : {
-        "1" : { #Fire Dragon
-            "Name" : ("Fire Dragon"),
-            #"Description" : "Fire Dragons Will Attack From Afar With Large Plumes Of Fire From Its Mouth. Lurks In Large Open Volcanic Caverns, Or Mountians." 
-            #"Most Common Elemental Dragon. Connot Become A Powerful One"
-            #"Immunity To Air, Pure Air Feeds Their Element Core, And They Will Burn Brighter And Hotter. Enpowering Them With A Super Powerful Fireball."
-            #"It Said That A Large Thunder Of Fire Dragons Can Cause Catastrophic Volcanic Activity."
-            #,
-            "Health" : 500,
-            "Damage" : 130,
-            "Magic Damage" : 40,
-            "Magic Resistance" : 10, 
-            "Armor" : 60,
-            "Powerful One" : False,
-            "Location Type" : ("Valley", "Mountain"),
-            "Frequency" : 1,
-            "Level Requirement" : 25,
-        },
-        "2" : { #Aqua Dragon
-            "Name" : ("Aqua Dragon"),
-            #"Description" : "Aqua Dragons Are Alike Fire Dragons In That Attack From Afar, But With Exhaling Scalding Hot Water. Resides Near And In Various Bodies Of Water. "
-            #"Second Most Common Elemental Dragon. Are Capeable Of Becoming A Powerful One, But It Is EXTREMELY RARE. "
-            #"Aqua Dragons Found In The Snowy Tundra Are More Adept At Cooling Water From Their Cores, And Instead Of Scalding Water, Exhale Icy Mist Or Entire Icicles. "
-            #"It's Believed That A Single Enraged Aqua Dragon Can Cause Tarential Downpours, Flooding Low Basins, And Large Swaulthves Of Land Near Souces Of Water."
-            #,
-            "Health" : 500,
-            "Damage" : 70,
-            "Magic Damage" : 100,
-            "Magic Resistance" : 0,
-            "Armor" : 55,
-            "Powerful One" : True,
-            "Location Type" : ("River", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 25,
-        },
-        "3" : { #Earth Dragon
-            "Name" : ("Earth Dragon"),
-            #"Description" : "Earth Dragons Unlike A Lot Of Other Dragons Fight Close To The Ground, And Munipulate Their Surroundings With Force To Subdue Their Challengers. "
-            #"Reside In Caverns, Caves, Mountaintops, And Deep Under The Planets Mantle. "
-            #"Earth Dragons' Bodies Are Almalgomations Of Rare Minerals, And Metals. Due To This They Lack The Magical Scales Other Dragons Have To Protect Them From Magic. "
-            #"Fourth Most Common Elemental Dragon. Earth Dragon Who Become Powerful Ones Can Be Unstoppable Behemiths With An Unparreleled Ability To Sustain Tons Of Damage. "
-            #"Should A Earth Dragon Take Resedance Near You, It Can Offer Protection From Wyrms, And Other Large Monsters For Matalic Coins It Likes To Snack On. "
-            #,
-            "Health" : 500,
-            "Damage" : 170,
-            "Magic Damage" : 0,
-            "Magic Resistance" : -30,
-            "Armor" : 120,
-            "Powerful One" : True,
-            "Location Type" : ("Cave", "Mountain"),
-            "Frequency" : 1,
-            "Level Requirement" : 25,
-        },
-        "4" : { #Air Dragon
-            "Name" : ("Air Dragon"),
-            "Description" : "",
-            "Health" : 500,
-            "Damage" : 170,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Powerful One" : True,
-            "Location Type" : ("Meadow"),
-            "Frequency" : 1,
-            "Level Requirement" : 25,
-        },
-        "5" : { #Lightning Dragon
-            "Name" : ("Lightning Dragon"),
-            "Description" : "",
-            "Health" : 500,
-            "Damage" : 170,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Powerful One" : False,
-            "Location Type" : ("Marsh"),
-            "Frequency" : 1,
-            "Level Requirement" : 25,
-        },
-        "6" : { #Light Dragon
-            "Name" : ("Light Dragon"),
-            "Description" : "",
-            "Health" : 500,
-            "Damage" : 170,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Powerful One" : True,
-            "Location Type" : ("Forest", "Welkin"),
-            "Frequency" : 1,
-            "Level Requirement" : 25,
-        },
-        "7" : { #Dark Dragon
-            "Name" : ("Dark Dragon"),
-            "Description" : "",
-            "Health" : 500,
-            "Damage" : 170,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Powerful One" : True,
-            "Location Type" : ("The Subterrane"),
-            "Frequency" : 1,
-            "Level Requirement" : 25,
-        },
-        "8" : { #Eclipse Dragon
-            "Name" : ("Eclipse Dragon"),
-            "Description" : "",
-            "Health" : 500,
-            "Damage" : 170,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Powerful One" : True,
-            "Location Type" : ("Dense Forest"),
-            "Frequency" : 1,
-            "Level Requirement" : 25,
-        },
-        "9" : { #Lunar Dragon
-            "Name" : ("Lunar Dragon"),
-            "Description" : "",
-            "Health" : 500,
-            "Damage" : 170,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Powerful One" : True,
-            "Location Type" : ("Mountain"),
-            "Frequency" : 1,
-            "Level Requirement" : 25,
-        },
-        "10" : { #Dragon
-            "Name" : ("Natural Dragon"),
-            #"Description" : "Natural Dragons Are . "
-            #"They Can Also Be Summoned As A Result Of The Failed Attempt Of Reviving A Dead Dragon. "
-            #"Being Barely 'Alive' As Its Is They Are Normally Really Frail. "
-            #"A Natural Dragon Is A Fairly Rare Dragon Encounter. ",
-            #"Natural Dragons Are Subservient To Humans And Demons As They Have A Cute Almost Pet Like Nature"
-            #"Natural Dragons Do Small Tasks For Their Caretaker"
-            "Health" : 100,
-            "Damage" : 90,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Powerful One" : False,
-            "Location Type" : ("Dense Forests", "Forest", "Town", "City", "Capital City"),
-            "Frequency" : 1,
-            "Level Requirement" : 25,
-        },
-        "11" : { #Soul Dragon
-            "Name" : ("Soul Dragon"),
-            #"Description" : "A Soul Dragon Is The Collection Of Many Souls, And Have Varrying Magical Powers, Depending On Its Envirnment. "
-            #"Residence: Unknown "
-            #"Soul Dragons Are By Proxy Technically An Elemental Dragon By Only Being Able To Manafest One Of The Five Elemental Dragons Powers (A Powerful One Is An Execption Have More Than One). "
-            #"Only In The Case Of Soul Dragons They Might Possiably Be Immune To Physical Attacks. A Powerful One Is Basically A Local God To Its Region, Muniplating Terrain, Influencing Fate, And Exerting Its Magical Authority. "
-            #"Being Simply A Body Of Trapped Souls, Makes Them Common, But Still Significally Rarer Than The Normal Elemental Dragons. ",
-            "Health" : 200,
-            "Damage" : 0,
-            "Magic Damage" : 180,
-            "Magic Resistance" : 0,
-            "Armor" : 90,
-            "Powerful One" : True,
-            "Location Type" : ("Ruin"),
-            "Frequency" : 1,
-            "Level Requirement" : 25,
-        },
-        "12" : { #Blood Dragon
-            "Name" : ("Blood Dragon"),
-            #"Description" : "",
-            "Health" : 500,
-            "Damage" : 0,
-            "Magic Damage" : 170,
-            "Magic Resistance" : 0,
-            "Armor" : 0,
-            "Powerful One" : True,
-            "Location Type" : ("City", "Capital City"),
-            "Frequency" : 1,
-            "Level Requirement" : 25,
         },
     },
     "Wyrm" : { #Wyrm
@@ -780,411 +627,8 @@ enemies = {
             "Level Requirement" : 30,
         },
     },
-
-    "Pirate" : {
-        1 : { #Deckhand
-            "Name" : ("Deckhand"),
-            "Description" : "",
-            "Health" : 50,
-            "Damage" : 5,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 15,
-        },
-        2 : { #Gunslinger
-            "Name" : ("Gunslinger"),
-            "Description" : "",
-            "Health" : 45,
-            "Damage" : 20,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 15,
-        },
-        3 : { #First Mate
-            "Name" : ("First Mate"),
-            "Description" : "",
-            "Health" : 60,
-            "Damage" : 15,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 15,
-        },
-        4 : { #Quartermaster
-            "Name" : ("Quartermaster"),
-            "Description" : "",
-            "Health" : 50,
-            "Damage" : 10,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 15,
-        },
-        5 : { #Powder Monkey
-            "Name" : ("Powder Monkey"),
-            "Description" : "",
-            "Health" : 40,
-            "Damage" : 10,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 15,
-        },
-        6 : { #Captian
-            "Name" : ("Captian"),
-            "Description" : "",
-            "Health" : 70,
-            "Damage" : 25,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 15,
-        },
-    },
     
-    "Cultist" : {
-        1 : { #Cultist Grunt
-            "Name" : ("Cultist Grunt"),
-            "Description" : "",
-            "Health" : 75,
-            "Damage" : 0,
-            "Magic Damage" : 15,
-            "Magic Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 15,
-        },
-        2 : { #Cultist Wizard
-            "Name" : ("Cultist Wizard"),
-            "Description" : "",
-            "Health" : 90,
-            "Damage" : 0,
-            "Magic Damage" : 30,
-            "Magic Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 15,
-        },
-        3 : { #Cultist Grand Wizard
-            "Name" : ("Cultist Grand Wizard"),
-            "Description" : "",
-            "Health" : 120,
-            "Damage" : 0,
-            "Magic Damage" : 50,
-            "Magic Resistance" : 0, 
-            "Armor" : 0,
-            "Location Type" : ("Coast", "Lake/Ocean"),
-            "Frequency" : 1,
-            "Level Requirement" : 15,
-        },
-    },
-    "Pure Demon" : {
-        1 : { #Demon
-            "Name" : ("Demon"),
-            "Description" : "",
-            "Health" : 73,
-            "Damage" : 24,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 35,
-            "Armor" : 20,
-            "Location Type" : ("Dense Forest", "City"),
-        },
-        2 : { #Arch Demon
-            "Name" : ("Arch Demon"),
-            "Description" : "",
-            "Health" : 90,
-            "Damage" : 28,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 20,
-            "Armor" : 15,
-            "Location Type" : ("Dense Forest"),
-        },
-        3 : { #Devil
-            "Name" : ("Devil"),
-            "Description" : "",
-            "Health" : 91,
-            "Damage" : 26,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 20,
-            "Armor" : 15,
-            "Location Type" : ("Dense Forest"),
-        },
-        4 : { #Blood Devil
-            "Name" : ("Blood Devil"),
-            "Description" : "",
-            "Health" : 91,
-            "Damage" : 0,
-            "Magic Damage" : 26,
-            "Magic Resistance" : 15,
-            "Armor" : 33,
-            "Location Type" : ("Dense Forest"),
-        },
-        5 : { #Incubi
-            "Name" : ("Incubi"),
-            "Description" : "",
-            "Health" : 132,
-            "Damage" : 0,
-            "Magic Damage" : 32,
-            "Magic Resistance" : 35,
-            "Armor" : 22,
-            "Location Type" : ("Dense Forest"),
-        },
-        6 : { #Succubi
-            "Name" : ("Succubi"),
-            "Description" : "",
-            "Health" : 135,
-            "Damage" : 0,
-            "Magic Damage" : 30,
-            "Magic Resistance" : 32,
-            "Armor" : 29,
-            "Location Type" : ("Dense Forest", "City"),
-        },
-    },
-    "Demon Hybrid" : {
-        1 : { #Dire
-            "Name" : ("Dire"),
-            "Description" : "",
-            "Health" : 170,
-            "Damage" : 37,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 23,
-            "Armor" : 11,
-            "Location Type" : ("Dense Forest", "Capital City"),
-        }
-    },
-    "Skeleton" : {
-        1 : {
-            "Name" : ("Common Skeleton"),
-            "Description" : "",
-            "Health" : 70,
-            "Damage" : 25,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 5
-        },
-    },
-    "Zombie" : {
-        1 : { #Ghoul
-            "Name" : ("Ghoul"),
-            "Description" : "",
-            "Health" : 70,
-            "Damage" : 18,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 12,
-            "Armor" : 2
-        },
-        2 : { #Beserking Ghoul
-            "Name" : ("Beserking Ghoul"),
-            "Description" : "",
-            "Health" : 90,
-            "Damage" : 21,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 4,
-            "Armor" : 3
-        },
-        3 : { #Draugr
-            "Name" : ("Draugr"),
-            "Description" : "",
-            "Health" : 60,
-            "Damage" : 14,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 12
-        },
-        4 : { #Revenant
-            "Name" : ("Revenant"),
-            "Description" : "",
-            "Health" : 70,
-            "Damage" : 12,
-            "Magic Damage" : 0,
-            "Magic Resistance" : 0,
-            "Armor" : 31
-        },
-    },
-    "Banshee" : {
-        1 : { #Grotto Banshee
-            "Name" : ("Grotto Banshee"),
-            "Description" : "",
-            "Health" : 60,
-            "Damage" : 0,
-            "Magic Damage" : 19,
-            "Magic_Resistace" : 0,
-            "Armor" : 0
-        },
-        2 : { #Forest Banshee
-            "Name" : ("Forest Banshee"),
-            "Description" : "",
-            "Health" : 56,
-            "Damage" : 0,
-            "Magic Damage" : 15,
-            "Magic_Resistace" : 0,
-            "Armor" : 0
-        },
-        3 : { #Fortress Banshee
-            "Name" : ("Fortress Banshee"),
-            "Description" : "",
-            "Health" : 111,
-            "Damage" : 0,
-            "Magic Damage" : 21,
-            "Magic_Resistace" : 0,
-            "Armor" : 0
-        }
-    },
-    "Ghost" : {
-        "1" : { #Shade
-            "Name" : ("Shade"),
-            "Description" : "",
-            "Health" : 56,
-            "Damage" : 0,
-            "Magic Damage" : 15,
-            "Magic_Resistace" : 0,
-            "Armor" : 0
-        },
-        "2" : { #Shadow
-            "Name" : ("Shadow"),
-            "Description" : "",
-            "Health" : 95,
-            "Damage" : 0,
-            "Magic Damage" : 17,
-            "Magic_Resistace" : 0,
-            "Armor" : 0
-        },
-        "3" : { #Wisp
-            "Name" : ("Wisp"),
-            "Description" : "",
-            "Health" : 45,
-            "Damage" : 0,
-            "Magic Damage" : 40,
-            "Magic_Resistace" : 0,
-            "Armor" : 0
-        },
-    },
-    "Soul" : {
-        1 : { #Fire
-            "Name" : ("Fire"),
-            "Description" : "",
-            "Health" : 70,
-            "Damage" : 0,
-            "Magic Damage" : 15,
-            "Magic_Resistace" : 0,
-            "Armor" : 0
-        },
-        2 : { #Aqua
-            "Name" : ("Aqua"),
-            "Description" : "",
-            "Health" : 48,
-            "Damage" : 0,
-            "Magic Damage" : 6,
-            "Magic_Resistace" : 0,
-            "Armor" : 0
-        },
-        3 : { #Earth
-            "Name" : ("Earth"),
-            "Description" : "",
-            "Health" : 80,
-            "Damage" : 0,
-            "Magic Damage" : 8,
-            "Magic_Resistace" : 0,
-            "Armor" : 0
-        },
-        4 : { #Air
-            "Name" : ("Air"),
-            "Description" : "",
-            "Health" : 60,
-            "Damage" : 0,
-            "Magic Damage" : 5,
-            "Magic_Resistace" : 0,
-            "Armor" : 0
-        },
-        5 : { #Lightning
-            "Name" : ("Lightning"),
-            "Description" : "",
-            "Health" : 53,
-            "Damage" : 0,
-            "Magic Damage" : 10,
-            "Magic_Resistace" : 0,
-            "Armor" : 0
-        },
-        6 : { #Light
-            "Name" : ("Light"),
-            "Description" : "",
-            "Health" : 45,
-            "Damage" : 0,
-            "Magic Damage" : 0,
-            "Magic_Resistace" : 0,
-            "Armor" : 0
-        },
-    },
-    "Wolves" : {
-        1 : { #Wolf
-            "Name" : ("Wolf"),
-            "Description" : "",
-            "Health" : 30,
-            "Damage" : 13,
-            "Magic Damage" : 0,
-            "Magic_Resistace" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Valley", "Mountain", "Den"),
-            "Frequency" : 1,
-            "Level Requirement" : 0,
-        },
-        2 : { #Dire Wolf
-            "Name" : ("Dire Wolf"),
-            "Description" : "",
-            "Health" : 122,
-            "Damage" : 31,
-            "Magic Damage" : 0,
-            "Magic_Resistace" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Mountain"),
-            "Frequency" : 5,
-            "Level Requirement" : 10,
-        },
-    },
-    "Jackel" : {
-        "1" : { #Jackel
-            "Name" : ("Jackel"),
-            "Description" : "",
-            "Health" : 70,
-            "Damage" : 23,
-            "Magic Damage" : 0,
-            "Magic_Resistace" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Forest", "Mountain"),
-            "Frequency" : 1,
-            "Level Requirement" : 25,
-        },
-    },
-    "Dahrk Hound" : {
-        "1" : {
-            "Name" : ("Dahrk Hound"),
-            "Description" : "",
-            "Health" : 94,
-            "Damage" : 3,
-            "Magic Damage" : 0,
-            "Magic_Resistace" : 0,
-            "Armor" : 0,
-            "Location Type" : ("Tundra", "Mountain"),
-            "Frequency" : 1,
-            "Level Requirement" : 0,
-        },
-    },
+
     "Sea Creatures": {
         1 : { #Titan
             "Titan" : {
@@ -1195,48 +639,6 @@ enemies = {
                 "Magic Damage" : 0,
                 "Magic_Resistace" : 0,
                 "Armor" : 0
-            },
-        },
-        2 : { #Merfolk
-            "Merfolk" : {
-                1 : { #Merfolk
-                    1 : { #Female (Mermaid)
-                        "Name" : ("Mermaid"),
-                        "Description" : "",
-                        "Health" : 70,
-                        "Damage" : 25,
-                        "Magic Damage" : 0,
-                        "Magic_Resistace" : 0,
-                        "Armor" : 0 
-                    },
-                    2 : { #Famale (Siren)
-                        "Name" : ("Siren"),
-                        "Description" : "",
-                        "Health" : 70,
-                        "Damage" : 25,
-                        "Magic Damage" : 0,
-                        "Magic_Resistace" : 0,
-                        "Armor" : 0 
-                    }
-                },
-                2 : { #Male (Merman)
-                    "Name" : ("Merman"),
-                    "Description" : "",
-                    "Health" : 70,
-                    "Damage" : 25,
-                    "Magic Damage" : 0,
-                    "Magic_Resistace" : 0,
-                    "Armor" : 0
-                },
-                3 : { #Merfolk Gaurd
-                    "Name" : ("Merfolk Gaurd"),
-                    "Description" : "",
-                    "Health" : 0,
-                    "Damage" : 0,
-                    "Magic Damage" : 0,
-                    "Magic_Resistace" : 0,
-                    "Armor" : 0 
-                }
             },
         },
         3 : { #Spirit
@@ -1668,15 +1070,6 @@ enemies = {
                 "Magic_Resistace" : 0,
                 "Armor" : 0
             },
-            3 : { #Orge
-                "Name" : ("Orge"),
-                "Description" : "",
-                "Health" : 60,
-                "Damage" : 20,
-                "Magic Damage" : 0,
-                "Magic_Resistace" : 0,
-                "Armor" : 0
-            },
             4 : { #Giant
                 "Name" : ("Giant"),
                 "Description" : "",
@@ -1685,37 +1078,6 @@ enemies = {
                 "Magic Damage" : 0,
                 "Magic_Resistace" : 0,
                 "Armor" : 0
-            },
-            5 : { #Goblin
-                "Name" : ("Goblin"),
-                "Description" : "",
-                "Health" : 10,
-                "Damage" : 5,
-                "Magic Damage" : 0,
-                "Magic_Resistace" : 0,
-                "Armor" : 0
-            },
-            6 : { #Kobold
-                "Kobold" : {
-                    1 : { #Kobolds
-                        "Name" : ("Kobolds"),
-                        "Description" : "",
-                        "Health" : 10,
-                        "Damage" : 4,
-                        "Magic Damage" : 1,
-                        "Magic_Resistace" : 0,
-                        "Armor" : 0
-                    },
-                    2 : { #Kobold Knight
-                        "Name" : ("Kobold Knight"),
-                        "Description" : "",
-                        "Health" : 40,
-                        "Damage" : 10,
-                        "Magic Damage" : 5,
-                        "Magic_Resistace" : 0,
-                        "Armor" : 0
-                    }
-                },
             },
         },
     },#<--End of Land Creatures/Monsters

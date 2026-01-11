@@ -1,0 +1,16 @@
+{
+  "generic.gender.female": "Weiblich",
+  "generic.gender.male": "Männlich",
+  "generic.gender.other": "Andere",
+  "generic.affinity.fire": "Feuer",
+  "generic.affinity.aqua": "Wasser",
+  "generic.affinity.earth": "Erde",
+  "generic.affinity.air": "Luft",
+  "generic.affinity.lightning": "Blitz",
+  "generic.affinity.light": "Licht",
+  "generic.affinity.dark": "Dunkelheit",
+  "generic.affinity.eclipse": "Sonnenfinsternis",
+  "generic.affinity.lunar": "Mond",
+  "generic.affinity.soul": "Seele",
+  "generic.affinity.blood": "Blut"
+}

@@ -1,7 +1,0 @@
-{
-    "python.analysis.extraPaths": [
-        "./main/rarity",
-        "./Main/materials",
-        "./Main"
-    ]
-}

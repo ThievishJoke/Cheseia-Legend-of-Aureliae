@@ -3,19 +3,6 @@ import random
 Princess_Spiders_Names = ["Lhilshu", "Issiesh", "Yarheqo", "En'qashe", "Naseth", "Sziaquth", "Kharzee", "Qhexhethoh", "Zievhi", "Sieca", "Klazhush", "Khashod", "An'qie", "Shezhalles", "Lhaqe", "Izocei", "Shreshir", "Shishri", "Khiaknus", "Shiaxhil", "Chechiqee", "Shocad", "Zhillush", "Nailus", "Zhiqareil", "Naikkiesh", "Zeezhorheed", "Chequs", "Neishozhia", "Zhanchelash", "Qiracei", "Sovexhai", "Shazsucis", "Khechien'qa", "Qivishel", "Klellosh", "Shiq'sho", "Rhizarhi", "Evish", "Riqshive", "Zhal'shal", "Zeen'qu", "Zichok'sie", "Secok'sith", "Lath'a"]
 Slain_Bosses = []
 
-##---------------------------------------------------------------- Boss Guide
-#"" : {    --------------BOSS NAME
-#    1 : {         --------------Variant (If any)
-#    "Name" : (""), ---Name / Variant Name(If any)
-#    "Description" : "", --------Desribe Boss's Backstory(If unique) / Lore
-#    "Health" : 0, -------------HP
-#    "Damage" : 0, -------------Physical Damage
-#    "Magic Damage" : 0, -------Magic Damage
-#    "Magic_Resistace" : 0, -----Resistance to Magic Damage
-#    "Armor" : 0 ----------------Resistance to Physical Damage
-#    },
-#}
-
 bosses = {
     "Rat Horde" : {
         "Name" : ("Rat Horde"),
@@ -204,28 +191,28 @@ bosses = {
         }
     }, #End of Reptile
     "Human" : {
-#        "Hybrid" : { #Un-used
-#            1 : { #Kistune
-#            },
-#            2 : { #Lamia
-#            },
-#            2 : { #Changeling
-#            },
-#        },
-#        "Pirate" : { #Un-used
-#            1 : { #Deckhand
-#            },
-#            2 : { #Gunslinger
-#            },
-#            3 : { #First Mate
-#            },
-#            4 : { #Quartermaster
-#            },
-#            5 : { #Powder Monkey
-#            },
-#            6 : { #Captian
-#            },
-#        },
+        "Hybrid" : { #Un-used
+            1 : { #Kistune
+            },
+            2 : { #Lamia
+            },
+            2 : { #Changeling
+            },
+        },
+        "Pirate" : { #Un-used
+            1 : { #Deckhand
+            },
+            2 : { #Gunslinger
+            },
+            3 : { #First Mate
+            },
+            4 : { #Quartermaster
+            },
+            5 : { #Powder Monkey
+            },
+            6 : { #Captian
+            },
+        },
         "Bandit" : {
             1 : { #Bandit
                 "Name" : ("Bandit"),
@@ -354,71 +341,71 @@ bosses = {
                     "Armor" : 15
                 },
             },
-#            3 : { #Devil #Un-used
-#                "Name" : ("Devil"),
-#                "Description" : "",
-#                "Health" : 91,
-#                "Damage" : 26,
-#                "Magic Damage" : 0,
-#                "Magic Resistance" : 20,
-#                "Armor" : 15
-#            },
-#            4 : { #Blood Devil #Un-used
-#                "Name" : ("Blood Devil"),
-#                "Description" : "",
-#                "Health" : 91,
-#                "Damage" : 0,
-#                "Magic Damage" : 26,
-#                "Magic Resistance" : 15,
-#                "Armor" : 33
-#            },
-#            5 : { #Incubi #Un-used
-#                "Name" : ("Incubi"),
-#                "Description" : "",
-#                "Health" : 132,
-#                "Damage" : 0,
-#                "Magic Damage" : 32,
-#                "Magic Resistance" : 35,
-#                "Armor" : 22
-#            },
-#            6 : { #Succubi #Un-used
-#                "Name" : ("Succubi"),
-#                "Description" : "",
-#                "Health" : 135,
-#                "Damage" : 0,
-#                "Magic Damage" : 30,
-#                "Magic Resistance" : 32,
-#                "Armor" : 29
-#            },
-#        },
-#        "Hybrid" : {
-#            1 : { #Dire #Un-used
-#                "Name" : ("Dire"),
-#                "Description" : "",
-#                "Health" : 170,
-#                "Damage" : 37,
-#                "Magic Damage" : 0,
-#                "Magic Resistance" : 23,
-#                "Armor" : 11
-#            },
-#            2 : { #Cambion #Un-used
-#                "Name" : ("Cambion"),
-#                "Description" : "",
-#                "Health" : 136,
-#                "Damage" : 35,
-#                "Magic Damage" : 0,
-#                "Magic Resistance" : 20,
-#                "Armor" : 12
-#            },
-#            3 : { #Demon Halfling #Un-used
-#                "Name" : ("Demon Halfling"),
-#                "Description" : "",
-#                "Health" : 53,
-#                "Damage" : 23,
-#                "Magic Damage" : 0,
-#                "Magic Resistance" : 12,
-#                "Armor" : 9
-#            }
+            3 : { #Devil #Un-used
+                "Name" : ("Devil"),
+                "Description" : "",
+                "Health" : 91,
+                "Damage" : 26,
+                "Magic Damage" : 0,
+                "Magic Resistance" : 20,
+                "Armor" : 15
+            },
+            4 : { #Blood Devil #Un-used
+                "Name" : ("Blood Devil"),
+                "Description" : "",
+                "Health" : 91,
+                "Damage" : 0,
+                "Magic Damage" : 26,
+                "Magic Resistance" : 15,
+                "Armor" : 33
+            },
+            5 : { #Incubi #Un-used
+                "Name" : ("Incubi"),
+                "Description" : "",
+                "Health" : 132,
+                "Damage" : 0,
+                "Magic Damage" : 32,
+                "Magic Resistance" : 35,
+                "Armor" : 22
+            },
+            6 : { #Succubi #Un-used
+                "Name" : ("Succubi"),
+                "Description" : "",
+                "Health" : 135,
+                "Damage" : 0,
+                "Magic Damage" : 30,
+                "Magic Resistance" : 32,
+                "Armor" : 29
+            },
+        },
+        "Hybrid" : {
+            1 : { #Dire #Un-used
+                "Name" : ("Dire"),
+                "Description" : "",
+                "Health" : 170,
+                "Damage" : 37,
+                "Magic Damage" : 0,
+                "Magic Resistance" : 23,
+                "Armor" : 11
+            },
+            2 : { #Cambion #Un-used
+                "Name" : ("Cambion"),
+                "Description" : "",
+                "Health" : 136,
+                "Damage" : 35,
+                "Magic Damage" : 0,
+                "Magic Resistance" : 20,
+                "Armor" : 12
+            },
+            3 : { #Demon Halfling #Un-used
+                "Name" : ("Demon Halfling"),
+                "Description" : "",
+                "Health" : 53,
+                "Damage" : 23,
+                "Magic Damage" : 0,
+                "Magic Resistance" : 12,
+                "Armor" : 9
+            }
         },
     },
     "Monsters" : {
@@ -451,7 +438,7 @@ bosses = {
     } #End of Monster
 }
 
-print(bosses["Spider"][1]["Princess Spiders"][1])
+#print(bosses["Spider"][1]["Princess Spiders"][1])
 
 ##Bosses
 #--Complete--#bosses_group_misc =  ["Rat_Horde", "God_Slime"]
@@ -622,3 +609,5 @@ print(bosses["Spider"][1]["Princess Spiders"][1])
 #Drulbamm_The_Obsidian_Rock_Golem_Dmg = 50
 #Yeshai_The_Diamond_Crystal_Golem_Hp = 700
 #Yeshai_The_Diamond_Crystal_Golem_Dmg = 50
+
+print("Successfully Imported Bosses")

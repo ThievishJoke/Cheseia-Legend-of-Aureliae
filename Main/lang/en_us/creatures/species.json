@@ -1,0 +1,19 @@
+{
+  "species.human.name": "Human",
+  "species.human.description": "A versatile species, adaptable to many roles.",
+
+  "species.lamia.name": "Lamia",
+  "species.lamia.description": "A snake-like species, cunning and agile.",
+
+  "species.kitsune.name": "Kitsune",
+  "species.kitsune.description": "A fox-like species, known for magic and trickery.",
+  
+  "species.orc.name": "Orc",
+  "species.orc.description": "A strong, prideful species with high physical power.",
+  
+  "species.drider.name": "Drider",
+  "species.drider.description": "A humanoid arachnid species with sharp reflexes.",
+  
+  "species.dire.name": "Dire",
+  "species.dire.description": "A mysterious species with vampiric abilities."
+}

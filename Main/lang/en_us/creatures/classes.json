@@ -1,0 +1,25 @@
+{
+  "classes.warrior.name": "Warrior",
+  "classes.warrior.description": "A strong fighter specializing in melee combat.",
+  
+  "classes.fighter.name": "Fighter",
+  "classes.fighter.description": "A versatile warrior balanced between offense and defense.",
+  
+  "classes.mage.name": "Mage",
+  "classes.mage.description": "A spellcaster who uses powerful magic attacks.",
+  
+  "classes.bard.name": "Bard",
+  "classes.bard.description": "A support class using music and magic to aid allies.",
+  
+  "classes.thief.name": "Thief",
+  "classes.thief.description": "A nimble rogue who excels at stealth and quick strikes.",
+  
+  "classes.paladin.name": "Paladin",
+  "classes.paladin.description": "A holy warrior with healing and defensive abilities.",
+  
+  "classes.healer.name": "Healer",
+  "classes.healer.description": "A support spellcaster focused on healing and buffs.",
+  
+  "classes.ranger.name": "Ranger",
+  "classes.ranger.description": "A ranged fighter skilled in bows and nature magic."
+}

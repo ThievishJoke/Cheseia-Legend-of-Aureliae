@@ -1,0 +1,91 @@
+{
+  "species.slime.name": "Slime",
+  "species.slime.description": "A gelatinous creature that wobbles and jiggles.",
+  
+  "species.drider.name": "Drider",
+  "species.drider.description": "A hybrid spider-human, cunning and dangerous.",
+  
+  "species.spider.name": "Spider",
+  "species.spider.description": "A creepy crawly creature that spins webs and hunts in packs.",
+  
+  "enemies.green_slime.name": "Green Slime",
+  "enemies.green_slime.description": "A weak green slime that jiggles angrily.",
+  
+  "enemies.red_slime.name": "Red Slime",
+  "enemies.red_slime.description": "A fiery red slime with an acidic temperament.",
+  
+  "enemies.blue_slime.name": "Blue Slime",
+  "enemies.blue_slime.description": "A chill blue slime that radiates cold energy.",
+  
+  "enemies.weakend_drider.name": "Weakend Drider",
+  "enemies.weakend_drider.description": "A fragile drider, weakened but still dangerous.",
+  
+  "enemies.vigored_drider.name": "Vigored Drider",
+  "enemies.vigored_drider.description": "A drider infused with vitality, stronger than normal.",
+  
+  "enemies.solid_drider.name": "Solid Drider",
+  "enemies.solid_drider.description": "A heavily armored drider, difficult to injure.",
+  
+  "enemies.drider_princess.name": "Drider Princess",
+  "enemies.drider_princess.description": "A royal drider, graceful and dangerous.",
+  
+  "enemies.drider_queen.name": "Drider Queen",
+  "enemies.drider_queen.description": "The ruler of driders, commanding and deadly.",
+  
+  "enemies.widower_arachnid.name": "Widower Arachnid",
+  "enemies.widower_arachnid.description": "A cunning spider that preys on the unsuspecting.",
+  
+  "enemies.giant_spider.name": "Giant Spider",
+  "enemies.giant_spider.description": "A massive spider with venomous fangs.",
+  
+  "enemies.death_widow.name": "Death Widow",
+  "enemies.death_widow.description": "A deadly spider that spins lethal webs.",
+  
+  "enemies.moth_spiderling.name": "Moth Spiderling",
+  "enemies.moth_spiderling.description": "A small spider with delicate wings, agile and swift.",
+  
+  "enemies.crimson_brood.name": "Crimson Brood",
+  "enemies.crimson_brood.description": "A terrifying red spider with a vicious bite.",
+  
+  "enemies.wolf_spider.name": "Wolf Spider",
+  "enemies.wolf_spider.description": "A fast and aggressive spider that hunts in packs.",
+  
+  "enemies.frostbite_spider.name": "Frostbite Spider",
+  "enemies.frostbite_spider.description": "A spider imbued with cold, freezing its prey.",
+
+  "enemies.fire_dragon.name": "Fire Dragon",
+  "enemies.fire_dragon.description": "Fire Dragons will attack from afar with large plumes of fire from their mouths. They lurk in large open volcanic caverns or mountains. Most common elemental dragon, cannot become a powerful one. Immune to air; pure air feeds their elemental core, empowering them with a super powerful fireball. A large number of fire dragons can cause catastrophic volcanic activity.",
+
+  "enemies.aqua_dragon.name": "Aqua Dragon",
+  "enemies.aqua_dragon.description": "Aqua Dragons are similar to Fire Dragons, attacking from afar by exhaling scalding hot water. They reside near or in various bodies of water. Second most common elemental dragon, capable of becoming a powerful one, but extremely rare. Those in snowy tundras exhale icy mist or icicles. A single enraged Aqua Dragon can cause torrential downpours, flooding low basins, and large swathes of land.",
+
+  "enemies.earth_dragon.name": "Earth Dragon",
+  "enemies.earth_dragon.description": "Earth Dragons fight close to the ground and manipulate their surroundings to subdue challengers. They reside in caverns, caves, mountaintops, and deep under the planet's mantle. Their bodies are amalgamations of rare minerals and metals, lacking magical scales. Powerful Earth Dragons can become unstoppable behemoths. They may offer protection from other monsters for metallic coins.",
+
+  "enemies.air_dragon.name": "Air Dragon",
+  "enemies.air_dragon.description": "",
+
+  "enemies.lightning_dragon.name": "Lightning Dragon",
+  "enemies.lightning_dragon.description": "",
+
+  "enemies.light_dragon.name": "Light Dragon",
+  "enemies.light_dragon.description": "",
+
+  "enemies.dark_dragon.name": "Dark Dragon",
+  "enemies.dark_dragon.description": "",
+
+  "enemies.eclipse_dragon.name": "Eclipse Dragon",
+  "enemies.eclipse_dragon.description": "",
+
+  "enemies.lunar_dragon.name": "Lunar Dragon",
+  "enemies.lunar_dragon.description": "",
+
+  "enemies.natural_dragon.name": "Natural Dragon",
+  "enemies.natural_dragon.description": "Natural Dragons are barely alive and normally very frail. They are fairly rare and often subservient to humans or demons. They can perform small tasks for their caretakers.",
+
+  "enemies.soul_dragon.name": "Soul Dragon",
+  "enemies.soul_dragon.description": "Soul Dragons are collections of many souls, with varying magical powers depending on their environment. They can manifest one elemental power and may be immune to physical attacks. Powerful ones act like local gods, manipulating terrain and influencing fate.",
+
+  "enemies.blood_dragon.name": "Blood Dragon",
+  "enemies.blood_dragon.description": ""
+}

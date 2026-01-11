@@ -1,0 +1,19 @@
+{
+  "species.human.name": "Mensch",
+  "species.human.description": "Eine vielseitige Spezies, die sich an viele Rollen anpassen kann.",
+  
+  "species.lamia.name": "Lamia",
+  "species.lamia.description": "Eine schlangenartige Spezies, listig und agil.",
+
+  "species.kitsune.name": "Kitsune",
+  "species.kitsune.description": "Eine fuchsähnliche Spezies, bekannt für Magie und List.",
+
+  "species.orc.name": "Ork",
+  "species.orc.description": "Eine starke, stolze Spezies mit hoher körperlicher Kraft.",
+
+  "species.drider.name": "Drider",
+  "species.drider.description": "Eine humanoide Spinnenspezies mit scharfen Reflexen.",
+
+  "species.dire.name": "Dire",
+  "species.dire.description": "Eine mysteriöse Spezies mit vampirischen Fähigkeiten."
+}
